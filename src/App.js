@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/home";
 import Login from "./pages/member/login";
 import Template from "./pages/template";
+import ChangeInfoRoutes from './pages/changeInfo/changeInfoRoutes';
+
 
 function App() {
 
@@ -31,6 +33,8 @@ function App() {
                 <Route path="/plan"></Route>
                 <Route path="/notice"></Route>
                 <Route path="/admin" />
+                <Route path="/changeInfo/*" element=<ChangeInfoRoutes/> />
+
             </Route>
         </Routes>
     </>
