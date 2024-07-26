@@ -3,26 +3,24 @@ server: #디폴트(8080)
 spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-#    url: jdbc:oracle:thin:@211.109.103.98:51521/XEPDB1
-#    username: ICTUSER
-#    password: ICT1234
-    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
-    username: STUDY
-    password: STUDY
+    url: jdbc:oracle:thin:@211.109.103.98:51521/XEPDB1
+    username: ICTUSER
+    password: ICT1234
     
     hikari:
       auto-commit: true #default(false)
       connection-timeout: 30000 # default(30000)
       maximum-pool-size: 50 # default(10)
-      
+
   security:
-      user:
-          name: user
-          password: 1234
+    user:
+      name: user
+      password: 1234
+      
 #Spring-Data-JPA설정
   jpa:
     hibernate:
-      ddl-auto: update # create = ddl 자동생성, create-drop은 재시작
+      ddl-auto: none # create = ddl 자동생성, create-drop은 재시작
       #create이후에는 update, 테이블만들어놓고하면 none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # column명 전략
