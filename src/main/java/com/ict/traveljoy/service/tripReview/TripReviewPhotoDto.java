@@ -1,14 +1,9 @@
-package com.ict.traveljoy.service.tripReview;
+package com.ict.traveljoy.repository.tripReview;
 
-
-
+import com.ict.traveljoy.repository.tripReview.TripReview;
 import com.ict.traveljoy.repository.tripReview.TripReviewPhoto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -16,23 +11,30 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class TripReviewPhotoDto {
-	private long tripReviewPhotoId;
-	private long tripReviewId;
-	private long imageId;
-	
-	public TripReviewPhoto toEntity() {
-		return TripReviewPhoto.builder()
-				.imageId(imageId)
-				.tripReviewId(tripReviewId)
-				.imageId(imageId)
-				.build();
-	}
-	
-	public static TripReviewPhotoDto toDto(TripReviewPhoto trp) {
-		return TripReviewPhotoDto.builder()
-				.imageId(trp.getImageId())
-				.tripReviewId(trp.getTripReviewId())
-				.imageId(trp.getImageId())
-				.build();
-	}
+    private Long tripReviewPhotoId;
+    private Long tripReviewId;
+    private Long imageId;
+
+    public TripReviewPhoto toEntity() {
+        TripReviewPhoto tripReviewPhoto = new TripReviewPhoto();
+        tripReviewPhoto.setTripReviewPhotoId(tripReviewPhotoId);
+
+        TripReview tripReview = new TripReview();
+        tripReview.setTripReviewId(tripReviewId);
+        tripReviewPhoto.setTripReview(tripReview);
+
+        Image image = new Image();
+        image.setImageId(imageId);
+        tripReviewPhoto.setImage(image);
+
+        return tripReviewPhoto;
+    }
+
+    public static TripReviewPhotoDto toDto(TripReviewPhoto tripReviewPhoto) {
+        return TripReviewPhotoDto.builder()
+                .tripReviewPhotoId(tripReviewPhoto.getTripReviewPhotoId())
+                .tripReviewId(tripReviewPhoto.getTripReview().getTripReviewId())
+                .imageId(tripReviewPhoto.getImage().getImageId())
+                .build();
+    }
 }

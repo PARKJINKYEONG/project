@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,8 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.ColumnDefault;
+
+import com.ict.traveljoy.repository.plan.Plan;
 
 @Entity
 @Table(name = "trip_review")
@@ -32,8 +36,9 @@ public class TripReview {
     @Column(name = "TRIP_REVIEW_ID", nullable = false)
     private Long tripReviewId;
 
-    @Column(name = "PLAN_ID")
-    private Long planId;
+    @ManyToOne
+    @JoinColumn(name = "PLAN_ID", nullable = false)
+    private Plan plan;
 
     @Column(name = "WRITER", length = 30)
     private String writer;

@@ -1,10 +1,14 @@
 package com.ict.traveljoy.repository.planInterest;
 
+import com.ict.traveljoy.repository.plan.Plan;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -28,8 +32,10 @@ public class PlanInterest {
     @Column(name = "PLAN_INTEREST_ID", nullable = false)
     private Long planInterestId;
 
-    @Column(name = "PLAN_ID")
-    private Long planId;
+    @ManyToOne
+    @JoinColumn(name = "PLAN_ID", nullable = false)
+    private Plan plan;
+
 
     @Column(name = "INTEREST_ID")
     private Long interestId;

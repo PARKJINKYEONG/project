@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 
-    List<Feedback> findByPlanId(Long planId);
+    List<Feedback> findByPlan_PlanId(Long planId);
 
     List<Feedback> findByOwner(String owner);
 

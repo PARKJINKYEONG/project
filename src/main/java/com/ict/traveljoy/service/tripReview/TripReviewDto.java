@@ -1,14 +1,10 @@
 package com.ict.traveljoy.service.tripReview;
 
-import java.sql.Timestamp;
-
+import com.ict.traveljoy.repository.plan.Plan;
 import com.ict.traveljoy.repository.tripReview.TripReview;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -16,38 +12,48 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class TripReviewDto {
-	private long tripReviewId;
-	private long planId;
-	private String writer;
-	private String title;
-	private String reviewContent;
-	private String isActive;
-	private String isDelete;
-	private Timestamp deleteDate;
-	
-	public TripReview toEntity() {
-		return TripReview.builder()
-				.tripReviewId(tripReviewId)
-				.planId(planId)
-				.writer(writer)
-				.title(title)
-				.reviewContent(reviewContent)
-				.isActive(isActive)
-				.isDelete(isDelete)
-				.deleteDate(deleteDate)
-				.build();
-	}
-	
-	public static TripReviewDto toDto(TripReview trw) {
-		return TripReviewDto.builder()
-				.tripReviewId(trw.getTripReviewId())
-				.planId(trw.getPlanId())
-				.writer(trw.getWriter())
-				.title(trw.getTitle())
-				.reviewContent(trw.getReviewContent())
-				.isActive(trw.getIsActive())
-				.isDelete(trw.getIsDelete())
-				.deleteDate(trw.getDeleteDate())
-				.build();
-	}
+    private Long tripReviewId;
+    private Long planId;
+    private String writer;
+    private String title;
+    private String reviewContent;
+    private String url;
+    private Timestamp postDate;
+    private String isActive;
+    private String isDelete;
+    private Timestamp deleteDate;
+
+    public TripReview toEntity() {
+        TripReview tripReview = new TripReview();
+        tripReview.setTripReviewId(tripReviewId);
+        tripReview.setWriter(writer);
+        tripReview.setTitle(title);
+        tripReview.setReviewContent(reviewContent);
+        tripReview.setUrl(url);
+        tripReview.setPostDate(postDate);
+        tripReview.setIsActive(isActive);
+        tripReview.setIsDelete(isDelete);
+        tripReview.setDeleteDate(deleteDate);
+
+        Plan plan = new Plan();
+        plan.setPlanId(planId);
+        tripReview.setPlan(plan);
+
+        return tripReview;
+    }
+
+    public static TripReviewDto toDto(TripReview tripReview) {
+        return TripReviewDto.builder()
+                .tripReviewId(tripReview.getTripReviewId())
+                .planId(tripReview.getPlan().getPlanId())
+                .writer(tripReview.getWriter())
+                .title(tripReview.getTitle())
+                .reviewContent(tripReview.getReviewContent())
+                .url(tripReview.getUrl())
+                .postDate(tripReview.getPostDate())
+                .isActive(tripReview.getIsActive())
+                .isDelete(tripReview.getIsDelete())
+                .deleteDate(tripReview.getDeleteDate())
+                .build();
+    }
 }

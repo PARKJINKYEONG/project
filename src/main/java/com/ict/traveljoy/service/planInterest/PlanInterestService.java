@@ -1,5 +1,6 @@
 package com.ict.traveljoy.service.planInterest;
 
+import com.ict.traveljoy.repository.plan.Plan;
 import com.ict.traveljoy.repository.planInterest.PlanInterest;
 import com.ict.traveljoy.repository.planInterest.PlanInterestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +63,12 @@ public class PlanInterestService {
 
     // PlanInterest 수정
     public PlanInterestDto updatePlanInterest(PlanInterestDto planInterestDto) {
-        PlanInterest existingPlanInterest = planInterestRepository.findByPlanIdAndInterestId(planInterestDto.getPlanId(), planInterestDto.getPlanInterestId());
+        PlanInterest existingPlanInterest = planInterestRepository.findByPlanIdAndInterestId(planInterestDto.getPlanId(), planInterestDto.getInterestId());
         if (existingPlanInterest != null) {
-            existingPlanInterest.setPlanId(planInterestDto.getPlanId());
+            Plan plan = new Plan();
+            plan.setPlanId(planInterestDto.getPlanId());
+            
+            existingPlanInterest.setPlan(plan);
             // 필요한 경우 다른 필드도 업데이트할 수 있습니다.
             
             PlanInterest updatedPlanInterest = planInterestRepository.save(existingPlanInterest);

@@ -2,6 +2,7 @@ package com.ict.traveljoy.service.feedback;
 
 import com.ict.traveljoy.repository.feedback.Feedback;
 import com.ict.traveljoy.repository.feedback.FeedbackRepository;
+import com.ict.traveljoy.repository.plan.Plan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class FeedbackService {
 
     // planId로 Feedback 조회
     public List<FeedbackDto> getFeedbacksByPlanId(Long planId) {
-        List<Feedback> feedbacks = feedbackRepository.findByPlanId(planId);
+        List<Feedback> feedbacks = feedbackRepository.findByPlan_PlanId(planId);
         return feedbacks.stream()
                 .map(FeedbackDto::toDto)
                 .collect(Collectors.toList());
@@ -47,6 +48,11 @@ public class FeedbackService {
     // Feedback 저장
     public FeedbackDto saveFeedback(FeedbackDto feedbackDto) {
         Feedback feedback = feedbackDto.toEntity();
+        if (feedbackDto.getPlanId() != null) {
+            Plan plan = new Plan();
+            plan.setPlanId(feedbackDto.getPlanId());
+            feedback.setPlan(plan);
+        }
         Feedback savedFeedback = feedbackRepository.save(feedback);
         return FeedbackDto.toDto(savedFeedback);
     }
@@ -55,7 +61,9 @@ public class FeedbackService {
     public FeedbackDto updateFeedback(FeedbackDto feedbackDto) {
         Feedback existingFeedback = feedbackRepository.findById(feedbackDto.getFeedbackId()).orElse(null);
         if (existingFeedback != null) {
-            existingFeedback.setPlanId(feedbackDto.getPlanId());
+            Plan plan = new Plan();
+            plan.setPlanId(feedbackDto.getPlanId());
+            existingFeedback.setPlan(plan);
             existingFeedback.setOwner(feedbackDto.getOwner());
             existingFeedback.setRate(feedbackDto.getRate());
 

@@ -1,6 +1,7 @@
 package com.ict.traveljoy.service.feedback;
 
 import com.ict.traveljoy.repository.feedback.Feedback;
+import com.ict.traveljoy.repository.plan.Plan;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,26 +15,31 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class FeedbackDto {
-	private long feedbackId;
-	private long planId;
-	private String owner;
-	private Integer rate;
-	
-	public Feedback toEntity() {
-		return Feedback.builder()
-				.feedbackId(feedbackId)
-				.planId(planId)
-				.owner(owner)
-				.rate(rate)
-				.build();
-	}
-	
-	public static FeedbackDto toDto(Feedback fbk) {
-		return FeedbackDto.builder()
-				.feedbackId(fbk.getFeedbackId())
-				.planId(fbk.getPlanId())
-				.owner(fbk.getOwner())
-				.rate(fbk.getRate())
-				.build();
-	}
+    private Long feedbackId;
+    private Long planId;
+    private String owner;
+    private Integer rate;
+
+    public Feedback toEntity() {
+        Feedback feedback = new Feedback();
+        feedback.setFeedbackId(feedbackId);
+        
+        Plan plan = new Plan();
+        plan.setPlanId(planId);
+        feedback.setPlan(plan);
+        
+        feedback.setOwner(owner);
+        feedback.setRate(rate);
+        
+        return feedback;
+    }
+
+    public static FeedbackDto toDto(Feedback feedback) {
+        return FeedbackDto.builder()
+                .feedbackId(feedback.getFeedbackId())
+                .planId(feedback.getPlan() != null ? feedback.getPlan().getPlanId() : null)
+                .owner(feedback.getOwner())
+                .rate(feedback.getRate())
+                .build();
+    }
 }

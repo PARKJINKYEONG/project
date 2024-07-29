@@ -1,5 +1,6 @@
 package com.ict.traveljoy.service.tripReview;
 
+import com.ict.traveljoy.repository.plan.Plan;
 import com.ict.traveljoy.repository.tripReview.TripReview;
 import com.ict.traveljoy.repository.tripReview.TripReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,15 @@ public class TripReviewService {
         return TripReviewDto.toDto(savedTripReview);
     }
 
-    // TripReview 수정
+ // TripReview 수정
     public TripReviewDto updateTripReview(TripReviewDto tripReviewDto) {
         TripReview existingTripReview = tripReviewRepository.findById(tripReviewDto.getTripReviewId()).orElse(null);
         if (existingTripReview != null) {
-            existingTripReview.setPlanId(tripReviewDto.getPlanId());
+            // 엔티티의 plan 객체에 대한 수정
+            Plan plan = new Plan();
+            plan.setPlanId(tripReviewDto.getPlanId());
+            existingTripReview.setPlan(plan);
+
             existingTripReview.setWriter(tripReviewDto.getWriter());
             existingTripReview.setTitle(tripReviewDto.getTitle());
             existingTripReview.setReviewContent(tripReviewDto.getReviewContent());
@@ -76,6 +81,7 @@ public class TripReviewService {
         }
         return null; // 수정할 TripReview가 없는 경우
     }
+
 
     // TripReview 삭제
     public void deleteTripReview(Long tripReviewId) {

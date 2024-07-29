@@ -1,5 +1,6 @@
 package com.ict.traveljoy.service.planRegion;
 
+import com.ict.traveljoy.repository.plan.Plan;
 import com.ict.traveljoy.repository.planRegion.PlanRegion;
 import com.ict.traveljoy.repository.planRegion.PlanRegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,18 +50,25 @@ public class PlanRegionService {
         return PlanRegionDto.toDto(savedPlanRegion);
     }
 
-    // PlanRegion 수정
+ // PlanRegion 수정
     public PlanRegionDto updatePlanRegion(PlanRegionDto planRegionDto) {
         PlanRegion existingPlanRegion = planRegionRepository.findById(planRegionDto.getPlanRegionId()).orElse(null);
         if (existingPlanRegion != null) {
-            existingPlanRegion.setPlanId(planRegionDto.getPlanId());
-            existingPlanRegion.setRegionId(planRegionDto.getRegionId());
+            // 기존 PlanRegion의 Plan과 Region 객체를 새로운 ID로 설정
+            Plan plan = new Plan();
+            plan.setPlanId(planRegionDto.getPlanId());
+            existingPlanRegion.setPlan(plan);
+
+            Region region = new Region();
+            region.setRegionId(planRegionDto.getRegionId());
+            existingPlanRegion.setRegion(region);
 
             PlanRegion updatedPlanRegion = planRegionRepository.save(existingPlanRegion);
             return PlanRegionDto.toDto(updatedPlanRegion);
         }
         return null; // 수정할 PlanRegion가 없는 경우
     }
+
 
     // PlanRegion 삭제 (PlanId로 삭제)
     public void deletePlanRegionByPlanId(Long planId) {

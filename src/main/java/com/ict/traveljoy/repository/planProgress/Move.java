@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,12 +29,15 @@ public class Move {
     @Column(name = "MOVE_ID", nullable = false)
     private Long moveId;
 	
-	 @Column(name = "START_DETAIL_PLAN_ID")
-	 private Long startDetailPlanId;
-	 
-	 @Column(name = "END_DETAIL_PLAN_ID")
-	 private Long endDetailPlanId;
-	 
-	 @Column(name = "TRANSPORTATION_ID")
-	 private Long transportationId;
+	@ManyToOne
+    @JoinColumn(name = "START_DETAIL_PLAN_ID")
+    private PlanProgress2 startDetailPlan;
+
+    @ManyToOne
+    @JoinColumn(name = "END_DETAIL_PLAN_ID")
+    private PlanProgress2 endDetailPlan;
+
+    @ManyToOne
+    @JoinColumn(name = "TRANSPORTATION_ID")
+    private Transportation transportation;
 }
