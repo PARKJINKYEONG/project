@@ -1,5 +1,7 @@
 package com.ict.traveljoy.service.tripReview;
 
+import com.ict.traveljoy.repository.image.Image;
+
 import com.ict.traveljoy.repository.tripReview.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

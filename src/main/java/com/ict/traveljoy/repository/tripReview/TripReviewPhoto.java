@@ -1,5 +1,7 @@
 package com.ict.traveljoy.repository.tripReview;
 
+import com.ict.traveljoy.repository.image.Image;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

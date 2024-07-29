@@ -1,5 +1,7 @@
 package com.ict.traveljoy.repository.planProgress;
 
+import com.ict.traveljoy.repository.transportation.Transportation;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

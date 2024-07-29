@@ -1,5 +1,7 @@
 package com.ict.traveljoy.repository.tripReview;
 
+import com.ict.traveljoy.repository.image.Image;
+
 import com.ict.traveljoy.repository.tripReview.TripReview;
 import com.ict.traveljoy.repository.tripReview.TripReviewPhoto;
 

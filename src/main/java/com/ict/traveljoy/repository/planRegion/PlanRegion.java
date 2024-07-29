@@ -1,6 +1,7 @@
 package com.ict.traveljoy.repository.planRegion;
 
 import com.ict.traveljoy.repository.plan.Plan;
+import com.ict.traveljoy.repository.region.Region;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,8 +1,9 @@
 package com.ict.traveljoy.service.planRegion;
 
 import com.ict.traveljoy.repository.plan.Plan;
-import com.ict.traveljoy.repository.planRegion.PlanRegion;
 import com.ict.traveljoy.repository.region.Region;
+import com.ict.traveljoy.repository.planRegion.PlanRegion;
+
 import lombok.*;
 
 @Getter

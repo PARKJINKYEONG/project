@@ -2,6 +2,7 @@ package com.ict.traveljoy.service.planProgress;
 
 import com.ict.traveljoy.repository.planProgress.Move;
 import com.ict.traveljoy.repository.planProgress.PlanProgress2;
+import com.ict.traveljoy.repository.transportation.Transportation;
 import lombok.*;
 
 @Getter
