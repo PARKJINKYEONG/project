@@ -4,7 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/home";
 import Login from "./pages/member/login";
 import Template from "./pages/template";
-import ChangeInfoRoutes from './pages/changeInfo/changeInfoRoutes';
+import ChangeInfoRoutes from './pages/changeInfoAsManager/changeInfoRoutes';
+import BookmarkRoutes from "./pages/bookmark/bookmarkRoutes";
 
 
 function App() {
@@ -34,7 +35,8 @@ function App() {
                 <Route path="/plan"></Route>
                 <Route path="/notice"></Route>
                 <Route path="/admin" />
-                <Route path="/changeInfo/*" element=<ChangeInfoRoutes/> />
+                <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
+                <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
 
             </Route>
         </Routes>

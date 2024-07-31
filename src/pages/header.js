@@ -34,6 +34,12 @@ export default function Header(){
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/singup" style={({isActive})=>isActive?activeStyle:null}> <img src="/images/send.svg" style={{width:'20px',height:'20px'}}/> </NavLink>
                     </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/changeInfo" style={({isActive})=>isActive?activeStyle:null}>계정관리</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/bookmark" style={({isActive})=>isActive?activeStyle:null}>즐겨찾기</NavLink>
+                    </li>
                 </ul>
             </div>
             
