@@ -40,6 +40,12 @@ export default function Header(){
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/bookmark" style={({isActive})=>isActive?activeStyle:null}>즐겨찾기</NavLink>
                     </li>
+
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/statistics" style={({isActive})=>isActive?activeStyle:null}>통계</NavLink>
+                    </li>
+
+
                 </ul>
             </div>
             

@@ -11,7 +11,8 @@ const BookmarkRoutes = () => {
             <Routes>
                 <Route path="/" element={<BookmarkHome/>}/>
                 <Route path="/recently-viewed" element={<BookmarkRecentlyViewed/>}/>
-                <Route path="/details" element={<BookmarkDetails/>}  />
+                <Route path="/details/*" element={<BookmarkDetails/>}  />
+
             </Routes>
         </>
     );

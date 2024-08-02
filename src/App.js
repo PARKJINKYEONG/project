@@ -6,6 +6,9 @@ import Login from "./pages/member/login";
 import Template from "./pages/template";
 import ChangeInfoRoutes from './pages/changeInfoAsManager/changeInfoRoutes';
 import BookmarkRoutes from "./pages/bookmark/bookmarkRoutes";
+import StatisticRoutes from "./pages/statistic/statisticRoutes";
+
+
 
 
 function App() {
@@ -37,6 +40,9 @@ function App() {
                 <Route path="/admin" />
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
+                <Route path="/statistics/*" element={<StatisticRoutes/>}/>
+
+
 
             </Route>
         </Routes>
