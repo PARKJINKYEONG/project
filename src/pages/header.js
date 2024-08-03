@@ -17,6 +17,18 @@ export default function Header(){
     }
 
 
+
+    var isAuth=false;
+
+    function change(){
+        console.log('click!',isAuth)
+        if(isAuth==false)
+            isAuth=true;
+        else
+            isAuth=false;
+    }
+
+
     return <>
     <nav className="navbar navbar-expand-md fixed-top style.header roboto-condensed-engfont " id="bg-color">
         {(isAuth===true)?
@@ -24,6 +36,7 @@ export default function Header(){
                 <div className="col-4">
                     <Link className="navbar-brand" to="/">
                         <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}} alt="logo"/>
+
                     </Link>
                 </div>
                 <div className="col-4 text-center fs-2 playwrite-dk-loopet-engfont">
@@ -51,10 +64,12 @@ export default function Header(){
                 <div className="col-6">
                     <Link className="navbar-brand" to="/">
                         <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}} alt="logo"/>
+
                     </Link>
                     <div className={style.headerTitle}>Travel Joy</div>
 
                 </div>
+
                 <div className="col-6 text-end">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                     <span className="navbar-toggler-icon"></span>

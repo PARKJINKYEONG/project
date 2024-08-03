@@ -6,8 +6,9 @@ import Login from "./pages/member/login";
 import Template from "./pages/template";
 import ChangeInfoRoutes from './pages/changeInfoAsManager/changeInfoRoutes';
 import BookmarkRoutes from "./pages/bookmark/bookmarkRoutes";
+import UserQna from "./userQna";
+import QnA from "./userQna";
 import StatisticRoutes from "./pages/statistic/statisticRoutes";
-
 
 
 
@@ -29,7 +30,6 @@ function App() {
 
 
     return <>
-    
         <Routes>
             <Route element={<Template/>}>
                 <Route path="/" element={<Home/>} />
@@ -40,9 +40,8 @@ function App() {
                 <Route path="/admin" />
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
+                <Route path="/userQna" element={<QnA/>}></Route>
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
-
-
 
             </Route>
         </Routes>

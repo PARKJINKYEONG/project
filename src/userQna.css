@@ -1,0 +1,52 @@
+/* src/components/QnA.css */
+
+.qna-container {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header-image {
+  margin-top: 66px;
+  margin-bottom: 30px;
+  width: 100%;
+  height: auto;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.menu button, .menu input {
+  margin: 0 10px;
+  padding: 10px 50px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.qna-section {
+  margin: 20px auto;
+  width: 80%;
+  
+}
+
+.qna-section h2 {
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.qna-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 500px;
+}
+
+.qna-section th, .qna-section td {
+
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
