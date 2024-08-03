@@ -1,12 +1,13 @@
 import { Link, NavLink, redirect, useNavigate, useOutletContext } from "react-router-dom";
-// import styles from "";   //header.css import하는법 찾아보기
+import style from "../components/css/Header.module.css";
 
 export default function BigTitleHeader(){
 
     const activeStyle={color:'#FFFFFF',fontWeight:'bold'};
+    
 
     return <>
-    <nav className="navbar navbar-expand-md fixed-top mt-5">
+    <nav className="navbar navbar-expand-md fixed-top mt-5 style.header">
         <div className="container-fluid">
             <div className="col-4">
                 <Link className="navbar-brand" to="/">

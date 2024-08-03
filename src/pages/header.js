@@ -1,56 +1,90 @@
 import { Link, NavLink, redirect, useNavigate, useOutletContext } from "react-router-dom";
-// import styles from "";   //header.css import하는법 찾아보기
+import style from "../components/styles/Header.module.css";
 
 export default function Header(){
 
-    const activeStyle={color:'#FFFFFF',fontWeight:'bold'};
+    const activeStyle={fontWeight:'normal'};
+
+
+    var isAuth=false;
+
+    function change(){
+        console.log('click!',isAuth)
+        if(isAuth===false)
+            isAuth=true;
+        else
+            isAuth=false;
+    }
+
 
     return <>
-    <nav className="navbar navbar-expand-md fixed-top">
-        <div className="container-fluid">
-            <div className="col-6">
-                <Link className="navbar-brand" to="/">
-                    <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}}/>
-                </Link>
+    <nav className="navbar navbar-expand-md fixed-top style.header roboto-condensed-engfont " id="bg-color">
+        {(isAuth===true)?
+            <div className="container-fluid">
+                <div className="col-4">
+                    <Link className="navbar-brand" to="/">
+                        <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}} alt="logo"/>
+                    </Link>
+                </div>
+                <div className="col-4 text-center fs-2 playwrite-dk-loopet-engfont">
+                    Travel Joy
+                </div>
+                <div className="col-4">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="mynavbar">
+                    <ul className="navbar-nav ms-auto ">
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/" onClick={change}> Sign In </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/"> Sign Up </NavLink>
+                        </li>
+                        
+                    </ul>
+                    </div>
+                </div>
             </div>
-            <div className="col-6">
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="mynavbar">
-                <ul className="navbar-nav ms-auto gap-3">
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/login" style={({isActive})=>isActive?activeStyle:null}> New Plan <img src="/images/plus-circle.svg" style={{width:'15px',height:'15px'}}/> </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/singup" style={({isActive})=>isActive?activeStyle:null}> Notice </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/singup" style={({isActive})=>isActive?activeStyle:null}> Q&A </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/singup" style={({isActive})=>isActive?activeStyle:null}> <img src="/images/person-circle.svg" style={{width:'20px',height:'20px'}}/> </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/singup" style={({isActive})=>isActive?activeStyle:null}> <img src="/images/send.svg" style={{width:'20px',height:'20px'}}/> </NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/changeInfo" style={({isActive})=>isActive?activeStyle:null}>계정관리</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/bookmark" style={({isActive})=>isActive?activeStyle:null}>즐겨찾기</NavLink>
-                    </li>
+            :
+            <div className="container-fluid {style.tjheader}" >
+                <div className="col-6">
+                    <Link className="navbar-brand" to="/">
+                        <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}} alt="logo"/>
+                    </Link>
+                    <div className={style.headerTitle}>Travel Joy</div>
 
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to="/statistics" style={({isActive})=>isActive?activeStyle:null}>통계</NavLink>
-                    </li>
+                </div>
+                <div className="col-6 text-end">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="mynavbar">
+                    <ul className="navbar-nav ms-auto gap-3" >
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/" onClick={change} style={({isActive})=>isActive?activeStyle:null} > New Plan <img src="/images/plus-circle.svg" style={{width:'15px',height:'15px'}} alt="new plan"/> </NavLink>
+                        </li>
+                        {/* style={({isActive})=>isActive?activeStyle:null} */}
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > Notice </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > Q&A </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > <img src="/images/person-circle.svg" style={{width:'20px',height:'20px'}} alt="profile"/> </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > <img src="/images/bell.svg" style={{width:'20px',height:'20px'}} alt="alarm"/> </NavLink>
+                        </li>
+                    </ul>
+                </div>
+                
+                </div>
 
-
-                </ul>
             </div>
-            
-            </div>
-        </div>
+            }
+
     </nav>
     </>
 }

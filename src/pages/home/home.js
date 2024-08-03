@@ -4,7 +4,7 @@ export default function Home(){
 
     return <>
         {/* 메인페이지 내용 */}
-        <div className="mt-4 p-5">
+        <div className="top-margin-tj">
         <SideController/>
         </div>
 
