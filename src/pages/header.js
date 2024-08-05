@@ -92,6 +92,9 @@ export default function Header(){
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > <img src="/images/bell.svg" style={{width:'20px',height:'20px'}} alt="alarm"/> </NavLink>
                         </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/ReviewList" style={({isActive})=>isActive?activeStyle:null} > 여행후기 </NavLink>
+                        </li>
                     </ul>
                 </div>
                 
