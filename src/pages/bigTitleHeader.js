@@ -1,5 +1,4 @@
 import { Link, NavLink, redirect, useNavigate, useOutletContext } from "react-router-dom";
-import style from "../components/css/Header.module.css";
 
 export default function BigTitleHeader(){
 
