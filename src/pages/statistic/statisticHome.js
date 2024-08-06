@@ -25,15 +25,7 @@ const StatisticHome = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.colMd6}>
-                        <div className={styles.statisticCard}>
-                            <div className={styles.cardBody}>
-                                <h5 className={styles.cardTitle}>페이지 체류 시간</h5>
-                                <p className={styles.cardText}>방문자가 각 페이지에서 보내는 평균 시간을 확인하세요.</p>
-                                <Link to="/statistics/pageStayTime" className={`btn btn-primary ${styles.statisticLink}`}>페이지 체류 시간 보기</Link>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div className={styles.colMd6}>
                         <div className={styles.statisticCard}>
                             <div className={styles.cardBody}>
