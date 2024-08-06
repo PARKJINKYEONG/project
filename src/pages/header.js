@@ -108,6 +108,7 @@ export default function Header(){
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/ReviewList" style={({isActive})=>isActive?activeStyle:null} > 여행후기 </NavLink>
                         </li>
+
                     </ul>
                 </div>
                 
