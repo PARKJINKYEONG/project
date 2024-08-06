@@ -96,6 +96,7 @@ export default function Header(){
                             <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > <img src="/images/bell.svg" style={{width:'20px',height:'20px'}} alt="alarm"/> </NavLink>
                         </li>
                         <li className="nav-item">
+
                             <NavLink className="nav-link" to="/bookmark" style={({isActive})=>isActive?activeStyle:null} > <FavoriteBorderIcon /> </NavLink>
                         </li>
                         <li className="nav-item">
@@ -105,6 +106,7 @@ export default function Header(){
                             <NavLink className="nav-link" to="/changeInfo" style={({isActive})=>isActive?activeStyle:null} > <ManageAccountsIcon/> </NavLink>
                         </li>
                        
+
                     </ul>
                 </div>
                 
