@@ -105,7 +105,9 @@ export default function Header(){
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/changeInfo" style={({isActive})=>isActive?activeStyle:null} > <ManageAccountsIcon/> </NavLink>
                         </li>
-                       
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/ReviewList" style={({isActive})=>isActive?activeStyle:null} > 여행후기 </NavLink>
+                        </li>
 
                     </ul>
                 </div>
