@@ -1,5 +1,8 @@
 import { Link, NavLink, redirect, useNavigate, useOutletContext } from "react-router-dom";
 import style from "../components/styles/Header.module.css";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 export default function Header(){
 
@@ -92,6 +95,16 @@ export default function Header(){
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > <img src="/images/bell.svg" style={{width:'20px',height:'20px'}} alt="alarm"/> </NavLink>
                         </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/bookmark" style={({isActive})=>isActive?activeStyle:null} > <FavoriteBorderIcon /> </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/statistics" style={({isActive})=>isActive?activeStyle:null} > <BarChartIcon/> </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/changeInfo" style={({isActive})=>isActive?activeStyle:null} > <ManageAccountsIcon/> </NavLink>
+                        </li>
+                       
                     </ul>
                 </div>
                 
