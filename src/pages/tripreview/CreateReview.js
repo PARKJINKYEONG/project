@@ -3,12 +3,15 @@ import { TextField, Button, Typography, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Header from '../header';
 import BigTitleHeader from '../bigTitleHeader';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const CreateTripReview = () => {
   const [formData, setFormData] = useState({
     title: '',
     author: '',
-    date: '',
+    startDate: null,
+    endDate: null,
     package: '',
     itinerary: '',
     content: '',
@@ -25,6 +28,15 @@ const CreateTripReview = () => {
     setFormData(prevData => ({ ...prevData, images: [...e.target.files] }));
   };
 
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setFormData(prevData => ({
+      ...prevData,
+      startDate: start,
+      endDate: end
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // For now, we'll log the form data
@@ -36,7 +48,6 @@ const CreateTripReview = () => {
   return (
     <>
       <Header />
-      <BigTitleHeader />
       <div className="create-review-container" style={{ padding: '20px' }}>
         <div style={{ marginTop: '100px' }}>
           <Typography variant="h2" gutterBottom style={{ textAlign: 'left' }}>
@@ -66,15 +77,16 @@ const CreateTripReview = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                label="날짜"
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                required
+              <Typography variant="h6">여행 기간</Typography>
+              <DatePicker
+                selected={formData.startDate}
+                onChange={handleDateChange}
+                startDate={formData.startDate}
+                endDate={formData.endDate}
+                selectsRange
+                inline
+                minDate={new Date()}
+                dateFormat="yyyy-MM-dd"
               />
             </Grid>
             <Grid item xs={12}>
