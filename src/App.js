@@ -6,7 +6,7 @@ import Login from "./pages/member/login";
 import Template from "./pages/template";
 import ChangeInfoRoutes from './pages/changeInfoAsManager/changeInfoRoutes';
 import BookmarkRoutes from "./pages/bookmark/bookmarkRoutes";
-import QnA from "./userQna";
+import UserQna from "./userQna";
 import StatisticRoutes from "./pages/statistic/statisticRoutes";
 import './components/styles/common.css'
 import ReviewList from "./pages/tripreview/ReviewList";
@@ -28,6 +28,7 @@ function App() {
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
                 <Route path="/userQna" element={<QnA/>}></Route>
+
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/ReviewList" element={<ReviewList />}/>
                 <Route path="/CreateTripReview" element={<CreateTripReview />}/>

@@ -11,6 +11,7 @@ import axios from "axios";
 
 export default function Home(){
 
+
     const [chatShow,setChatShow]=useState(false);
     
     // RESTAPI와 연동 시도중

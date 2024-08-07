@@ -5,7 +5,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
-
 export default function Header(){
 
     const activeStyle={fontWeight:'normal'};
@@ -13,7 +12,20 @@ export default function Header(){
 
     const [isShow,setIsShow]=useState(false);
 
+
+    var isAuth=false;
+
+    function change(){
+        console.log('click!',isAuth)
+        if(isAuth==false)
+            isAuth=true;
+        else
+            isAuth=false;
+    }
+
+
     return <>
+
     <nav className="navbar navbar-expand-md fixed-top style.header roboto-condensed-engfont " id="bg-color">
         {(!isShow)?
             <div className="container-fluid">
@@ -47,8 +59,8 @@ export default function Header(){
             <div className="container-fluid {style.tjheader}" >
                 <div className="col-6">
                     <Link className="navbar-brand" to="/">
-                        <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}} alt="logo"/>
 
+                        <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}} alt="logo"/>
                     </Link>
                     <div className={style.headerTitle}>Travel Joy</div>
 
@@ -59,6 +71,7 @@ export default function Header(){
                     <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="mynavbar">
+
                     <ul className="navbar-nav ms-auto gap-3" >
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/" onClick={()=>{setIsShow(!isShow)}} style={({isActive})=>isActive?activeStyle:null} > New Plan <img src="/images/plus-circle.svg" style={{width:'15px',height:'15px'}} alt="new plan"/> </NavLink>
