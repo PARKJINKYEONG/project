@@ -45,6 +45,14 @@
     background-color: white;
 }
 
-.top-margin-tj{
+.container{
     margin-top: 66px;
+}
+
+body{
+    min-height: 80vh;
+}
+
+body .container{
+    min-height: 80vh;
 }

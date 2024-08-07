@@ -1,0 +1,46 @@
+.chatContainer{
+    position: absolute;
+    top: 25vh;
+    left:90vh;
+    border: solid black;
+    border-width: 1px;
+    border-radius: 16px;
+    width: 350px;
+    height: 500px;
+}
+
+.chatHeader{
+    height: 60px;
+    border: solid black;
+    border-width: 0px 0px 1px 0px;
+}
+.chatHeaderContent{
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+}
+.chatHeaderContent button{
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+}
+
+
+.chatContent{
+    height: 470px;
+    border-radius: 0px 0px 16px 16px;
+    border: solid black;
+    border-width: 1px 0px 0px 0px;
+}
+
+.chatTextContent{
+    height: 350px;
+}
+
+.chatTextArea{
+    height: 60px;
+    border: solid black;
+    border-width: 1px 0px 0px 0px;
+    border-radius: 0px 0px 16px 16px;
+}

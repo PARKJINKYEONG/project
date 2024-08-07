@@ -1,40 +1,21 @@
 import { Link, NavLink, redirect, useNavigate, useOutletContext } from "react-router-dom";
 import style from "../components/styles/Header.module.css";
+import { useState } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+
 
 export default function Header(){
 
     const activeStyle={fontWeight:'normal'};
 
 
-    var isAuth=false;
-
-    function change(){
-        console.log('click!',isAuth)
-        if(isAuth===false)
-            isAuth=true;
-        else
-            isAuth=false;
-    }
-
-
-
-    var isAuth=false;
-
-    function change(){
-        console.log('click!',isAuth)
-        if(isAuth==false)
-            isAuth=true;
-        else
-            isAuth=false;
-    }
-
+    const [isShow,setIsShow]=useState(false);
 
     return <>
     <nav className="navbar navbar-expand-md fixed-top style.header roboto-condensed-engfont " id="bg-color">
-        {(isAuth===true)?
+        {(!isShow)?
             <div className="container-fluid">
                 <div className="col-4">
                     <Link className="navbar-brand" to="/">
@@ -52,7 +33,7 @@ export default function Header(){
                     <div className="collapse navbar-collapse" id="mynavbar">
                     <ul className="navbar-nav ms-auto ">
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/" onClick={change}> Sign In </NavLink>
+                            <NavLink className="nav-link" to="/" onClick={()=>{setIsShow(!isShow)}}> Sign In </NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/"> Sign Up </NavLink>
@@ -80,7 +61,7 @@ export default function Header(){
                     <div className="collapse navbar-collapse" id="mynavbar">
                     <ul className="navbar-nav ms-auto gap-3" >
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/" onClick={change} style={({isActive})=>isActive?activeStyle:null} > New Plan <img src="/images/plus-circle.svg" style={{width:'15px',height:'15px'}} alt="new plan"/> </NavLink>
+                            <NavLink className="nav-link" to="/" onClick={()=>{setIsShow(!isShow)}} style={({isActive})=>isActive?activeStyle:null} > New Plan <img src="/images/plus-circle.svg" style={{width:'15px',height:'15px'}} alt="new plan"/> </NavLink>
                         </li>
                         {/* style={({isActive})=>isActive?activeStyle:null} */}
                         <li className="nav-item">
