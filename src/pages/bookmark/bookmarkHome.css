@@ -1,0 +1,99 @@
+body {
+    background-color: #F8F6E3; /* 배경 색깔 변경 */
+    margin: 0;
+    padding: 0;
+}
+
+.bookmark-home {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    width: 100%;
+    height: 100vh; /* 화면 전체 높이 */
+    padding: 100px;
+    box-sizing: border-box;
+}
+
+.main-title {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.content {
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 20vh;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.bookmark-list {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+}
+
+.bookmark-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    width: 400px;
+    height: 300px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 상하 간격을 자동 조정 */
+    position: relative; /* 상대 위치를 설정하여 최근 조회 요소 배치 */
+}
+
+.bookmark-item2 {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    width: 400px;
+    height: 300px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 상하 간격을 자동 조정 */
+    position: relative; /* 상대 위치를 설정하여 최근 조회 요소 배치 */
+}
+
+.bookmark-image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.grid-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.single-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.bookmark-name {
+    text-align: left;
+}
+
+.bookmark-name h3 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.recently-viewed {
+    text-align: left;
+}
+
+.recently-viewed h3 {
+    font-size: 18px;
+    margin: 0;
+}

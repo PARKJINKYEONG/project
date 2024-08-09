@@ -1,0 +1,52 @@
+.container {
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+}
+
+.privacyContainer {
+  max-width: 800px; 
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  width: 700px;
+}
+
+.privacyContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.privacyItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLabel {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 20px; /* 글자 크기 조정 */
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+}
+
+.formControl {
+  flex-grow: 1;
+  padding: 10px; /* 패딩을 20px에 맞게 조정 */
+  font-size: 20px; /* 글자 크기 조정 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn {
+  padding: 10px 20px; /* 패딩을 20px에 맞게 조정 */
+  margin-left: 10px; /* 간격을 20px에 맞게 조정 */
+  font-size: 20px; /* 글자 크기 조정 */
+  border-radius: 4px;
+}

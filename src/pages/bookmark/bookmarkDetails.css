@@ -1,0 +1,266 @@
+/* bookmarkDetails.css */
+.bookmark-details {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100vh;
+  padding: 100px;
+  box-sizing: border-box;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 60%;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #f0f0f0;
+}
+
+.bookmark-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bookmark-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bookmark-image-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.grid-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.bookmark-name {
+  text-align: left;
+  padding-top: 10px;
+}
+
+.bookmark-name h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.memo-button {
+  width: 100px;
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.memo-button:hover {
+  background-color: #f0f0f0;
+}
+
+.Modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  outline: none;
+  width: 800px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Modal h2 {
+  margin-top: 0;
+}
+
+.Modal textarea {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.Modal button {
+  margin-right: 20px;
+}
+
+.guest-counter {
+  margin-top: 20px;
+}
+
+.guest-counter div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.guest-counter span {
+  font-size: 16px;
+  width: 150px;
+}
+
+.guest-counter button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.guest-counter button:disabled {
+  background-color: #ccc;
+}
+
+.guest-counter button:hover:enabled {
+  background-color: #0056b3;
+}
+
+.reset-button {
+  background-color: #FF4136;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.reset-button:hover {
+  background-color: #C12F1E;
+}
+
+.save-button {
+  background-color: #2ECC40;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.save-button:hover {
+  background-color: #27AE60;
+}
+
+.datepicker-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.datepicker-button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.react-datepicker {
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 75%;
+}
+
+.react-datepicker__month-container {
+  margin: 0 10px;
+}
+
+.react-datepicker__header {
+  background-color: #007BFF;
+  color: white;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range {
+  background-color: #2ECC40;
+  color: white;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #2ECC40;
+  color: white;
+}
+
+.map-container {
+  width: 40%;
+  height: 600px;
+  margin-top: 100px;
+}
+
+.search-box {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 240px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  outline: none;
+  text-overflow: ellipses;
+  margin-top: 10px;
+}
+
+.search-box-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}

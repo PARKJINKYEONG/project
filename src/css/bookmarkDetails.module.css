@@ -1,0 +1,311 @@
+.bookmark-details {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  margin-top: 10vh;
+}
+
+.content {
+  width: 40%;
+  max-width: 25rem;
+  margin-right: 2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.625rem;
+  margin-bottom: 1.25rem;
+}
+
+.button {
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.3125rem;
+  background-color: #007BFF;
+  color: white;
+}
+
+.bookmark-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.bookmark-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 18.75rem;
+  height: 18.75rem;
+  border: 0.0625rem solid #ddd; 
+  border-radius: 0.3125rem; 
+  padding: 0.625rem;
+  background-color: #f9f9f9; 
+}
+
+.bookmark-image-grid {
+  width: 3.125rem;
+  height: 3.125rem;
+  overflow: hidden;
+  border-radius: 0.3125rem;
+}
+
+.grid-image {
+  width: 100%;
+  height: auto;
+}
+
+.memo-button {
+  padding: 0.3125rem 0.625rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: 0.0625rem solid #007BFF;
+  border-radius: 0.3125rem;
+  background-color: white;
+  color: #007BFF;
+  width: 6.25rem;
+  margin-top: 0.625rem; /* 메모 박스 아래로 간격 추가 */
+}
+
+.saved-memo-container {
+  display: inline-block; 
+  background-color: #f9f9f9;
+  border: 0.0625rem solid #ddd;
+  border-radius: 0.3125rem;
+  padding: 0.625rem;
+  width: 18.75rem; 
+  word-wrap: break-word; /*텍스트가 박스의 가로폭을 넘길 경우 자동으로 줄바꿈 */
+}
+
+.saved-memo {
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.Modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 0.625rem;
+  outline: none;
+  max-width: 37.5rem;
+  width: 90%;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+textarea {
+  width: 100%;
+  height: 6.25rem;
+  padding: 0.625rem;
+  margin-bottom: 0.625rem;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.3125rem;
+  resize: none;
+}
+
+button {
+  margin: 0.3125rem;
+  padding: 0.625rem 0.9375rem;
+  border: none;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reset-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.save-button {
+  background-color: #007BFF;
+  color: white;
+}
+
+.guest-counter {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.625rem;
+  margin-bottom: 1.25rem;
+}
+
+.guest-counter div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.625rem;
+}
+
+.guest-counter span {
+  font-size: 1rem;
+  flex: 1;
+  text-align: center;
+}
+
+.guest-counter button {
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  border: 0.0625rem solid #ccc;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guest-counter button:disabled {
+  background-color: #e0e0e0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.map-container {
+  width: 60%;
+  height: 37.5rem;
+  position: relative; /* 자식 요소의 절대 위치를 위한 상대 위치 설정 */
+}
+
+.search-box-container {
+  position: absolute; /* 절대 위치 */
+  bottom: 0.625rem; /* 아래쪽에서의 거리 */
+  left: 0.625rem; /* 왼쪽에서의 거리 */
+  z-index: 10; /* 지도 위에 표시되도록 z-index 설정 */
+}
+
+.search-box {
+  width: auto; /* 글자 크기에 맞게 가로폭 설정 */
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.3125rem;
+  background-color: white; /* 배경색을 추가하여 텍스트 입력 필드가 더 잘 보이도록 함 */
+}
+
+.search-box::placeholder {
+  color: #999;
+}
+
+.error {
+  position: absolute;
+  bottom: 0.625rem; /* 아래쪽에서의 거리 */
+  right: 3.5rem; /* 오른쪽에서의 거리 */
+  z-index: 10;
+  color: red;
+  font-size: 1.5rem;
+}
+
+/* 날짜 선택 모달 스타일 */
+.datepicker-container {
+  display: flex;
+  gap: 1.25rem; 
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.datepicker-wrapper {
+  display: inline-block;
+}
+
+.datepicker {
+  flex: 1;
+}
+
+.datepicker-button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+/* 게스트 설정 모달 스타일 */
+.guest-modal-container {
+  padding: 2rem;
+}
+
+.guest-modal-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.guest-counter {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.guest-counter div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.guest-counter span {
+  font-size: 1rem;
+  flex: 1;
+  text-align: center;
+}
+
+.guest-counter button {
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  border: 0.0625rem solid #ccc;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guest-counter button:disabled {
+  background-color: #e0e0e0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.toggle-button {
+
+  z-index: 10;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.3125rem;
+  background-color: #007BFF;
+  color: white;
+}
