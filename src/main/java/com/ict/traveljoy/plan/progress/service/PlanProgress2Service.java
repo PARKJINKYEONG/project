@@ -35,7 +35,7 @@ public class PlanProgress2Service {
     }
 
     // 특정 이벤트 여부에 해당하는 PlanProgress2 엔티티를 조회하는 메서드
-    public List<PlanProgress2Dto> getPlanProgressesByIsEvent(char isEvent) {
+    public List<PlanProgress2Dto> getPlanProgressesByIsEvent(Boolean isEvent) {
         List<PlanProgress2> planProgresses = planProgress2Repository.findByIsEvent(isEvent);
         return planProgresses.stream()
                 .map(PlanProgress2Dto::toDto)
@@ -43,7 +43,7 @@ public class PlanProgress2Service {
     }
 
     // 특정 식사 여부에 해당하는 PlanProgress2 엔티티를 조회하는 메서드
-    public List<PlanProgress2Dto> getPlanProgressesByIsFood(char isFood) {
+    public List<PlanProgress2Dto> getPlanProgressesByIsFood(Boolean isFood) {
         List<PlanProgress2> planProgresses = planProgress2Repository.findByIsFood(isFood);
         return planProgresses.stream()
                 .map(PlanProgress2Dto::toDto)
@@ -51,7 +51,7 @@ public class PlanProgress2Service {
     }
 
     // 특정 관광지 여부에 해당하는 PlanProgress2 엔티티를 조회하는 메서드
-    public List<PlanProgress2Dto> getPlanProgressesByIsSight(char isSight) {
+    public List<PlanProgress2Dto> getPlanProgressesByIsSight(Boolean isSight) {
         List<PlanProgress2> planProgresses = planProgress2Repository.findByIsSight(isSight);
         return planProgresses.stream()
                 .map(PlanProgress2Dto::toDto)
@@ -59,7 +59,7 @@ public class PlanProgress2Service {
     }
 
     // 특정 숙박 여부에 해당하는 PlanProgress2 엔티티를 조회하는 메서드
-    public List<PlanProgress2Dto> getPlanProgressesByIsHotel(char isHotel) {
+    public List<PlanProgress2Dto> getPlanProgressesByIsHotel(Boolean isHotel) {
         List<PlanProgress2> planProgresses = planProgress2Repository.findByIsHotel(isHotel);
         return planProgresses.stream()
                 .map(PlanProgress2Dto::toDto)

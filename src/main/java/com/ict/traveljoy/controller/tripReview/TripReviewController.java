@@ -15,14 +15,14 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "여행 리뷰 관리", description = "여행 리뷰 및 리뷰 사진을 관리")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/trip-reviews")
 public class TripReviewController {
 
     private final TripReviewService tripReviewService;
     private final TripReviewPhotoService tripReviewPhotoService;
 
     @CrossOrigin
-    @PostMapping("/trip-reviews")
+    @PostMapping("/create")
     @Operation(summary = "여행 리뷰 생성하기", description = "여행 리뷰를 생성하는 컨트롤러")
     public ResponseEntity<TripReviewDto> createTripReview(@RequestBody TripReviewDto tripReviewDto) {
         try {
@@ -35,7 +35,7 @@ public class TripReviewController {
     }
 
     @CrossOrigin
-    @PutMapping("/trip-reviews/{id}")
+    @PutMapping("/update/{id}")
     @Operation(summary = "여행 리뷰 수정하기", description = "여행 리뷰를 수정하는 컨트롤러")
     public ResponseEntity<TripReviewDto> updateTripReview(@PathVariable("id") Long tripReviewId, @RequestBody TripReviewDto tripReviewDto) {
         try {
@@ -48,7 +48,7 @@ public class TripReviewController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/trip-reviews/{id}")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "여행 리뷰 삭제하기", description = "여행 리뷰를 삭제하는 컨트롤러")
     public ResponseEntity<Void> deleteTripReview(@PathVariable("id") Long tripReviewId) {
         try {
@@ -61,7 +61,7 @@ public class TripReviewController {
     }
 
     @CrossOrigin
-    @GetMapping("/trip-reviews/{id}")
+    @GetMapping("/view/{id}")
     @Operation(summary = "여행 리뷰 조회하기", description = "특정 ID로 여행 리뷰를 조회하는 컨트롤러")
     public ResponseEntity<TripReviewDto> getTripReview(@PathVariable("id") Long tripReviewId) {
         try {
@@ -74,7 +74,7 @@ public class TripReviewController {
     }
 
     @CrossOrigin
-    @PostMapping("/trip-reviews/photos")
+    @PostMapping("/photo-create/photos")
     @Operation(summary = "여행 리뷰 사진 저장하기", description = "여행 리뷰에 대한 사진을 저장하는 컨트롤러")
     public ResponseEntity<TripReviewPhotoDto> createTripReviewPhoto(@RequestBody TripReviewPhotoDto tripReviewPhotoDto) {
         try {
@@ -87,7 +87,7 @@ public class TripReviewController {
     }
 
     @CrossOrigin
-    @PutMapping("/trip-reviews/photos/{id}")
+    @PutMapping("/photo-update/photos/{id}")
     @Operation(summary = "여행 리뷰 사진 수정하기", description = "여행 리뷰 사진을 수정하는 컨트롤러")
     public ResponseEntity<TripReviewPhotoDto> updateTripReviewPhoto(@PathVariable("id") Long tripReviewPhotoId, @RequestBody TripReviewPhotoDto tripReviewPhotoDto) {
         try {
@@ -100,7 +100,7 @@ public class TripReviewController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/trip-reviews/photos/{id}")
+    @DeleteMapping("/photo-delete/photos/{id}")
     @Operation(summary = "여행 리뷰 사진 삭제하기", description = "여행 리뷰 사진을 삭제하는 컨트롤러")
     public ResponseEntity<Void> deleteTripReviewPhoto(@PathVariable("id") Long tripReviewPhotoId) {
         try {
@@ -113,7 +113,7 @@ public class TripReviewController {
     }
 
     @CrossOrigin
-    @GetMapping("/trip-reviews/photos/{id}")
+    @GetMapping("/photo-view/photos/{id}")
     @Operation(summary = "여행 리뷰 사진 조회하기", description = "특정 ID로 여행 리뷰 사진을 조회하는 컨트롤러")
     public ResponseEntity<TripReviewPhotoDto> getTripReviewPhoto(@PathVariable("id") Long tripReviewPhotoId) {
         try {

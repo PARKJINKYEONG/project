@@ -24,8 +24,8 @@ public class TripReviewPhotoDto {
         TripReviewPhotoDto dto = new TripReviewPhotoDto();
         dto.setTripReviewPhotoId(tripReviewPhoto.getTripReviewPhotoId());
         dto.setTripReviewId(tripReviewPhoto.getTripReview().getTripReviewId());
-        dto.setImageId(tripReviewPhoto.getImage().getId()); // 수정: getId()로 이미지 ID 가져오기
-        dto.setImageUrl(tripReviewPhoto.getImage().getImageUrl()); // 수정: getImageUrl()로 이미지 URL 가져오기
+        dto.setImageId(tripReviewPhoto.getImage().getId()); 
+        dto.setImageUrl(tripReviewPhoto.getImage().getImageUrl()); 
         return dto;
     }
 
@@ -36,7 +36,7 @@ public class TripReviewPhotoDto {
                 .build();
 
         Image image = Image.builder()
-                .id(imageId) // 수정: long 타입의 id 설정
+                .id(imageId)
                 .build();
 
         return TripReviewPhoto.builder()

@@ -51,19 +51,19 @@ public class PlanProgress2 {
 
     @Column(name = "IS_EVENT", length = 1, nullable = false)
     @ColumnDefault("false")
-    private char isEvent;
+    private Boolean isEvent;
 
     @Column(name = "IS_FOOD", length = 1, nullable = false)
     @ColumnDefault("false")
-    private char isFood;
+    private Boolean isFood;
 
     @Column(name = "IS_SIGHT", length = 1, nullable = false)
     @ColumnDefault("false")
-    private char isSight;
+    private Boolean isSight;
 
     @Column(name = "IS_HOTEL", length = 1, nullable = false)
     @ColumnDefault("false")
-    private char isHotel;
+    private Boolean isHotel;
 
     @Column(name = "EVENT_ID")
     private Long eventId;

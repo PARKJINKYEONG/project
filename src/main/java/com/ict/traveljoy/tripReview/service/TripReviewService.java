@@ -130,7 +130,7 @@ public class TripReviewService {
 
         Image image = tripReviewPhoto.getImage();
         if (image != null) {
-            image = new Image(); // Here you should load the image entity from your image repository
+            image = new Image(); 
             image.setId(tripReviewPhoto.getImage().getId());
             tripReviewPhoto.setImage(image);
         }

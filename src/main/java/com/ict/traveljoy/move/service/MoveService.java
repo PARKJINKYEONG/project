@@ -69,7 +69,6 @@ public class MoveService {
     public MoveDto updateMove(MoveDto moveDto) {
         Move existingMove = moveRepository.findById(moveDto.getMoveId()).orElse(null);
         if (existingMove != null) {
-            // Set startDetailPlan
             if (moveDto.getStartDetailPlanId() != null) {
                 PlanProgress2 startDetailPlan = new PlanProgress2();
                 startDetailPlan.setPlanProgress2Id(moveDto.getStartDetailPlanId());
@@ -78,7 +77,6 @@ public class MoveService {
                 existingMove.setStartDetailPlan(null);
             }
 
-            // Set endDetailPlan
             if (moveDto.getEndDetailPlanId() != null) {
                 PlanProgress2 endDetailPlan = new PlanProgress2();
                 endDetailPlan.setPlanProgress2Id(moveDto.getEndDetailPlanId());
@@ -87,7 +85,6 @@ public class MoveService {
                 existingMove.setEndDetailPlan(null);
             }
 
-            // Set transportation
             if (moveDto.getTransportationId() != null) {
                 Transportation transportation = transportationRepository.findById(moveDto.getTransportationId())
                         .orElseThrow(() -> new IllegalArgumentException("Invalid transportation ID: " + moveDto.getTransportationId()));
