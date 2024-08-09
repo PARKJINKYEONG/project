@@ -78,7 +78,7 @@ export default function Header(){
                         </li>
                         {/* style={({isActive})=>isActive?activeStyle:null} */}
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > Notice </NavLink>
+                            <NavLink className="nav-link" to="/announcement" style={({isActive})=>isActive?activeStyle:null} > Notice </NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/userQna" style={({isActive})=>isActive?activeStyle:null} > Q&A </NavLink>

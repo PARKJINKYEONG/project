@@ -11,6 +11,8 @@ import './styles/common.css'
 import ReviewList from "./pages/tripreview/ReviewList";
 import CreateTripReview from "./pages/tripreview/CreateTripReview";
 import QnA from "./pages/clientService/userQna";
+import UserFaq from "./pages/clientService/userFaq";
+import { Announcement } from "@mui/icons-material";
 
 function App() {
 
@@ -28,6 +30,8 @@ function App() {
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
                 <Route path="/userQna" element={<QnA/>}></Route>
+                <Route path="/userFaq" element={<UserFaq/>}></Route>
+                <Route path="/announcement" element={<Announcement/>}></Route>
 
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/ReviewList" element={<ReviewList />}/>
