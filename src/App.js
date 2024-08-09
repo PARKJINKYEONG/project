@@ -6,11 +6,11 @@ import Login from "./pages/member/login";
 import Template from "./pages/template";
 import ChangeInfoRoutes from './pages/changeInfoAsManager/changeInfoRoutes';
 import BookmarkRoutes from "./pages/bookmark/bookmarkRoutes";
-import UserQna from "./userQna";
 import StatisticRoutes from "./pages/statistic/statisticRoutes";
-import './components/styles/common.css'
+import './styles/common.css'
 import ReviewList from "./pages/tripreview/ReviewList";
 import CreateTripReview from "./pages/tripreview/CreateTripReview";
+import QnA from "./pages/clientService/userQna";
 
 function App() {
 

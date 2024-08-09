@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "../../css/popularPackages.module.css"
+import styles from "../../styles/popularPackages.module.css"
 import { PieChart } from '@mui/x-charts';
 
 

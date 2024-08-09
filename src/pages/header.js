@@ -1,5 +1,5 @@
 import { Link, NavLink, redirect, useNavigate, useOutletContext } from "react-router-dom";
-import style from "../components/styles/Header.module.css";
+import style from "../styles/Header.module.css";
 import { useState } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -81,7 +81,7 @@ export default function Header(){
                             <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > Notice </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > Q&A </NavLink>
+                            <NavLink className="nav-link" to="/userQna" style={({isActive})=>isActive?activeStyle:null} > Q&A </NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/" style={({isActive})=>isActive?activeStyle:null} > <img src="/images/person-circle.svg" style={{width:'20px',height:'20px'}} alt="profile"/> </NavLink>

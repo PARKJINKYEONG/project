@@ -1,7 +1,7 @@
 import { BarChart } from '@mui/x-charts';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import styles from '../../css/dailyVisitor.module.css';
+import styles from '../../styles/dailyVisitor.module.css';
 
 export default function DailyVisitor() {
     const [dailyVisitors, setDailyVisitors] = useState([]);

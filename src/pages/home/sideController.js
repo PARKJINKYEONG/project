@@ -8,7 +8,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 
-import styles from "../../components/styles/SideController.module.css";
+import styles from "../../styles/SideController.module.css";
 
 const actions = [
     { icon: <FileCopyIcon />, name: 'Copy' },

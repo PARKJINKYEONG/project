@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from '../../css/bookmarkDetails.module.css';
+import styles from '../../styles/bookmarkDetails.module.css';
 import { GoogleMap, LoadScript, Marker, StandaloneSearchBox } from '@react-google-maps/api';
 
 Modal.setAppElement('#root');

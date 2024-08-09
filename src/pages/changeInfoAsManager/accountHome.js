@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import LockIcon from '@mui/icons-material/Lock';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import styles from '../../css/accountHome.module.css';
+import styles from '../../styles/accountHome.module.css';
 
 export default function AccountHome() {
   return (

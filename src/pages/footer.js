@@ -1,4 +1,4 @@
-import '../components/styles/common.css'
+import '../styles/common.css'
 
 export default function Footer(){
 

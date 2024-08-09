@@ -1,13 +1,13 @@
 // src/components/QnA.js
 
 import React from 'react';
-import './userQna.css';
+import QnAstyle from '../../styles/userQna.module.css';
 
 const QnA = () => {
     return <>
       
         <div className="qna-container">
-             <div className="header">
+             <div className="text-center {QnAstyle.headerImage}">
               <img src="/images/Mask_group.png" alt="Header" className="header-image" />
             </div>
             <div className="menu">

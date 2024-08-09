@@ -1,6 +1,6 @@
 import React from 'react';
 import { PieChart } from "@mui/x-charts";
-import styles from "../../css/searchKeywords.module.css"
+import styles from "../../styles/searchKeywords.module.css"
 
 export default function SearchKeywords() {
     // 원본 데이터

@@ -1,4 +1,4 @@
-import styles from "../components/styles/Chatroom.module.css";
+import styles from "../../styles/Chatroom.module.css";
 import React, { useState, useEffect } from 'react';
 import mqtt from 'mqtt';
 

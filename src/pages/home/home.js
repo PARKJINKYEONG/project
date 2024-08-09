@@ -4,8 +4,8 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import styles from "../../components/styles/Home.module.css";
-import ChatRoom from '../../chat/chatroom';
+import styles from "../../styles/Home.module.css";
+import ChatRoom from '../../components/chat/chatroom';
 import axios from "axios";
 
 

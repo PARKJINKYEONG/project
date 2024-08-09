@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../pages/header';
 import { Link } from 'react-router-dom';
-import BigTitleHeader from '../../pages/bigTitleHeader';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import '../../css/TripReview.css';
+import '../../styles/TripReview.css';
 
 const exampleReviews = [
   {
@@ -187,7 +186,6 @@ const ReviewList = () => {
   return (
     <>
       <Header />
-      <BigTitleHeader />
       <div className="container my-5" style={{ paddingTop: '56px', paddingBottom: '80px' }}>
         <div className="table-header my-4">
           <h1>여행 후기 목록</h1>

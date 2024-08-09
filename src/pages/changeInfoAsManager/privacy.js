@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from '../../css/privacy.module.css';
+import styles from '../../styles/privacy.module.css';
 
 export default function Privacy() {
   const handleEdit = (field) => {

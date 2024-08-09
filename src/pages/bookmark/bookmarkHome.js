@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../css/bookmarkHome.module.css';
+import styles from '../../styles/bookmarkHome.module.css';
 
 const BookmarkHome = () => {
   const [items, setItems] = useState([

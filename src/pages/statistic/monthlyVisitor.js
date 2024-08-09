@@ -1,5 +1,5 @@
 import { BarChart } from "@mui/x-charts";
-import styles from '../../css/monthlyVisitor.module.css'
+import styles from '../../styles/monthlyVisitor.module.css'
 export default function MonthlyVisitor(){
 
     return <>

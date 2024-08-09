@@ -1,6 +1,6 @@
 
 import React from 'react';
-import styles from '../../css/loginSecurity.module.css';
+import styles from '../../styles/loginSecurity.module.css';
 
 export default function LoginSecurity() {
   const handleEdit = (field) => {

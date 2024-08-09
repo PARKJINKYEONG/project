@@ -1,6 +1,6 @@
 
 import React from 'react';
-import styles from '../../css/bookmarkRecentlyViewd.module.css';
+import styles from '../../styles/bookmarkRecentlyViewd.module.css';
 
 const items = [
   {

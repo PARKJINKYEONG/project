@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from '../../css/statisticHome.module.css';
+import styles from '../../styles/statisticHome.module.css';
 
 const StatisticHome = () => {
     return (

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Header from '../header';
-import BigTitleHeader from '../bigTitleHeader';
 
 const CreateTripReview = () => {
   const [formData, setFormData] = useState({
@@ -36,7 +35,6 @@ const CreateTripReview = () => {
   return (
     <>
       <Header />
-      <BigTitleHeader />
       <div className="create-review-container" style={{ padding: '20px' }}>
         <div style={{ marginTop: '100px' }}>
           <Typography variant="h2" gutterBottom style={{ textAlign: 'left' }}>
