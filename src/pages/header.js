@@ -1,4 +1,4 @@
-import { Link, NavLink, redirect, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, NavLink, redirect, useLocation, useNavigate, useOutletContext} from "react-router-dom";
 import style from "../styles/Header.module.css";
 import { useState } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -101,6 +101,13 @@ export default function Header(){
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/ReviewList" style={({isActive})=>isActive?activeStyle:null} > 여행후기 </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/statistics" style={({isActive})=>isActive?activeStyle:null}>통계</NavLink>
+                        </li>
+
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/admin" style={({isActive})=>isActive?activeStyle:null}>관리자</NavLink>
                         </li>
 
                     </ul>

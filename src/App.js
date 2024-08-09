@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/home/home";
 import Login from "./pages/member/login";
 import Template from "./pages/template";
@@ -14,6 +14,9 @@ import QnA from "./pages/clientService/userQna";
 import UserFaq from "./pages/clientService/userFaq";
 import { Announcement } from "@mui/icons-material";
 
+import AdminHome from "./pages/admin/adminHome";
+import PlanManagement from "./pages/admin/planManagement";
+
 function App() {
 
 
@@ -26,7 +29,6 @@ function App() {
                 <Route path="/place"></Route>
                 <Route path="/plan"></Route>
                 <Route path="/notice"></Route>
-                <Route path="/admin" />
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
                 <Route path="/userQna" element={<QnA/>}></Route>
@@ -34,6 +36,8 @@ function App() {
                 <Route path="/announcement" element={<Announcement/>}></Route>
 
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
+                <Route path="/mypage/*" element={<PlanManagement />} />
+                <Route path="/admin/*" element={<AdminHome />} />
                 <Route path="/ReviewList" element={<ReviewList />}/>
                 <Route path="/CreateTripReview" element={<CreateTripReview />}/>
 
