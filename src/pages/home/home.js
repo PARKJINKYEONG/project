@@ -28,14 +28,17 @@ export default function Home(){
         { icon: <img src="/images/robot.svg" style={{width:'30px',height:'30px'}} alt="logo" onClick={()=>{setChatShow(!chatShow)}} />, name: '챗봇' },
     ];
 
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return <>
     {/* <div>백엔드 연동 : {hello} </div> */}
         {chatShow && <ChatRoom/>}        
         <Box position="fixed" sx={{height:360,transform: 'translateZ(0px)', flexGrow: 1}}>
-            {/* 메인페이지 내용 */}
-            <SpeedDial ariaLabel="SpeedDial basic example" sx={{ position: 'absolute', top: '60vh', left: '115vh'}} icon={<SpeedDialIcon />} >
+            <SpeedDial ariaLabel="SpeedDial basic example" sx={{ position: 'absolute', top: '60vh', left: '115vh'}} icon={<SpeedDialIcon />} onClose={handleClose} onOpen={handleOpen} open={open}>
                 {actions.map((action) => (
-                <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} sx={{ bgcolor:'white'}}/>
+                <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} sx={{ bgcolor:'white'}} onClick={handleClose}/>
                 ))}
             </SpeedDial>
         </Box>

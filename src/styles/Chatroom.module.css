@@ -6,41 +6,69 @@
     border-width: 1px;
     border-radius: 16px;
     width: 350px;
-    height: 500px;
+    height: 480px;
+    
 }
 
 .chatHeader{
-    height: 60px;
-    border: solid black;
-    border-width: 0px 0px 1px 0px;
-}
-.chatHeaderContent{
-    display: inline-block;
-    height: 60px;
-    line-height: 60px;
-}
-.chatHeaderContent button{
-    background-color: white;
-    width: 20px;
-    height: 20px;
-    padding: 0;
+    height: 10%;
+    min-height: 50px;
+    background-color: #7AA2E3;
+    color: white;
 }
 
+.chatHeaderContent{
+    height: 100%;
+    
+}
+
+.chatHeaderContent button{
+    height: 100%;
+    border-radius: 16px 0 0 0;
+    background-color: #7AA2E3;
+}
 
 .chatContent{
-    height: 470px;
+    height: 90%;
     border-radius: 0px 0px 16px 16px;
     border: solid black;
     border-width: 1px 0px 0px 0px;
 }
 
-.chatTextContent{
-    height: 350px;
+.chatContentBox{
+    height: 85%;
+    overflow-y:scroll;
+    padding: 0 8px 0 8px;
 }
 
 .chatTextArea{
-    height: 60px;
+    height: 15%;
+    width: 100%;
     border: solid black;
     border-width: 1px 0px 0px 0px;
     border-radius: 0px 0px 16px 16px;
+    
+}
+
+.chatTextArea input{
+    width: 80%;
+    height: 100%;
+    border: none;
+}
+
+.chatTextArea button{
+    width: 20%;
+    height: 100%;
+    border-radius: 0 0 16px 0;
+    background-color: #F8F6E3;
+
+}
+
+.agent{
+    background-color: #7AA2E3;
+    color: white;
+}
+
+.client{
+    background-color: #F8F6E3;
 }

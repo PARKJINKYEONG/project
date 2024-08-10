@@ -10,28 +10,21 @@ import ShareIcon from '@mui/icons-material/Share';
 
 import styles from "../../styles/SideController.module.css";
 
-const actions = [
-    { icon: <FileCopyIcon />, name: 'Copy' },
-    { icon: <SaveIcon />, name: 'Save' },
-    { icon: <PrintIcon />, name: 'Print' },
-    { icon: <ShareIcon />, name: 'Share' },
-];
 
 export default function SideController(){
 
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     return <>
-        <Box sx={{ height:360,transform: 'translateZ(0px)', flexGrow: 1}}>
-            <SpeedDial ariaLabel="SpeedDial basic example" sx={{ position: 'fixed', top: '16', right: 16 }} icon={<SpeedDialIcon />}
-            >
+        {/* <Box position="fixed" sx={{height:360,transform: 'translateZ(0px)', flexGrow: 1}}>
+            
+            <SpeedDial ariaLabel="SpeedDial basic example" sx={{ position: 'absolute', top: '60vh', left: '115vh'}} icon={<SpeedDialIcon />} onClose={handleClose} onOpen={handleOpen} open={open}>
                 {actions.map((action) => (
-                <SpeedDialAction
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                />
+                <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} sx={{ bgcolor:'white'}} onClick={handleClose}/>
                 ))}
             </SpeedDial>
-        </Box>
+        </Box> */}
     </>
 }
