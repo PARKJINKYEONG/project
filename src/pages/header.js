@@ -4,6 +4,8 @@ import { useState } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import Icon from '@mdi/react';
+import { mdiMessageDraw } from '@mdi/js';
 
 export default function Header(){
 
@@ -100,7 +102,7 @@ export default function Header(){
                             <NavLink className="nav-link" to="/changeInfo" style={({isActive})=>isActive?activeStyle:null} > <ManageAccountsIcon/> </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/ReviewList" style={({isActive})=>isActive?activeStyle:null} > 여행후기 </NavLink>
+                            <NavLink className="nav-link" to="/ReviewList" style={({isActive})=>isActive?activeStyle:null}  > <Icon path={mdiMessageDraw} size={1}/></NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/statistics" style={({isActive})=>isActive?activeStyle:null}>통계</NavLink>

@@ -15,7 +15,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
-import '../../css/reportManagement.css';
+// import '../../styles/reportManagement.js';
 
 function createData(name, name1, value2, value3, value4, value5) {
   return {

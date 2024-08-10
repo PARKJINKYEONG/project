@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Header from '../header';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const CreateTripReview = () => {
   const [formData, setFormData] = useState({
     title: '',
     author: '',
-    date: '',
+    startDate: null,
+    endDate: null,
     package: '',
     itinerary: '',
     content: '',
@@ -24,20 +26,26 @@ const CreateTripReview = () => {
     setFormData(prevData => ({ ...prevData, images: [...e.target.files] }));
   };
 
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setFormData(prevData => ({
+      ...prevData,
+      startDate: start,
+      endDate: end
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, we'll log the form data
     console.log('Form Data Submitted:', formData);
-    // Redirect to Review List page after submission
     navigate('/ReviewList');
   };
 
   return (
     <>
-      <Header />
       <div className="create-review-container" style={{ padding: '20px' }}>
-        <div style={{ marginTop: '100px' }}>
-          <Typography variant="h2" gutterBottom style={{ textAlign: 'left' }}>
+        <div style={{ marginTop: '20px' }}>
+          <Typography variant="h3" gutterBottom style={{ textAlign: 'left' }}>
             후기 작성하기
           </Typography>
         </div>
@@ -64,14 +72,16 @@ const CreateTripReview = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                label="날짜"
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                fullWidth
-                InputLabelProps={{ shrink: true }}
+              <Typography variant="h6">여행 기간</Typography>
+              <DatePicker
+                selected={formData.startDate}
+                onChange={handleDateChange}
+                startDate={formData.startDate}
+                endDate={formData.endDate}
+                selectsRange
+                inline
+                minDate={new Date()}
+                dateFormat="yyyy-MM-dd"
                 required
               />
             </Grid>
@@ -82,6 +92,7 @@ const CreateTripReview = () => {
                 value={formData.package}
                 onChange={handleInputChange}
                 fullWidth
+               
               />
             </Grid>
             <Grid item xs={12}>
@@ -91,6 +102,7 @@ const CreateTripReview = () => {
                 value={formData.itinerary}
                 onChange={handleInputChange}
                 fullWidth
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -120,7 +132,7 @@ const CreateTripReview = () => {
             </Grid>
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary">
-                제출하기
+                리뷰 남기기
               </Button>
             </Grid>
           </Grid>
