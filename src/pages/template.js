@@ -11,7 +11,7 @@ export default function Template(){
 
     return <>
         <Header />
-        <div className="container">
+        <div className="container godo-korfont">
             <Outlet />
         </div>
         <Footer/>

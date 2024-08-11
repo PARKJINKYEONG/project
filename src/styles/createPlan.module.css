@@ -1,0 +1,15 @@
+.container{
+    width: 100%;
+}
+
+.planController{
+    display: inline-block;
+}
+
+.planContainer{
+    display: inline-block;
+}
+
+.when div{
+    display: inline-block;
+ }

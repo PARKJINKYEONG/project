@@ -37,7 +37,7 @@ export default function Header(){
 
                     </Link>
                 </div>
-                <div className="col-4 text-center fs-2 playwrite-dk-loopet-engfont">
+                <div className="col-4 text-center fs-2 playwrite-dk-loopet-engfont"  onClick={()=>{setIsShow(!isShow)}}>
                     Travel Joy
                 </div>
                 <div className="col-4">
@@ -47,7 +47,7 @@ export default function Header(){
                     <div className="collapse navbar-collapse" id="mynavbar">
                     <ul className="navbar-nav ms-auto ">
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/" onClick={()=>{setIsShow(!isShow)}}> Sign In </NavLink>
+                            <NavLink className="nav-link" to="/"> Sign In </NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/"> Sign Up </NavLink>
@@ -64,7 +64,7 @@ export default function Header(){
 
                         <img src="/images/sample_logo.png" style={{width:'50px',height:'50px'}} alt="logo"/>
                     </Link>
-                    <div className={style.headerTitle}>Travel Joy</div>
+                    <div className={style.headerTitle} onClick={()=>{setIsShow(!isShow)}}>Travel Joy</div>
 
                 </div>
 
@@ -76,7 +76,7 @@ export default function Header(){
 
                     <ul className="navbar-nav ms-auto gap-3" >
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/" onClick={()=>{setIsShow(!isShow)}} style={({isActive})=>isActive?activeStyle:null} > New Plan <img src="/images/plus-circle.svg" style={{width:'15px',height:'15px'}} alt="new plan"/> </NavLink>
+                            <NavLink className="nav-link" to="/createPlan" style={({isActive})=>isActive?activeStyle:null} > New Plan <img src="/images/plus-circle.svg" style={{width:'15px',height:'15px'}} alt="new plan"/> </NavLink>
                         </li>
                         {/* style={({isActive})=>isActive?activeStyle:null} */}
                         <li className="nav-item">

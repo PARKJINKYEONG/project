@@ -18,7 +18,7 @@ import CreatePlan from "./pages/plan/createPlan";
 
 import QnA from "./pages/clientService/userQna";
 import UserFaq from "./pages/clientService/userFaq";
-import { Announcement } from "@mui/icons-material";
+import Announcement from "./pages/clientService/announcement";
 
 function App() {
 

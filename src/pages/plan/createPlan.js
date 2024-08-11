@@ -18,6 +18,7 @@ import Header from "../header";
 import StepButton from '@mui/material/StepButton';
 import { BorderAll } from "@mui/icons-material";
 
+import styles from '../../styles/createPlan.module.css'
 
 
 
@@ -75,54 +76,62 @@ export default function CreatePlan(){
 
 
   return <>
-  <Header/>
+  <div>
   <h2>ㄱㄱㄱㄱ </h2>
-    <Box sx={{ maxWidth: 300} } style={{ border: '1px solid black' }}> {/* style border보면서 크기잡으려고, 나중에 */}
-      <Stepper nonLinear activeStep={activeStep} orientation="vertical">
-        {steps.map((step, index) => (
-          <Step key={step.label}>
-            <StepButton color="inherit" onClick={handleStep(index)}
-              optional={
-                index === 4 ? (
-                  <Typography variant="caption">마지막 단계</Typography>
-                ) : null
-              }
-            >
-              {step.label}
-            </StepButton>
-            <StepContent>
-              <Typography>{step.description}</Typography>
-              <Box sx={{ mb: 2 }}>
-                <div>
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    {index === steps.length - 1 ? '완료' : '계속'}
-                  </Button>
-                  <Button
-                    disabled={index === 0}
-                    onClick={handleBack}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    뒤로가기
-                  </Button>
-                </div>
-              </Box>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-            초기화
-          </Button>
-        </Paper>
-      )}
-    </Box>
+  <div>
+    <div className={`${styles.planController} col-3`}>
+      <Box sx={{ maxWidth: 300} } style={{ border: '1px solid black' }}> {/* style border보면서 크기잡으려고, 나중에 */}
+        <Stepper nonLinear activeStep={activeStep} orientation="vertical">
+          {steps.map((step, index) => (
+            <Step key={step.label}>
+              <StepButton color="inherit" onClick={handleStep(index)}
+                optional={
+                  index === 4 ? (
+                    <Typography variant="caption">마지막 단계</Typography>
+                  ) : null
+                }
+              >
+                {step.label}
+              </StepButton>
+              <StepContent>
+                <Typography>{step.description}</Typography>
+                <Box sx={{ mb: 2 }}>
+                  <div>
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      {index === steps.length - 1 ? '완료' : '계속'}
+                    </Button>
+                    <Button
+                      disabled={index === 0}
+                      onClick={handleBack}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      뒤로가기
+                    </Button>
+                  </div>
+                </Box>
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === steps.length && (
+          <Paper square elevation={0} sx={{ p: 3 }}>
+            <Typography>All steps completed - you&apos;re finished</Typography>
+            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+              초기화
+            </Button>
+          </Paper>
+        )}
+      </Box>
+    </div>
+    <div className={`${styles.planContainer} col-auto`}>
+      {activeStep==1 && <ProgressPlan2/>}
+    </div>
+    </div>
+    </div>
   </>
 
 
