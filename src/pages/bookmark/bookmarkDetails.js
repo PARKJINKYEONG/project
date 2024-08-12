@@ -6,6 +6,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../../styles/bookmarkDetails.module.css';
 import { GoogleMap, LoadScript, Marker, StandaloneSearchBox } from '@react-google-maps/api';
+import CustomModal from '../../components/customModal';
+import GuestCounter from '../../components/guestCounter';
 
 Modal.setAppElement('#root');
 
@@ -127,6 +129,13 @@ export default function BookmarkDetails() {
     }
   };
 
+  const guests = [
+    { type: 'adults', label: '성인 (13세 이상)', value: adults, minValue: 1 },
+    { type: 'children', label: '어린이 (2-12세)', value: children },
+    { type: 'infants', label: '유아 (2세 미만)', value: infants },
+    { type: 'pets', label: '반려동물', value: pets },
+  ];
+
   const handleReset = () => {
     setAdults(1);
     setChildren(0);
@@ -162,12 +171,10 @@ export default function BookmarkDetails() {
           <div className={styles['bookmark-item']}>
             <div className={styles['bookmark-image-grid']}>
               <img src="image1.jpg" alt="item1" className={styles['grid-image']} />
-
             </div>
           </div>
           {savedMemo ? (
             <>
-
               <div className={styles['saved-memo-container']}>
                 <div className={styles['saved-memo']}>{savedMemo}</div>
               </div>
@@ -175,12 +182,10 @@ export default function BookmarkDetails() {
             </>
           ) : (
             <button className={styles['memo-button']} onClick={openMemoModal}>메모 추가</button>
-
           )}
         </div>
       </div>
-
-
+  
       <div className={styles['map-container']}>
         <LoadScript googleMapsApiKey="AIzaSyB-COY1Ryjaa2wILZqfl5UoS2WltfYD3Hc" libraries={["places"]}>
           <GoogleMap mapContainerStyle={mapContainerStyle} center={searchResult} zoom={10}>
@@ -199,14 +204,11 @@ export default function BookmarkDetails() {
         </LoadScript>
         {errorMessage && <div className={styles.error}>{errorMessage}</div>}
       </div>
-
-      <Modal
+  
+      <CustomModal
         isOpen={memoModalIsOpen}
         onRequestClose={closeMemoModal}
         contentLabel="메모 추가"
-        className={styles.Modal}
-        overlayClassName={styles.Overlay}
-
       >
         <h2>메모 추가</h2>
         <textarea 
@@ -216,57 +218,30 @@ export default function BookmarkDetails() {
           placeholder="메모 추가"
         />
         <div>{memo.length}/250자</div>
-        <button onClick={handleClearMemo}>모두 지우기</button>
-        <button onClick={handleSaveMemo}>저장</button>
-      </Modal>
-
-      <Modal
+        <div className={styles.buttonContainer}>
+          <button className={styles.clearButton} onClick={handleClearMemo}>모두 지우기</button>
+          <button className={styles.saveButton} onClick={handleSaveMemo}>저장</button>
+        </div>
+      </CustomModal>
+  
+      <CustomModal
         isOpen={guestModalIsOpen}
         onRequestClose={closeGuestModal}
         contentLabel="게스트 설정"
-
-        className={styles.Modal}
-        overlayClassName={styles.Overlay}
       >
         <h2>게스트 설정</h2>
-        <div className={styles['guest-counter']}>
-
-          <div>
-            <span>성인 (13세 이상)</span>
-            <button onClick={() => handleGuestChange('adults', 'decrement')} disabled={adults <= 1}>-</button>
-            <span>{adults}</span>
-            <button onClick={() => handleGuestChange('adults', 'increment')}>+</button>
-          </div>
-          <div>
-            <span>어린이 (2-12세)</span>
-            <button onClick={() => handleGuestChange('children', 'decrement')} disabled={children <= 0}>-</button>
-            <span>{children}</span>
-            <button onClick={() => handleGuestChange('children', 'increment')}>+</button>
-          </div>
-          <div>
-            <span>유아 (2세 미만)</span>
-            <button onClick={() => handleGuestChange('infants', 'decrement')} disabled={infants <= 0}>-</button>
-            <span>{infants}</span>
-            <button onClick={() => handleGuestChange('infants', 'increment')}>+</button>
-          </div>
-          <div>
-            <span>반려동물</span>
-            <button onClick={() => handleGuestChange('pets', 'decrement')} disabled={pets <= 0}>-</button>
-            <span>{pets}</span>
-            <button onClick={() => handleGuestChange('pets', 'increment')}>+</button>
-          </div>
-        </div>
-
+        <GuestCounter 
+        guests={guests}
+        handleGuestChange={handleGuestChange}
+        />
         <button className={styles['reset-button']} onClick={handleReset}>다시 설정</button>
         <button className={styles['save-button']} onClick={closeGuestModal}>저장</button>
-      </Modal>
-
-      <Modal
+      </CustomModal>
+  
+      <CustomModal
         isOpen={dateModalIsOpen}
         onRequestClose={closeDateModal}
         contentLabel="날짜 선택"
-        className={styles.Modal}
-        overlayClassName={styles.Overlay}
       >
         <h2>날짜 선택</h2>
         <div className={styles['datepicker-container']}>
@@ -279,7 +254,7 @@ export default function BookmarkDetails() {
               selectsRange
               inline
               monthsShown={2} 
-              className={styles.datepicker}
+              className={`${styles.datepicker} ${styles.customDatepicker}`}
             />
           </div>
         </div>
@@ -287,8 +262,8 @@ export default function BookmarkDetails() {
           <button className={styles['reset-button']} onClick={handleReset}>다시 설정</button>
           <button className={styles['save-button']} onClick={closeDateModal}>저장</button>
         </div>
-      </Modal>
-
+      </CustomModal>
     </div>
   );
+  
 }

@@ -4,7 +4,8 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import '../../styles/TripReview.css';
+import '../../css/TripReview.css';
+import ScrollToTopButton from '../../components/scrollToTopButton';
 
 const exampleReviews = [
   {
@@ -135,10 +136,8 @@ const ReviewList = () => {
   const [selectedFilter, setSelectedFilter] = useState('title');
   const [expandedReviewIds, setExpandedReviewIds] = useState(new Set());
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
   const [currentDisplayedImageIndexes, setCurrentDisplayedImageIndexes] = useState({});
   const [currentThumbnailPageIndexes, setCurrentThumbnailPageIndexes] = useState({});
-  const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
   const THUMBNAILS_PER_PAGE = 3;
@@ -148,13 +147,6 @@ const ReviewList = () => {
     filterReviews();
   }, [searchFilters]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTopButton(window.scrollY > 300);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const totalImages = tripReviews.flatMap(review => review.imageUrl).length;
@@ -199,18 +191,6 @@ const ReviewList = () => {
     setTripReviews(filteredReviews);
   };
 
-  const toggleExpand = (id) => {
-    setExpandedReviewIds(prev => {
-      const newExpanded = new Set(prev);
-      if (newExpanded.has(id)) {
-        newExpanded.delete(id);
-      } else {
-        newExpanded.add(id);
-      }
-      return newExpanded;
-    });
-  };
-
   const toggleDropdown = () => {
     setDropdownOpen(prev => !prev);
   };
@@ -226,9 +206,6 @@ const ReviewList = () => {
     setDropdownOpen(false);
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   const handleNextImage = (id) => {
     setCurrentDisplayedImageIndexes(prev => {
@@ -262,47 +239,6 @@ const ReviewList = () => {
     });
   };
 
-  const handleNextThumbnails = (id) => {
-    setCurrentThumbnailPageIndexes(prev => {
-      const totalThumbnails = tripReviews.find(review => review.id === id)?.imageUrl.length || 0;
-      const totalPages = Math.ceil(totalThumbnails / THUMBNAILS_PER_PAGE);
-      const currentPage = (prev[id] ?? 0) + 1;
-      if (currentPage < totalPages) {
-        const firstIndexOnNextPage = currentPage * THUMBNAILS_PER_PAGE;
-        const newIndex = Math.min(currentDisplayedImageIndexes[id] ?? 0, firstIndexOnNextPage + THUMBNAILS_PER_PAGE - 1);
-        setCurrentDisplayedImageIndexes(prev => ({
-          ...prev,
-          [id]: newIndex,
-        }));
-        return {
-          ...prev,
-          [id]: currentPage
-        };
-      }
-      return prev;
-    });
-  };
-
-  const handlePrevThumbnails = (id) => {
-    setCurrentThumbnailPageIndexes(prev => {
-      const currentPage = prev[id] ?? 0;
-      if (currentPage > 0) {
-        const newPage = currentPage - 1;
-        const firstIndexOnPrevPage = newPage * THUMBNAILS_PER_PAGE;
-        const newIndex = Math.min(currentDisplayedImageIndexes[id] ?? 0, firstIndexOnPrevPage + THUMBNAILS_PER_PAGE - 1);
-        setCurrentDisplayedImageIndexes(prev => ({
-          ...prev,
-          [id]: newIndex,
-        }));
-        return {
-          ...prev,
-          [id]: newPage
-        };
-      }
-      return prev;
-    });
-  };
-
   const handleThumbnailClick = (id, index) => {
     setCurrentDisplayedImageIndexes(prev => ({
       ...prev,
@@ -322,18 +258,6 @@ const ReviewList = () => {
     });
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(prev => prev + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1);
-    }
-  };
-
   const getCurrentPageImages = (id) => {
     const images = tripReviews.find(review => review.id === id)?.imageUrl || [];
     const startIndex = currentThumbnailPageIndexes[id] * THUMBNAILS_PER_PAGE;
@@ -343,7 +267,7 @@ const ReviewList = () => {
 
   return (
     <>
-      <div className="container my-5" style={{ paddingTop: '56px', paddingBottom: '80px' }}>
+      <div className="container my-5" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <div className="table-header my-4">
           <h1>여행 후기 목록</h1>
           <div className="search-container">
@@ -486,12 +410,7 @@ const ReviewList = () => {
         <div className="fixed-button">
           <Link to="/CreateReview">후기 작성하기</Link>
         </div>
-
-        {showScrollTopButton && (
-          <button className="scroll-to-top" onClick={scrollToTop}>
-            ↑
-          </button>
-        )}
+        <ScrollToTopButton />
       </div>
     </>
   );

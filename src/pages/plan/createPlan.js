@@ -1,152 +1,62 @@
-import { Route, Routes } from "react-router-dom";
-import DescriptionPlan from "./descriptionPlan";
-import ProgressPlan1 from "./progressPlan1";
-import ProgressPlan2 from "./progressPlan2";
-import ProgressPlan3 from "./progressPlan3";
-import ProgressPlan4 from "./progressPlan4";
+// CreatePlan.js
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Header from "../header";
-import StepButton from '@mui/material/StepButton';
-import { BorderAll } from "@mui/icons-material";
+import React, { useState } from 'react';
+import { Box} from '@mui/material';
+import StepperComponent from './stepperComponent';
+import ContentComponent from './contentComponent';
+import Header from '../header';
+import { useNavigate } from 'react-router-dom';
 
-import styles from '../../styles/createPlan.module.css'
+function CreatePlan() {
+  const [activeStep, setActiveStep] = useState(0); // 현재 단계 상태 관리
+  const [completed, setCompleted] = useState(0);
 
+  const navigate = useNavigate();
 
+  const handleButtonClick = () => {
+    if (activeStep === 5) {
+      navigate('/'); // Home으로 이동
+    } else {
+      handleNext(); // 다음 단계로 이동
+    }
+  };
 
-const steps = [
-  {
-    label: '1단계 : 계획 설명단계',
-    description: `잘 만든다`,
-  },
-  {
-    label: '2단계 : ㅇㄷ?',
-    description:
-      '노력한다',
-  },
-  {
-    label: '3단계 : 뭐먹/뭐봄',
-    description: `무엇을 먹고싶으세요?`,
-  },
-  {
-    label: '4단계 : 어디서잠',
-    description: `더욱더 노력한다`,
-  },
-  {
-    label: '5단계 : 일정',
-    description: `거의다왔다`,
-  },
-  {
-    label: '6단계 : 지도에서일정',
-    description: `완성`,
-  },
+  // 다음 단계로 이동
+  const handleNext = () => {
+    setActiveStep((prevStep) => Math.min(prevStep + 1, 5));
+  };
 
-];
-
-
-export default function CreatePlan(){
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState({});
-
+  // 이전 단계로 이동
+  const handleBack = () => {
+    setActiveStep((prevStep) => Math.max(prevStep - 1, 0));
+  };
+  
+  //원하는 단계로 이동
 
   const handleStep = (step) => () => {
     setActiveStep(step);
   };
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
+  // 초기화
   const handleReset = () => {
     setActiveStep(0);
     setCompleted({});
   };
 
 
-  return <>
-  <div>
-  <h2>ㄱㄱㄱㄱ </h2>
-  <div>
-    <div className={`${styles.planController} col-3`}>
-      <Box sx={{ maxWidth: 300} } style={{ border: '1px solid black' }}> {/* style border보면서 크기잡으려고, 나중에 */}
-        <Stepper nonLinear activeStep={activeStep} orientation="vertical">
-          {steps.map((step, index) => (
-            <Step key={step.label}>
-              <StepButton color="inherit" onClick={handleStep(index)}
-                optional={
-                  index === 4 ? (
-                    <Typography variant="caption">마지막 단계</Typography>
-                  ) : null
-                }
-              >
-                {step.label}
-              </StepButton>
-              <StepContent>
-                <Typography>{step.description}</Typography>
-                <Box sx={{ mb: 2 }}>
-                  <div>
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      sx={{ mt: 1, mr: 1 }}
-                    >
-                      {index === steps.length - 1 ? '완료' : '계속'}
-                    </Button>
-                    <Button
-                      disabled={index === 0}
-                      onClick={handleBack}
-                      sx={{ mt: 1, mr: 1 }}
-                    >
-                      뒤로가기
-                    </Button>
-                  </div>
-                </Box>
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === steps.length && (
-          <Paper square elevation={0} sx={{ p: 3 }}>
-            <Typography>All steps completed - you&apos;re finished</Typography>
-            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-              초기화
-            </Button>
-          </Paper>
-        )}
-      </Box>
+  return (
+    <div>
+      <Header />
+      <h2>계획단계</h2>
+      <div style={{ display: 'flex' }}>
+        {/* StepperComponent와 ContentComponent가 동일한 상태를 공유 */}
+        <StepperComponent activeStep={activeStep} handleBack={handleBack} handleStep={handleStep} handleReset={handleReset} handleButtonClick = {handleButtonClick}/>
+        <Box style={{ flexGrow: 1, border: '2px solid black', marginLeft: '20px'}}>
+          <ContentComponent activeStep={activeStep} handleBack={handleBack} handleStep={handleStep} handleReset={handleReset} handleButtonClick = {handleButtonClick}/>
+        </Box>
+      </div>
     </div>
-    <div className={`${styles.planContainer} col-auto`}>
-      {activeStep==1 && <ProgressPlan2/>}
-    </div>
-    </div>
-    </div>
-  </>
+  );
+}
 
-
-
-};
-
-/*
-return<>
-  
-<Routes>
-  <Route element={<DescriptionPlan/>}/>
-  <Route element={<ProgressPlan1/>}/>
-  <Route element={<ProgressPlan2/>}/>
-  <Route element={<ProgressPlan3/>}/>
-  <Route element={<ProgressPlan4/>}/>
-
-</Routes>
-</>*/
+export default CreatePlan;

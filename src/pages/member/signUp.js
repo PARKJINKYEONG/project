@@ -1,38 +1,20 @@
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { useState, Fragment } from 'react';
-import SignUpStep1 from './signUpStep1';
-import SignUpStep2 from './signUpStep2';
-import SignUpStep3 from './signUpStep3';
-import SignUpStepEnd from './signUpStepEnd';
+import { Fragment, useState } from "react";
+import SignUpStep1 from "./signUpStep1";
+import SignUpStep2 from "./signUpStep2";
+import SignUpStep3 from "./signUpStep3";
+import SignUpStepEnd from "./signUpStepEnd";
+import { Box, Button, Grid } from "@mui/material";
+import SignUpStepper from "./signUpStepper";
 
-import { Grid } from '@mui/material';
-
-const steps = ['필수 정보 입력', '이메일 인증', '선택 정보 입력'];
 export default function SignUp(){
+  const steps = ['필수 정보 입력', '이메일 인증', '선택 정보 입력'];
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [failed, setFailed] = useState(new Set());
-
-  const isStepFailed = (step) => {
-    return failed.has(step);
-  };
-
-  const isStepOptional = (step) => {
-    return step === 2;
-  };
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
+  const optionalSteps = new Set([2]);
 
   const handleFailed = () => {
-    
+    //조건 만족 안되면 여기서 작동하게
   }
 
   const handleNext = () => {
@@ -52,8 +34,6 @@ export default function SignUp(){
 
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
       throw new Error("필수사항은 건너뛸 수 없습니다.");
     }
 
@@ -69,42 +49,25 @@ export default function SignUp(){
     setActiveStep(0);
   };
 
+  const isStepFailed = (step) => {
+    return failed.has(step);
+  };
+
+  const isStepOptional = (step) => {
+    if(optionalSteps.has(step))
+        return true;
+    else
+        return false;
+  };
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step);
+  };
+
   return <>
-          <Box sx={{ width: '100%', marginTop: '100px' }}>
-            <Stepper activeStep={activeStep}>
-                {steps.map((label, index) => {
-                const stepProps = {};
-                const labelProps = {};
-                if (isStepOptional(index)) {
-                    labelProps.optional = (
-                    <Typography variant="caption">(선택 사항)</Typography>
-                    );
-                }
-                if (isStepSkipped(index)) {
-                    stepProps.completed = false;
-                }
 
-                if (isStepFailed(index)) {
-                  labelProps.optional = (
-                    <Typography variant="caption" color="error">
-                      Alert message
-                    </Typography>
-                  );
-      
-                  labelProps.error = true;
-                }
-
-
-                return (
-                    <Step key={label} {...stepProps}>
-                    <StepLabel {...labelProps}>{label}</StepLabel>
-                    </Step>
-                );
-                })}
-            </Stepper>
-
-            
-            {activeStep === steps.length ? (// 모든 단계 종료시 출력
+  <SignUpStepper steps={steps} activeStep={activeStep} isStepFailed={isStepFailed} isStepOptional={isStepOptional} isStepSkipped={isStepSkipped}/>
+  {activeStep === steps.length ? (// 모든 단계 종료시 출력
                 
 
                 <Fragment> 
@@ -120,6 +83,7 @@ export default function SignUp(){
                 <Grid container sx={{minHeight: '50dvh'}} spacing={2} justifyContent="center"> 
                   <Grid item xs={10} sx={{mt: '4%'}}>
 
+                
                 {activeStep === 0 && ( //1단계
                     <SignUpStep1 />
                 )}
@@ -157,7 +121,5 @@ export default function SignUp(){
                 </Box>
                 </Fragment>
             )}
-
-            </Box>
-    </>
+  </>
 }

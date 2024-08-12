@@ -32,7 +32,6 @@ function App() {
                 <Route path="/place"></Route>
                 <Route path="/createPlan" element={<CreatePlan/>}></Route>
                 <Route path="/notice"></Route>
-                <Route path="/admin"/>
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
                 <Route path="/userQna" element={<QnA/>}></Route>
