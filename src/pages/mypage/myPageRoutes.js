@@ -9,6 +9,7 @@ export default function MyPageRoutes(){
             <Route element={<MyPage/>}>
                 <Route path="/" element={<PlanManagement/>}/>
                 <Route path="/plan" element={<PlanManagement/>}/>
+                
             </Route>
         </Routes>
     </>

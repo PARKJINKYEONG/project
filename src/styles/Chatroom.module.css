@@ -1,13 +1,12 @@
 .chatContainer{
-    position: absolute;
-    top: 25vh;
-    left:90vh;
+
     border: solid black;
     border-width: 1px;
     border-radius: 16px;
     width: 350px;
     height: 480px;
-    
+    display: flex;
+    align-items: center;
 }
 
 .chatHeader{

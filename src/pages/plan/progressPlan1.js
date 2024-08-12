@@ -4,7 +4,7 @@ import { Box, FormControl, InputLabel, MenuItem, Select, stepConnectorClasses, T
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import CalendarComponent from "../../components/calendar";
+import CalendarComponent from "../../components/calendar_demoContainer";
 import { useState } from "react";
 
 

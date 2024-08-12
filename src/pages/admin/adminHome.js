@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { List, ListItemButton, ListItemText, Collapse } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { List, ListItemButton, ListItemText, Collapse, AppBar, Toolbar, IconButton, Drawer, Typography, Button, Box } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import styles from '../../styles/adminHome.module.css';
 import CommentManagement from './commentManagement';
 import ReportManagement from './reportManagement';
 import PostManagement from './postManagement';
@@ -10,11 +9,19 @@ import Statistics from './statictics';
 import MemberManagement from './user/memberManagemenat';
 import MemberDeleteManagement from './user/memberDeleteManagement';
 import QuestionManagement from './QnA/questionManagement';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 
 const AdminHome = () => {
-    const [openMember, setOpenMember] = useState(true);
-    const [openBoard, setOpenBoard] = useState(true);
-    const [selectedComponent, setSelectedComponent] = useState(null);
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [openMember, setOpenMember] = useState(false);
+    const [openBoard, setOpenBoard] = useState(false);
+    const [selectedComponent, setSelectedComponent] = useState();    
+
+    const handleDrawerToggle = () => {
+        setOpenDrawer(!openDrawer);
+    };
 
     const handleMemberClick = () => {
         setOpenMember(!openMember);
@@ -28,6 +35,7 @@ const AdminHome = () => {
 
     const handleComponentClick = (component) => {
         setSelectedComponent(component);
+        setOpenDrawer(false);
     };
 
     const renderComponent = () => {
@@ -52,64 +60,97 @@ const AdminHome = () => {
     };
 
     return (
-        <div className={styles.adminContainer}>
-
-                <aside className={styles.sidebar}>
-                    <h1 className={styles.sidebarTitle}>관리자 페이지</h1>
-                    <List
-                        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-                        component="nav"
-                        aria-labelledby="nested-list-subheader"
+        <Box>            
+            <AppBar position="fixed" sx={{ top: 0}}>
+                <Toolbar>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={handleDrawerToggle}
                     >
-                        <ListItemButton onClick={handleMemberClick}>
-                            <ListItemText primary="회원 정보 관리" />
-                            {openMember ? <ExpandLess /> : <ExpandMore />}
-                        </ListItemButton>
-                        <Collapse in={openMember} >
-                            <List component="div" >
-                                <ListItemButton onClick={() => handleComponentClick('member-management')} sx={{ pl: 4 }}>
-                                    <ListItemText primary="회원 정보 변경" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => handleComponentClick('member-management/delete')} sx={{ pl: 4 }}>
-                                    <ListItemText primary="회원 삭제" />
-                                </ListItemButton>
-                            </List>
-                        </Collapse>
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap>
+                        관리자 페이지
+                    </Typography>
+                    <div style={{ flexGrow: 1 }} />
+                    <IconButton
+                        color="inherit"
+                        component={Link}
+                        to="/"
+                    >
+                        <HomeIcon />
+                    </IconButton>            
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                variant="temporary"
+                open={openDrawer}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true,
+                }}
+                PaperProps={{
+                    sx: { width: 250,top: 0 }
+                }}
+            >
+                <List>
+                    <ListItemButton onClick={handleMemberClick}>
+                        <ListItemText primary="회원 정보 관리" />
+                        {openMember ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={openMember}>
+                        <List component="div" disablePadding>
+                            <ListItemButton onClick={() => handleComponentClick('member-management')} sx={{ pl: 4 }}>
+                                <ListItemText primary="회원 정보 변경" />
+                            </ListItemButton>
+                            <ListItemButton onClick={() => handleComponentClick('member-management/delete')} sx={{ pl: 4 }}>
+                                <ListItemText primary="회원 삭제" />
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
 
-                        <ListItemButton onClick={handleBoardClick}>
-                            <ListItemText primary="게시판 관리" />
-                            {openBoard ? <ExpandLess /> : <ExpandMore />}
-                        </ListItemButton>
-                        <Collapse in={openBoard} >
-                            <List component="div" >
-                                <ListItemButton onClick={() => handleComponentClick('board-management/notice')} sx={{ pl: 4 }}>
-                                    <ListItemText primary="공지 사항" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => handleComponentClick('board-management/posts')} sx={{ pl: 4 }}>
-                                    <ListItemText primary="게시글 관리" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => handleComponentClick('board-management/comments')} sx={{ pl: 4 }}>
-                                    <ListItemText primary="댓글 관리" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => handleComponentClick('board-management/questions')} sx={{ pl: 4 }}>
-                                    <ListItemText primary="문의 관리" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => handleComponentClick('board-management/reports')} sx={{ pl: 4 }}>
-                                    <ListItemText primary="신고 관리" />
-                                </ListItemButton>
-                            </List>
-                        </Collapse>
+                    <ListItemButton onClick={handleBoardClick}>
+                        <ListItemText primary="게시판 관리" />
+                        {openBoard ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={openBoard}>
+                        <List component="div" disablePadding>
+                            <ListItemButton onClick={() => handleComponentClick('board-management/notice')} sx={{ pl: 4 }}>
+                                <ListItemText primary="공지 사항" />
+                            </ListItemButton>
+                            <ListItemButton onClick={() => handleComponentClick('board-management/posts')} sx={{ pl: 4 }}>
+                                <ListItemText primary="게시글 관리" />
+                            </ListItemButton>
+                            <ListItemButton onClick={() => handleComponentClick('board-management/comments')} sx={{ pl: 4 }}>
+                                <ListItemText primary="댓글 관리" />
+                            </ListItemButton>
+                            <ListItemButton onClick={() => handleComponentClick('board-management/questions')} sx={{ pl: 4 }}>
+                                <ListItemText primary="문의 관리" />
+                            </ListItemButton>
+                            <ListItemButton onClick={() => handleComponentClick('board-management/reports')} sx={{ pl: 4 }}>
+                                <ListItemText primary="신고 관리" />
+                            </ListItemButton>
+                        </List>
+                    </Collapse>
 
-                        <ListItemButton onClick={() => handleComponentClick('statistics')}>
-                            <ListItemText primary="통계" />
-                        </ListItemButton>
-                    </List>
-                </aside>
-                <main className={styles.mainContent}>     
-                    {renderComponent()}                
-                </main>
-
-        </div>
+                    <ListItemButton onClick={() => handleComponentClick('statistics')}>
+                        <ListItemText primary="통계" />
+                    </ListItemButton>
+                </List>
+            </Drawer>
+            <Box
+                sx={{
+                    marginTop: '80px',
+                    position: 'relative',
+                    padding: '16px',
+                    
+                }}
+            >
+                {renderComponent()}
+            </Box>
+        </Box>
     );
 };
 

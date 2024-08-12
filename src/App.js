@@ -39,12 +39,12 @@ function App() {
                 <Route path="/announcement" element={<Announcement/>}></Route>
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/mypage/*" element={<PlanManagement />} />
-                <Route path="/admin/*" element={<AdminHome />} />
                 <Route path="/ReviewList" element={<ReviewList />}/>
                 <Route path="/CreateReview" element={<CreateReview />}/>
                 <Route path="/EditReview/:id" element={<EditReview />} />
 
             </Route>
+            <Route path="/admin/*" element={<AdminHome />} />
         </Routes>
     </>
 }

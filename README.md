@@ -64,3 +64,4 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 - npm install @mui/material @emotion/react @emotion/styled
 - npm install @mui/x-date-pickers-pro
 - npm install dayjs
+- npm install react-beautiful-dnd

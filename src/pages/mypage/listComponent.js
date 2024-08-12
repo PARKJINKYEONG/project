@@ -14,6 +14,6 @@ export function ListComponent({listNames, listLinks}){
               </ListItem>
               </Link>
             ))}
-          </List>
+        </List>
     </>
 }

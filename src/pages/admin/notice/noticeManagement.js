@@ -83,6 +83,7 @@ const NoticeManagement  = () => {
     </div>
   );
 
+
 };
 
 export default NoticeManagement;

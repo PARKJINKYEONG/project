@@ -1,4 +1,8 @@
-.sideController{
-    position: fixed;
-
+@media (max-width: 1000px){
+    .sideController{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1500;
+    }
 }
