@@ -1,0 +1,61 @@
+.container {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.privacyContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  width: 700px;
+}
+
+.privacyContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.privacyItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLabel {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+}
+
+.formControl {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  margin-left: 10px;
+  font-size: 20px;
+  border-radius: 4px;
+}
+
+.lockButtonContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

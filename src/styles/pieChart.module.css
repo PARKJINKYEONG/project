@@ -1,0 +1,23 @@
+.container {
+  margin-top: 50px;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.title {
+  text-align: center;
+  margin-left: -100px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 50px; /* 차트와 제목 사이의 간격 */
+}
+
+.chartContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0;
+}

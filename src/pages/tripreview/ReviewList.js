@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import '../../css/TripReview.css';
+import '../../styles/TripReview.css';
 import ScrollToTopButton from '../../components/scrollToTopButton';
 
 const exampleReviews = [
