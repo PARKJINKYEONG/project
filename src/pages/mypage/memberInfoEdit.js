@@ -67,7 +67,7 @@ export default function MemberInfoEdit() {
           <InputField label="새 비밀번호" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} type="password" />
           <InputField label="실명 변경" value={name} onChange={(e) => setName(e.target.value)} />
           
-          <PhoneInput phone={phone} setPhone={setPhone} />
+          <PhoneInput phone={phone} setPhone={setPhone} label="전화번호 변경"/>
 
           <InputField label="주소 변경" value={address} readOnly />
           <AddressSearch onAddressSelect={handleAddressSelect} />

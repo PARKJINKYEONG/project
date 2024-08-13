@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import styles from '../styles/changeInfo.module.css';
 
-const PhoneInput = ({ phone, setPhone }) => {
+const PhoneInput = ({ phone, setPhone , label }) => {
   
   const handlePhoneChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +31,7 @@ const PhoneInput = ({ phone, setPhone }) => {
 
   return (
     <div className={styles.privacyItem}>
-      <label className={styles.formLabel}>전화번호 변경</label>
+      <label className={styles.formLabel}>{label}</label>
         <div className={styles.inputGroup}>
             <TextField 
             variant="outlined" onChange={handlePhoneChange} style={{ flex: '1 1 auto', marginRight: '10px' }} 
