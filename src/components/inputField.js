@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Button } from '@mui/material';
 
-import styles from '../styles/privacy.module.css';
+import styles from '../styles/changeInfo.module.css';
 
 const InputField = ({ label, value, onChange, type = 'text', onButtonClick, buttonLabel, buttonVariant = 'outlined', buttonStyle = { width: '80px' }, ...props }) => {
   return (

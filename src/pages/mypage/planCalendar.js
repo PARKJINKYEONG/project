@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Calendar from "../../components/calendar";
+import Calendar from "../../components/calendar_box";
 
 const PlanCalendar = () => {
 

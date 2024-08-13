@@ -1,15 +1,20 @@
 import { Route, Routes } from "react-router-dom";
-import PlanManagement from "./planManagement";
 import MyPage from "./myPage";
+import MemberInfoEdit from "./memberInfoEdit";
+import ReportAndInquiryList from "./report&inquiryList";
+import PlanCalendar from './planCalendar';
+import BookmarkRoutes from "../bookmark/bookmarkRoutes";
 
 export default function MyPageRoutes(){
 
     return <>
         <Routes>
             <Route element={<MyPage/>}>
-                <Route path="/" element={<PlanManagement/>}/>
-                <Route path="/plan" element={<PlanManagement/>}/>
-                
+                <Route path="/" element={<PlanCalendar/>}/>
+                <Route path="/plan" element={<PlanCalendar/>}/>
+                <Route path="/memberInfoEdit" element={<MemberInfoEdit/>}/>
+                <Route path="/reportAndInqueiryList" element={<ReportAndInquiryList/>}/>
+                <Route path="/bookmark" element={<BookmarkRoutes/>}/>
             </Route>
         </Routes>
     </>

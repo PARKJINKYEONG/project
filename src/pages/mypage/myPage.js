@@ -12,11 +12,11 @@ const drawerWidth = 240;
   
 export default function MyPage(){
   const listNames = ['일정', '리뷰', '즐겨찾기'];
-  const listLinks = ['plan', 'review', 'good'];
-  const listNames2 = ['프로필', '메시지',  '내 정보'];
-  const listLinks2 = ['profile', 'messages', 'myinfo'];
+  const listLinks = ['plan', 'review', 'bookmark'];
+  const listNames2 = ['프로필', '신고 및 문의',  '내 정보 수정'];
+  const listLinks2 = ['profile', 'reportAndInqueiryList', 'memberInfoEdit'];
     return <>
-      <Box sx={{ display: 'flex' ,marginTop: '100px'}}>
+      <Box sx={{ display: 'flex'}}>
  
       
       <Drawer

@@ -12,6 +12,10 @@ import QuestionManagement from './QnA/questionManagement';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
+import StatisticHome from './../statistic/statisticHome';
+import Privacy from '../changeInfoAsManager/privacy';
+import LoginSecurity from '../changeInfoAsManager/loginSecurity';
+import AccountLock from '../changeInfoAsManager/accountLock';
 
 const AdminHome = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -41,9 +45,11 @@ const AdminHome = () => {
     const renderComponent = () => {
         switch (selectedComponent) {
             case 'member-management':
-                return <MemberManagement />;
+                return <Privacy/>;
             case 'member-management/delete':
-                return <MemberDeleteManagement/>;    
+                return <LoginSecurity/>;
+            case 'member-management/restrict':
+                return <AccountLock/>;
             case 'board-management/notice':
                 return <NoticeManagement />;
             case 'board-management/posts':
@@ -55,7 +61,7 @@ const AdminHome = () => {
             case 'board-management/reports':
                 return <ReportManagement />;
             default:
-                return <Statistics />;
+                return <StatisticHome />;
         }
     };
 
@@ -106,7 +112,10 @@ const AdminHome = () => {
                                 <ListItemText primary="회원 정보 변경" />
                             </ListItemButton>
                             <ListItemButton onClick={() => handleComponentClick('member-management/delete')} sx={{ pl: 4 }}>
-                                <ListItemText primary="회원 삭제" />
+                                <ListItemText primary="로그인 및 보안" />
+                            </ListItemButton>
+                            <ListItemButton onClick={() => handleComponentClick('member-management/restrict')} sx={{ pl: 4 }}>
+                                <ListItemText primary="계정제한" />
                             </ListItemButton>
                         </List>
                     </Collapse>

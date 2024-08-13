@@ -1,43 +1,72 @@
 .recentlyViewedContainer {
-    margin-top: 150px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
-  }
-  
-  .card {
-    width: 300px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .cardImage {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .cardContent {
-    padding: 15px;
-  }
-  
-  .cardTitle {
-    font-size: 18px;
-    margin: 0 0 10px;
-  }
-  
-  .cardDate,
-  .cardHost {
-    color: #555;
-    margin: 0 0 5px;
-  }
-  
+  margin-top: 150px;
+  padding: 20px;
+}
+
+.dateGroup {
+  margin-bottom: 40px;
+}
+
+.cardGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  position: relative; /* 하트 아이콘 위치를 위해 추가 */
+}
+
+.cardHeader {
+  position: absolute;
+  top: 10px; /* 카드의 상단에서 10px 아래 */
+  right: 10px; /* 카드의 오른쪽에서 10px 왼쪽 */
+  z-index: 10; /* 카드 내용 위에 아이콘이 오도록 설정 */
+}
+
+.favoriteIcon {
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 15px;
+}
+
+.cardTitle {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.cardDate,
+.cardHost {
+  color: #555;
+  margin: 0 0 5px;
+}
+
+.modalBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
