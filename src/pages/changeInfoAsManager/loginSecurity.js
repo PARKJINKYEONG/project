@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/loginSecurity.module.css';
-import InputField from '../../components/loginSecurity_';
+import styles from '../../styles/changeInfo.module.css';
+import InputField from '../../components/inputField';
+
 
 
 

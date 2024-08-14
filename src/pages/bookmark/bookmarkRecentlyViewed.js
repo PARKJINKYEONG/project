@@ -1,10 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/bookmarkRecentlyViewd.module.css';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Modal, Box, TextField, Button } from '@mui/material';
-
 
 const itemsData = [
   {
@@ -40,11 +38,11 @@ const itemsData = [
 const groupByDate = (items) => {
   return items.reduce((groups, item) => {
     const date = item.date;
-    if (!groups[date]) { // 현재 그룹 객체에 이 날짜가 키로 존재하지 않으면
-      groups[date] = []; // 해당 날짜를 키로 하고 빈 배열을 생성
+    if (!groups[date]) {
+      groups[date] = [];
     }
-    groups[date].push(item); // 해당 날짜의 배열에 현재 아이템을 추가
-    return groups; // reduce 함수는 최종적으로 모든 날짜를 키로 하고, 그 날짜에 해당하는 아이템들을 값으로 갖는 객체를 반환
+    groups[date].push(item);
+    return groups;
   }, {});
 };
 
@@ -56,7 +54,6 @@ const BookmarkRecentlyViewed = ({ onAddBookmark }) => {
   const [groupedItems, setGroupedItems] = useState({});
 
   useEffect(() => {
-    // 날짜별로 그룹화
     const sortedItems = [...itemsData].sort((a, b) => new Date(b.date) - new Date(a.date));
     setGroupedItems(groupByDate(sortedItems));
   }, []);
@@ -89,14 +86,25 @@ const BookmarkRecentlyViewed = ({ onAddBookmark }) => {
   };
 
   const toggleFavorite = (item) => {
-    setFavorites((prev) => ({
-      ...prev,
-      [item.id]: !prev[item.id], // 현재 아이템의 ID(item.id)에 해당하는 값을 true에서 false로, 또는 false에서 true로 반전
-                                // 하트 빨간색 회색의 차이를 주기 위함 
-    }));
-    // 모달 열기
-    handleOpen(item);
-  };
+    const isFavorite = favorites[item.id];
+
+    if (isFavorite) {
+        // 하트가 빨간색인 경우, 모달을 열지 않고 즐겨찾기에서 제거
+        setFavorites((prev) => ({
+            ...prev,
+            [item.id]: false,
+        }));
+    } 
+    else {
+        // 하트가 빨간색이 아닌 경우, 즐겨찾기 추가와 함께 모달을 엶
+        setFavorites((prev) => ({
+            ...prev,
+            [item.id]: true,
+        }));
+        handleOpen(item);
+    }
+};
+
 
   return (
     <div className={styles.recentlyViewedContainer}>

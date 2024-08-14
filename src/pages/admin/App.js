@@ -7,7 +7,6 @@ import ChangeInfoRoutes from './pages/changeInfoAsManager/changeInfoRoutes';
 import BookmarkRoutes from "./pages/bookmark/bookmarkRoutes";
 import StatisticRoutes from "./pages/statistic/statisticRoutes";
 import AdminHome from "./pages/admin/adminHome";
-
 import './styles/common.css'
 import ReviewList from "./pages/tripreview/ReviewList";
 import CreateReview from "./pages/tripreview/CreateReview"
@@ -18,8 +17,7 @@ import CreatePlan from "./pages/plan/createPlan";
 
 import QnA from "./pages/clientService/userQna";
 import UserFaq from "./pages/clientService/userFaq";
-import Announcement from "./pages/clientService/announcement";
-
+import { Announcement } from "@mui/icons-material";
 import MyPageRoutes from "./pages/mypage/myPageRoutes";
 
 function App() {
@@ -41,13 +39,15 @@ function App() {
                 <Route path="/announcement" element={<Announcement/>}></Route>
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/mypage/*" element={<MyPageRoutes />} />
+                
                 <Route path="/ReviewList" element={<ReviewList />}/>
                 <Route path="/CreateReview" element={<CreateReview />}/>
                 <Route path="/EditReview/:id" element={<EditReview />} />
-                
+
             </Route>
             <Route path="/admin/*" element={<AdminHome />} />
         </Routes>
+        
     </>
 }
 
