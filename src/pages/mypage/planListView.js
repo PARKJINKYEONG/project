@@ -14,7 +14,7 @@ const PlanListView = ({ event }) => {
           <Typography variant="h5">{event.title}</Typography>
     
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-            <Typography><strong>장소:</strong> {event.extendedProps.location || '없음'}</Typography>
+            <Typography><strong>장소:</strong> {event.extendedProps.location || '제주도'}</Typography>
             <Button onClick={() => handleEdit(1)} variant="outlined" size="small">수정</Button>
           </Box>
     
@@ -24,22 +24,22 @@ const PlanListView = ({ event }) => {
           </Box>
     
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-            <Typography><strong>인원수:</strong> {event.extendedProps.people || '없음'}</Typography>
+            <Typography><strong>인원수:</strong> {event.extendedProps.people || '1명'}</Typography>
             <Button onClick={() => handleEdit(1)} variant="outlined" size="small">수정</Button>
           </Box>
     
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-            <Typography><strong>예산:</strong> {event.extendedProps.budget || '없음'}</Typography>
+            <Typography><strong>예산:</strong> {event.extendedProps.budget || '300,000원'}</Typography>
             <Button onClick={() => handleEdit(1)} variant="outlined" size="small">수정</Button>
           </Box>
     
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-            <Typography><strong>관광지:</strong> {event.extendedProps.attractions || '없음'}</Typography>
+            <Typography><strong>관광지:</strong> {event.extendedProps.attractions || 'OO 축제'}</Typography>
             <Button onClick={() => handleEdit(2)} variant="outlined" size="small">수정</Button>
           </Box>
     
           <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-            <Typography><strong>숙소:</strong> {event.extendedProps.accommodation || '없음'}</Typography>
+            <Typography><strong>숙소:</strong> {event.extendedProps.accommodation || 'OO 호텔'}</Typography>
             <Button onClick={() => handleEdit(3)} variant="outlined" size="small">수정</Button>
           </Box>
         </Box>

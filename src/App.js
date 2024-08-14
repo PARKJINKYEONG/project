@@ -6,7 +6,6 @@ import Template from "./pages/template";
 import ChangeInfoRoutes from './pages/changeInfoAsManager/changeInfoRoutes';
 import BookmarkRoutes from "./pages/bookmark/bookmarkRoutes";
 import StatisticRoutes from "./pages/statistic/statisticRoutes";
-import AdminHome from "./pages/admin/adminHome";
 
 import './styles/common.css'
 import ReviewList from "./pages/tripreview/ReviewList";
@@ -21,7 +20,11 @@ import UserFaq from "./pages/clientService/userFaq";
 import Announcement from "./pages/clientService/announcement";
 
 import MyPageRoutes from "./pages/mypage/myPageRoutes";
+
+import AdminRoutes from "./pages/admin/adminRoutes";
+
 import { RouteMap } from "./pages/routeMap";
+
 
 function App() {
 
@@ -45,10 +48,9 @@ function App() {
                 <Route path="/ReviewList" element={<ReviewList />}/>
                 <Route path="/CreateReview" element={<CreateReview />}/>
                 <Route path="/EditReview/:id" element={<EditReview />} />
-                
             </Route>
+            <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<RouteMap/>} />
-            <Route path="/admin/*" element={<AdminHome />} />
         </Routes>
     </>
 }

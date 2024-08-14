@@ -39,7 +39,7 @@ const PlanCalendar = () => {
   };
 
   return (
-    <div className="App">
+    <div style={{ marginTop: '20px' , marginRight: '100px'}}>
       <Calendar onEventClick={handleEventClick}/>
       <Modal open={open} onClose={handleClose}>
         <Box sx={{ width: 600, padding: 5, backgroundColor: 'white', margin: 'auto', marginTop: '10%',

@@ -1,6 +1,6 @@
 import React from "react";
 
-const EditNotice = ({ setIsEditing  }) => {
+const EditNotice = ({ setIsEditing }) => {
 
     const handleSave = () => {
         setIsEditing(false);
@@ -8,18 +8,17 @@ const EditNotice = ({ setIsEditing  }) => {
     return (
         <div>
           <h2>공지 수정</h2>
-          {/* notice 객체의 데이터를 사용하여 폼을 초기화합니다 */}
           <form>
             <div>
-              <label>제목:</label>
-              <input type="text" />
+              <label>제목</label>
+              <input type="text" value={'공지사항'}/>
             </div>
             <div>
               <label>내용:</label>
-              <textarea></textarea>
+              <textarea>어떤 사항에 대한 공지사항입니다.</textarea>
             </div>
-            <button type="button" onClick={handleSave}>수정</button>
-            <button type="button" onClick={() => setIsEditing(false)}>삭제</button>
+            <button type="button" onClick={handleSave} style={{ marginRight: '10px' }}>수정</button>
+            <button type="button" onClick={() => setIsEditing(false)} style={{ marginRight: '10px' }}>삭제</button>
             <button type="button" onClick={() => setIsEditing(false)}>뒤로가기</button>
           </form>
         </div>
