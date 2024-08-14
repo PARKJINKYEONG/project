@@ -1,46 +1,54 @@
-import React from "react";
-import { Box } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Calendar from "../../components/calendar_box";
+
+import React, { useState } from 'react';
+import Calendar from '../../components/calendar';
+import { Box, Button, Modal } from '@mui/material';
+import ProgressPlan3 from '../plan/progressPlan3';
+import ProgressPlan2 from '../plan/progressPlan2';
+import ProgressPlan4 from '../plan/progressPlan4';
+import PlanListView from './planListView';
+
 
 const PlanCalendar = () => {
 
+  const [open, setOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [currentStep, setCurrentStep] = useState(null);
+
+  const handleEventClick = (info) => {
+    setSelectedEvent(info.event);
+    setOpen(true);
+    setCurrentStep(null);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const renderStepComponent = () => {
+    switch (currentStep) {
+      case 2:
+        return <ProgressPlan2 event={selectedEvent} />;
+      case 3:
+        return <ProgressPlan3 event={selectedEvent} />;
+      case 4:
+        return <ProgressPlan4 event={selectedEvent} />;
+      default:
+        return <PlanListView event={selectedEvent} onEdit={setCurrentStep} />;
+    }
+  };
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}> 
-      <Box>
-        <Calendar 
-        sx={{
-          width: '100%',
-          margin: '0 auto',
-            '& .MuiCalendarPicker-root': {
-              padding: '0 16px',
-            },          
-              '& .MuiPickersCalendarHeader-root': {
-                marginBottom: '16px', // 달과 네비게이션 버튼 사이의 거리 조정
-              },
-              '& .MuiDayPicker-weekContainer': {
-                display: 'flex',              
-                marginBottom: '8px', // 요일과 날짜 사이 간격 조정
-              },
-              '& .MuiPickersDay-root': {
-                width: '200px', // 날짜 셀의 너비 조정
-                height: '70px', // 날짜 셀의 높이 조정
-                fontSize: '1rem', // 날짜 텍스트 크기 조정
-              },
-              '& .MuiTypography-root': {
-                fontSize: '1.2rem', // 요일 텍스트 크기 조정
-                width: '170px', // 요일 텍스트의 너비를 날짜 셀과 일치시킴
-                textAlign: 'center', // 요일 텍스트를 중앙 정렬
-                lineHeight: '2rem', // 요일 텍스트의 줄 간격 조정 (위아래 간격 증가)
-                paddingTop: '8px', // 요일 텍스트 위쪽 여백 추가
-                paddingBottom: '8px', // 요일 텍스트 아래쪽 여백 추가
-            },
-          
-        }}
-      />
-      </Box>
-    </LocalizationProvider>  
+    <div className="App">
+      <Calendar onEventClick={handleEventClick}/>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={{ width: 600, padding: 5, backgroundColor: 'white', margin: 'auto', marginTop: '10%',
+            overflowY: 'auto',borderRadius: 2 }}>
+          {selectedEvent && renderStepComponent()}
+          <Button onClick={handleClose} variant="contained" color="primary">닫기</Button>
+        </Box>
+      </Modal>
+    </div> 
   ); 
 }
 

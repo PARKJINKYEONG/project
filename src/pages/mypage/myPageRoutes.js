@@ -5,6 +5,7 @@ import ReportAndInquiryList from "./report&inquiryList";
 import PlanCalendar from './planCalendar';
 import BookmarkRoutes from "../bookmark/bookmarkRoutes";
 
+
 export default function MyPageRoutes(){
 
     return <>
