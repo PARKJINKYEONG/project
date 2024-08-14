@@ -18,6 +18,9 @@ import CreatePlan from "./pages/plan/createPlan";
 import QnA from "./pages/clientService/userQna";
 import UserFaq from "./pages/clientService/userFaq";
 import Announcement from "./pages/clientService/announcement";
+import MyPage from "./pages/mypage/myPage";
+import MyReView from "./pages/mypage/review/myReview";
+import MyPageRoutes from "./pages/mypage/myPageRoutes";
 
 import MyPageRoutes from "./pages/mypage/myPageRoutes";
 

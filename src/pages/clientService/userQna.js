@@ -11,9 +11,8 @@ const QnA = () => {
               <img src="/images/Mask_group.png" alt="Header" className="header-image" />
             </div>
             <div className="menu">
-                <button>전체</button>
-                <button>공지사항</button>
-                <button>고객센터</button>
+                <button>Q&A</button>
+                <button>FAQ</button>
                 <input type="text" placeholder="검색" />
                 <button>검색</button>
             </div>

@@ -14,11 +14,12 @@ const UserFaq = () => {
         <img src="/images/Mask_group.png" alt="Header" className="header-image" />
       </div>
       <div className="nav">
-        <button>전체</button>
-        <button>공지사항</button>
-        <button>고객센터</button>
+        <button>Q&A</button>
+        <button>FAQ</button>
+        <input type="text" placeholder="검색" />
+        <button>검색</button>
       </div>
-      <div className="faq">
+      <div className="faq"> 
         <h2>FAQ</h2>
         <div className="faq-item">
           <div className="faq-question" onClick={() => toggleFAQ(0)}>
