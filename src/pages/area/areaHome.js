@@ -1,5 +1,4 @@
 import React from 'react';
-import './area.css';
 import AreaContent from './areaContent';
 
 

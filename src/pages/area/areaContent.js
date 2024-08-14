@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import Drawer from '@mui/material/Drawer';
+import Popover from '@mui/material/Popover';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -69,7 +69,7 @@ const ImageModal = styled(Modal)(({ theme }) => ({
 const SearchAppBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [imageResults, setImageResults] = useState([]);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [selectedMenuItem, setSelectedMenuItem] = useState('');
   const [selectedSubmenuItem, setSelectedSubmenuItem] = useState('');
   const [openMenu, setOpenMenu] = useState(null);
@@ -127,12 +127,12 @@ const SearchAppBar = () => {
     }
   };
 
-  const handleDrawerOpen = () => {
-    setDrawerOpen(true);
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const handleMenuItemClick = (text) => {
@@ -145,7 +145,7 @@ const SearchAppBar = () => {
   const handleSubmenuItemClick = (text) => {
     setSelectedSubmenuItem(text);
     setImageResults([]);
-    handleDrawerClose(); // Close the drawer when a submenu item is clicked
+    handleMenuClose(); // Close the popover when a submenu item is clicked
   };
 
   const handleImageClick = (url) => {
@@ -167,11 +167,108 @@ const SearchAppBar = () => {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handleMenuOpen}
             sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
+          <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={handleMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            PaperProps={{
+              sx: {
+                backgroundColor: (theme) => theme.palette.primary.main,
+                color: (theme) => theme.palette.common.white,
+              },
+            }}
+          >
+            <Box sx={{ width: 250 }}>
+              <List>
+                {['관광지', '숙박업소', '맛집', '교통'].map((text) => (
+                  <React.Fragment key={text}>
+                    <ListItem button onClick={() => handleMenuItemClick(text)}>
+                      <ListItemText primary={text} />
+                      {openMenu === text ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openMenu === text} timeout="auto" unmountOnExit>
+                      <List component="div" disablePadding>
+                        {text === '관광지' && ['해외관광', '국내관광', '인기관광'].map((submenu) => (
+                          <ListItem
+                            button
+                            key={submenu}
+                            sx={{
+                              pl: 4,
+                              backgroundColor: (theme) => alpha(theme.palette.common.white, 0.15),
+                              '&:hover': {
+                                backgroundColor: (theme) => alpha(theme.palette.common.white, 0.25),
+                              },
+                            }}
+                            onClick={() => handleSubmenuItemClick(submenu)}
+                          >
+                            <ListItemText primary={submenu} />
+                          </ListItem>
+                        ))}
+                        {text === '숙박업소' && ['호텔', '모텔'].map((submenu) => (
+                          <ListItem
+                            button
+                            key={submenu}
+                            sx={{
+                              pl: 4,
+                              backgroundColor: (theme) => alpha(theme.palette.common.white, 0.15),
+                              '&:hover': {
+                                backgroundColor: (theme) => alpha(theme.palette.common.white, 0.25),
+                              },
+                            }}
+                            onClick={() => handleSubmenuItemClick(submenu)}
+                          >
+                            <ListItemText primary={submenu} />
+                          </ListItem>
+                        ))}
+                        {text === '맛집' && ['AI추천', '크롤링 추천'].map((submenu) => (
+                          <ListItem
+                            button
+                            key={submenu}
+                            sx={{
+                              pl: 4,
+                              backgroundColor: (theme) => alpha(theme.palette.common.white, 0.15),
+                              '&:hover': {
+                                backgroundColor: (theme) => alpha(theme.palette.common.white, 0.25),
+                              },
+                            }}
+                            onClick={() => handleSubmenuItemClick(submenu)}
+                          >
+                            <ListItemText primary={submenu} />
+                          </ListItem>
+                        ))}
+                        {text === '교통' && (
+                          <ListItem
+                            button
+                            key="네이버 길찾기"
+                            sx={{
+                              pl: 4,
+                              backgroundColor: (theme) => alpha(theme.palette.common.white, 0.15),
+                              '&:hover': {
+                                backgroundColor: (theme) => alpha(theme.palette.common.white, 0.25),
+                              },
+                            }}
+                            onClick={() => handleSubmenuItemClick('네이버 길찾기')}
+                          >
+                            <ListItemText primary="네이버 길찾기" />
+                          </ListItem>
+                        )}
+                      </List>
+                    </Collapse>
+                    <Divider />
+                  </React.Fragment>
+                ))}
+              </List>
+            </Box>
+          </Popover>
           <Typography
             variant="h6"
             noWrap
@@ -195,52 +292,6 @@ const SearchAppBar = () => {
           </Search>
         </Toolbar>
       </AppBar>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={handleDrawerClose}
-      >
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-        >
-          <List>
-            {['관광지', '숙박업소', '맛집', '교통'].map((text) => (
-              <React.Fragment key={text}>
-                <ListItem button onClick={() => handleMenuItemClick(text)}>
-                  <ListItemText primary={text} />
-                  {openMenu === text ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={openMenu === text} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {text === '관광지' && ['해외관광', '국내관광', '인기관광'].map((submenu) => (
-                      <ListItem button key={submenu} sx={{ pl: 4 }} onClick={() => handleSubmenuItemClick(submenu)}>
-                        <ListItemText primary={submenu} />
-                      </ListItem>
-                    ))}
-                    {text === '숙박업소' && ['호텔', '모텔'].map((submenu) => (
-                      <ListItem button key={submenu} sx={{ pl: 4 }} onClick={() => handleSubmenuItemClick(submenu)}>
-                        <ListItemText primary={submenu} />
-                      </ListItem>
-                    ))}
-                    {text === '맛집' && ['AI추천', '크롤링 추천'].map((submenu) => (
-                      <ListItem button key={submenu} sx={{ pl: 4 }} onClick={() => handleSubmenuItemClick(submenu)}>
-                        <ListItemText primary={submenu} />
-                      </ListItem>
-                    ))}
-                    {text === '교통' && (
-                      <ListItem button key="네이버 길찾기" sx={{ pl: 4 }} onClick={() => handleSubmenuItemClick('네이버 길찾기')}>
-                        <ListItemText primary="네이버 길찾기" />
-                      </ListItem>
-                    )}
-                  </List>
-                </Collapse>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
       <Box sx={{ p: 2, display: 'flex', flexWrap: 'wrap' }}>
         {imageResults.map((url, index) => (
           <Box key={index} sx={{ m: 1 }} onClick={() => handleImageClick(url)}>

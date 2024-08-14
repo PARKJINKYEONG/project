@@ -16,17 +16,16 @@ import UserRoutes from "./pages/member/userRoutes";
 import CreatePlan from "./pages/plan/createPlan";
 
 import QnA from "./pages/clientService/userQna";
-import UserFaq from "./pages/clientService/userFaq";
 import Announcement from "./pages/clientService/announcement";
-import MyPage from "./pages/mypage/myPage";
-import MyReView from "./pages/mypage/review/myReview";
 import MyPageRoutes from "./pages/mypage/myPageRoutes";
 
-import MyPageRoutes from "./pages/mypage/myPageRoutes";
 
 import AdminRoutes from "./pages/admin/adminRoutes";
 
 import { RouteMap } from "./pages/routeMap";
+import BoardRoutes from "./pages/board/boardRoutes";
+import FaQ from "./pages/clientService/userFaq";
+import AreaRoutes from "./pages/area/areaRoutes";
 
 
 function App() {
@@ -38,19 +37,20 @@ function App() {
             <Route element={<Template/>}>
                 <Route path="/" element={<Home/>} />
                 <Route path="/user/*" element={<UserRoutes/>}></Route>
-                <Route path="/place"></Route>
+                <Route path="/place/*" element={<AreaRoutes/>} ></Route>
                 <Route path="/createPlan" element={<CreatePlan/>}></Route>
                 <Route path="/notice"></Route>
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
                 <Route path="/userQna" element={<QnA/>}></Route>
-                <Route path="/userFaq" element={<UserFaq/>}></Route>
+                <Route path="/userFaq" element={<FaQ/>}></Route>
                 <Route path="/announcement" element={<Announcement/>}></Route>
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/mypage/*" element={<MyPageRoutes />} />
                 <Route path="/ReviewList" element={<ReviewList />}/>
                 <Route path="/CreateReview" element={<CreateReview />}/>
                 <Route path="/EditReview/:id" element={<EditReview />} />
+                <Route path="/board/*" element={<BoardRoutes />} />
             </Route>
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<RouteMap/>} />

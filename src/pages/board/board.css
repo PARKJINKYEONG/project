@@ -1,0 +1,88 @@
+/* form.css */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title-form {
+    margin-bottom: 10px;
+}
+
+.content-form textarea {
+    height: 300px; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.text-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+/* list.css */
+.header {
+    margin-top: 70px;
+    text-align: center;
+}
+
+.board {
+    font-size: 15px;
+}
+
+.text-end {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    margin-right: 5px;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+/* view.css */
+.view-header {
+    margin-top: 70px;
+    text-align: center;
+}
+
+.view-board {
+    font-size: 15px;
+}
+
+.title {
+    width: 7%;
+}
+
+.date {
+    width: 10%;
+    text-align: start;
+}
+
+.comment-input {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.comment-input .form-control {
+    flex: 1;
+}
+
+.comment-input .btn {
+    margin-left: 10px;
+}
+
+.comment-list {
+    margin-top: 10px;
+}
