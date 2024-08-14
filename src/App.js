@@ -21,6 +21,7 @@ import UserFaq from "./pages/clientService/userFaq";
 import Announcement from "./pages/clientService/announcement";
 
 import MyPageRoutes from "./pages/mypage/myPageRoutes";
+import { RouteMap } from "./pages/routeMap";
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/EditReview/:id" element={<EditReview />} />
                 
             </Route>
+            <Route path="/testroute" element={<RouteMap/>} />
             <Route path="/admin/*" element={<AdminHome />} />
         </Routes>
     </>

@@ -4,6 +4,7 @@ import MemberInfoEdit from "./memberInfoEdit";
 import ReportAndInquiryList from "./report&inquiryList";
 import PlanCalendar from './planCalendar';
 import BookmarkRoutes from "../bookmark/bookmarkRoutes";
+import AddSpeciality from "./addSpeciality";
 
 
 export default function MyPageRoutes(){
@@ -16,6 +17,7 @@ export default function MyPageRoutes(){
                 <Route path="/memberInfoEdit" element={<MemberInfoEdit/>}/>
                 <Route path="/reportAndInqueiryList" element={<ReportAndInquiryList/>}/>
                 <Route path="/bookmark" element={<BookmarkRoutes/>}/>
+                <Route path="/addspecial" element={<AddSpeciality/>}/>
             </Route>
         </Routes>
     </>

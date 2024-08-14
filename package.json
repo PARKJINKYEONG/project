@@ -24,6 +24,7 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.12",
     "dom": "^0.0.3",
+    "fullcalendar": "^6.1.15",
     "http-proxy-middleware": "^3.0.0",
     "install": "^0.13.0",
     "mqtt": "^5.9.1",
