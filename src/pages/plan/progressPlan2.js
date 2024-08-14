@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import Box from '@mui/material/Box';
-import Modal from 'react-modal'; 
-import CreatePlan from './createPlan';
+import Modal from 'react-modal';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 const restaurants = [
   { name: 'BBQ', type: 'Korean', allergens: [], location: { lat: 37.5665, lng: 126.9780 } },
@@ -26,15 +25,18 @@ const attractions = [
 ];
 
 const containerStyle = {
-  width: '80%',
-  height: '80%',
+  marginTop: '100px',
+  width: '100%',
+  height: '100%',
 };
 
 const sectionStyle = {
   border: '1px solid #ddd',
   borderRadius: '8px',
   padding: '20px',
-  marginBottom: '30px',
+  marginBottom: '10px',
+  width: '100%',
+  maxWidth: '400px', // 최대 너비 설정
 };
 
 const sectionTitleStyle = {
@@ -43,8 +45,30 @@ const sectionTitleStyle = {
   marginBottom: '20px',
 };
 
+const cardStyle = {
+  display: 'inline-block',
+  width: '150px',
+  cursor: 'pointer',
+  borderRadius: '8px',
+  border: '1px solid #ddd',
+  marginRight: '5px',
+  height: '150px',
+  overflow: 'hidden'
+};
+
+const imageStyle = {
+  width: '100%',
+  height: '100px',
+  objectFit: 'cover',
+  borderTopLeftRadius: '8px',
+  borderTopRightRadius: '8px'
+};
+
+const contentStyle = {
+  padding: '10px'
+};
+
 const ProgressPlan2 = () => {
-  const [activeStep, setActiveStep] = useState(0);
   const [foodType, setFoodType] = useState('');
   const [allergies, setAllergies] = useState([]);
   const [selectedRestaurants, setSelectedRestaurants] = useState([]);
@@ -52,12 +76,15 @@ const ProgressPlan2 = () => {
   const [showMore, setShowMore] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.9780 });
   const mapRef = useRef(null);
 
-  const handleStep = (step) => () => setActiveStep(step);
-  const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  const handleReset = () => setActiveStep(3); 
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.panTo(mapCenter);
+      mapRef.current.setZoom(15);
+    }
+  }, [mapCenter]);
 
   const handleAllergyChange = (e) => {
     const value = e.target.value;
@@ -71,11 +98,15 @@ const ProgressPlan2 = () => {
   });
 
   const handleSelectRestaurant = (restaurant) => {
-    if (!selectedRestaurants.includes(restaurant)) {
-      setSelectedRestaurants([...selectedRestaurants, restaurant]);
-    } else {
-      setSelectedRestaurants(selectedRestaurants.filter((r) => r !== restaurant));
-    }
+    setMapCenter(restaurant.location);
+    setSelectedRestaurants((prev) => {
+      const alreadySelected = prev.find((r) => r.name === restaurant.name);
+      if (alreadySelected) {
+        return prev.filter((r) => r.name !== restaurant.name);
+      } else {
+        return [...prev, restaurant];
+      }
+    });
   };
 
   const openModal = (info) => {
@@ -88,28 +119,26 @@ const ProgressPlan2 = () => {
   };
 
   const handleSelectAttraction = (attraction) => {
-    if (!selectedAttractions.includes(attraction)) {
-      setSelectedAttractions([...selectedAttractions, attraction]);
-    } else {
-      setSelectedAttractions(selectedAttractions.filter((a) => a !== attraction));
-    }
+    setSelectedAttractions((prev) => {
+      const alreadySelected = prev.find((a) => a.name === attraction.name);
+      if (alreadySelected) {
+        return prev.filter((a) => a.name !== attraction.name);
+      } else {
+        return [...prev, attraction];
+      }
+    });
   };
 
   const handleMarkerClick = (info) => {
-    if (mapRef.current) {
-      mapRef.current.panTo(info.location); 
-      mapRef.current.setZoom(15); 
-    }
-    openModal(info); 
+    setMapCenter(info.location);
+    openModal(info);
   };
 
   return (
     <>
-      <div style={{ display: 'flex', height: '100vh', padding: '20px', gap: '20px' }}>
-       
-
-        <div style={{ flex: 2, display: 'flex', flexDirection: 'column' }}>
-          <div style={sectionStyle}>
+      <Box style={{ display: 'flex', padding: '20px', gap: '20px' }}>
+        <Box style={{ flex: 2, display: 'flex', flexDirection: 'column' }}>
+          <Box style={sectionStyle}>
             <h2 style={sectionTitleStyle}>음식 카테고리</h2>
             <select value={foodType} onChange={(e) => setFoodType(e.target.value)} style={{ marginBottom: '20px', width: '100%' }}>
               <option value="">선택</option>
@@ -119,11 +148,11 @@ const ProgressPlan2 = () => {
               <option value="Western">양식</option>
               <option value="Others">기타</option>
             </select>
-          </div>
+          </Box>
 
-          <div style={sectionStyle}>
+          <Box style={sectionStyle}>
             <h3 style={sectionTitleStyle}>알레르기 정보</h3>
-            <div style={{ marginBottom: '20px' }}>
+            <Box style={{ marginBottom: '20px' }}>
               <label><input type="checkbox" value="Egg" onChange={handleAllergyChange} /> 계란</label>
               <label><input type="checkbox" value="Milk" onChange={handleAllergyChange} /> 우유</label>
               <label><input type="checkbox" value="Peanut" onChange={handleAllergyChange} /> 땅콩</label>
@@ -141,11 +170,11 @@ const ProgressPlan2 = () => {
               <button onClick={() => setShowMore(!showMore)}>
                 {showMore ? '간단히' : '더보기+'}
               </button>
-            </div>
-          </div>
+            </Box>
+          </Box>
 
-          {foodType && (
-            <div style={sectionStyle}>
+          {allergies.length > 0 && foodType && (
+            <Box style={sectionStyle}>
               <h3 style={sectionTitleStyle}>식당 선택하기</h3>
               <ul style={{ marginBottom: '20px', listStyle: 'none', padding: 0 }}>
                 {filteredRestaurants.map((restaurant, index) => (
@@ -153,7 +182,7 @@ const ProgressPlan2 = () => {
                     key={index}
                     style={{
                       cursor: 'pointer',
-                      backgroundColor: selectedRestaurants.includes(restaurant) ? 'lightgray' : 'transparent',
+                      backgroundColor: selectedRestaurants.some((r) => r.name === restaurant.name) ? 'lightgray' : 'transparent',
                       padding: '10px',
                       borderBottom: '1px solid #ddd'
                     }}
@@ -163,43 +192,45 @@ const ProgressPlan2 = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Box>
           )}
 
-          <div style={sectionStyle}>
+<Box style={sectionStyle}>
             <h3 style={sectionTitleStyle}>관광지 선택하기</h3>
-            <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', paddingBottom: '10px' }}>
-              <div style={{ display: 'inline-flex', gap: '10px' }}>
+            <Box style={{ overflowX: 'auto', whiteSpace: 'nowrap', paddingBottom: '10px' }}>
+              <Box style={{ display: 'inline-flex', gap: '10px' }}>
                 {attractions.map((attraction, index) => (
-                  <img
+                  <Card
                     key={index}
-                    src={attraction.image}
-                    alt={attraction.name}
-                    style={{
-                      width: 'calc(20% - 10px)',
-                      cursor: 'pointer',
-                      borderRadius: '8px',
-                      flexShrink: 0
-                    }}
+                    style={cardStyle}
                     onClick={() => {
                       handleSelectAttraction(attraction);
-                      handleMarkerClick(attraction);  
+                      handleMarkerClick(attraction);
                     }}
-                  />
+                  >
+                    <img
+                      src={attraction.image}
+                      alt={attraction.name}
+                      style={imageStyle}
+                    />
+                    <CardContent style={contentStyle}>
+                      <Typography variant="subtitle2" style={{ fontSize: '14px' }}>{attraction.name}</Typography>
+                    </CardContent>
+                  </Card>
                 ))}
-              </div>
-            </div>
-          </div>
-        </div>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
 
-        <div style={{ flex: 1, padding: '20px' }}>
-          <div style={{ flex: 1, height: '30%' }}>
+        <Box style={{ flex: 1, padding: '20px' }}>
+        <Box style={{ flex: 1, height: '50%' }}>
             <LoadScript googleMapsApiKey="AIzaSyB-COY1Ryjaa2wILZqfl5UoS2WltfYD3Hc">
               <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={selectedRestaurants.length ? selectedRestaurants[0].location : { lat: 37.5665, lng: 126.9780 }}
+                center={mapCenter}
                 zoom={10}
-                onLoad={(map) => mapRef.current = map} 
+                onLoad={(map) => (mapRef.current = map)}
               >
                 {selectedRestaurants.map((restaurant, index) => (
                   <Marker
@@ -217,9 +248,9 @@ const ProgressPlan2 = () => {
                 ))}
               </GoogleMap>
             </LoadScript>
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
 
       <Modal
         isOpen={modalIsOpen}
@@ -243,7 +274,7 @@ const ProgressPlan2 = () => {
         }}
       >
         {selectedInfo && (
-          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <Box style={{ position: 'relative', width: '100%', height: '100%' }}>
             <h2>{selectedInfo.name}</h2>
             <img
               src={selectedInfo.image}
@@ -257,7 +288,7 @@ const ProgressPlan2 = () => {
             />
             <p>{selectedInfo.description}</p>
             <button onClick={closeModal}>닫기</button>
-          </div>
+          </Box>
         )}
       </Modal>
     </>
