@@ -1,0 +1,91 @@
+/* profilePage.module.css */
+
+.profilePage {
+    padding: 20px;
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.formGroup input,
+.formGroup textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.imagePreview {
+    margin-top: 10px;
+}
+
+.previewImage {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    cursor: pointer; /* 클릭 가능하도록 포인터 표시 */
+}
+
+.fileInputWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+#profileImage {
+    display: none; /* 기본 파일 선택 버튼을 숨김 */
+}
+
+.customButton {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+}
+
+.customButton:hover {
+    background-color: #0056b3;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* MUI 모달을 위한 스타일링 */
+.modalContentBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 700px;
+    width: 80%;
+    outline: none;
+}
+
+.modalContent {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    display: block;
+    margin: auto;
+}

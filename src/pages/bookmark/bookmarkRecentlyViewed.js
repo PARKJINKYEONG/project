@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../styles/bookmarkRecentlyViewd.module.css';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Modal, Box, TextField, Button } from '@mui/material';
+import { Button } from '@mui/material';
+import MuiModal from '../../components/muiModal';
+import TextField_ from '../../components/textField';
+
 
 const itemsData = [
   {
@@ -74,12 +77,19 @@ const BookmarkRecentlyViewed = ({ onAddBookmark }) => {
       alert('즐겨찾기 제목을 입력해주세요.');
       return;
     }
+
     const newItem = {
       id: selectedItem.id,
       title: bookmarkTitle,
       date: selectedItem.date,
       images: [selectedItem.image],
     };
+
+    setFavorites((prev) => ({
+      ...prev,
+      [selectedItem.id]: true,
+    }));
+
     onAddBookmark(newItem);
     console.log("Bookmark Added:", newItem);
     handleClose();
@@ -89,22 +99,14 @@ const BookmarkRecentlyViewed = ({ onAddBookmark }) => {
     const isFavorite = favorites[item.id];
 
     if (isFavorite) {
-        // 하트가 빨간색인 경우, 모달을 열지 않고 즐겨찾기에서 제거
-        setFavorites((prev) => ({
-            ...prev,
-            [item.id]: false,
-        }));
-    } 
-    else {
-        // 하트가 빨간색이 아닌 경우, 즐겨찾기 추가와 함께 모달을 엶
-        setFavorites((prev) => ({
-            ...prev,
-            [item.id]: true,
-        }));
-        handleOpen(item);
+      setFavorites((prev) => ({
+        ...prev,
+        [item.id]: false,
+      }));
+    } else {
+      handleOpen(item);
     }
-};
-
+  };
 
   return (
     <div className={styles.recentlyViewedContainer}>
@@ -140,21 +142,14 @@ const BookmarkRecentlyViewed = ({ onAddBookmark }) => {
         </div>
       ))}
       
-      <Modal open={open} onClose={handleClose}>
-        <Box className={styles.modalBox}>
-          <h2>즐겨찾기 추가</h2>
-          <TextField 
-            label="즐겨찾기 제목" 
-            fullWidth 
-            value={bookmarkTitle} 
-            onChange={(e) => setBookmarkTitle(e.target.value)} 
-            margin="normal"
-          />
+      <MuiModal open={open} onClose={handleClose} title="즐겨찾기 추가"
+        content={<TextField_ label="즐겨찾기 제목" value={bookmarkTitle} 
+            onChange={(e) => setBookmarkTitle(e.target.value)} />}
+        actions={
           <Button variant="contained" color="primary" onClick={handleSaveBookmark}>
             저장
-          </Button>
-        </Box>
-      </Modal>
+          </Button>}
+      />
     </div>
   );
 };

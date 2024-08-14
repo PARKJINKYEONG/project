@@ -105,7 +105,7 @@ const BookmarkHome = ({ bookmarks }) => {
               <div className={`card-body ${styles.cardBody}`}>
                 <div className={`mb-2 ${styles.images}`}>
                   {item.images && item.images.map((image, idx) => (
-                    <img key={idx} src={image} alt="bookmark" className="img-thumbnail" />
+                    <img key={idx} src={image}  className="img-thumbnail" />
                   ))}
                 </div>
                 {item.title !== '최근 조회' && (

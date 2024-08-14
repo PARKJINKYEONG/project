@@ -9,6 +9,7 @@
 }
 
 .headerTitle{
+    cursor: pointer;
     display: inline-block;
     font-size: 24px;
     font-family: "Playwrite DK Loopet", cursive;
@@ -16,4 +17,32 @@
     font-weight: 400;
     font-style: normal;
     vertical-align: middle;
+    transition: all 0.3s ease;
+}
+
+.headerTitle:hover {
+    color: #0056b3; 
+    transform: scale(1.1); 
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+}
+
+.iconStyle {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.iconStyle:hover {
+    color: #0056b3; 
+    transform: scale(1.1); 
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+}
+
+.logoStyle {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.logoStyle:hover {
+    transform: scale(1.1); /* 이미지 확대 */
+    
 }

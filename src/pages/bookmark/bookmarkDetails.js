@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-
 import { useLocation } from 'react-router-dom';
-import Modal from 'react-modal';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../../styles/bookmarkDetails.module.css';
 import { GoogleMap, LoadScript, Marker, StandaloneSearchBox } from '@react-google-maps/api';
-import CustomModal from '../../components/customModal';
+import MuiModal from '../../components/muiModal';
 import GuestCounter from '../../components/guestCounter';
-
-Modal.setAppElement('#root');
+import { Box, Button, TextField } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 const mapContainerStyle = {
   width: '100%',
-
   height: '600px',
 };
 
@@ -26,7 +24,6 @@ export default function BookmarkDetails() {
 
   const location = useLocation(); 
   const { title } = location.state || {}; 
-
 
   const [memoModalIsOpen, setMemoModalIsOpen] = useState(false);
   const [guestModalIsOpen, setGuestModalIsOpen] = useState(false);
@@ -41,16 +38,13 @@ export default function BookmarkDetails() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchBox, setSearchBox] = useState(null);
-
   const [searchResult, setSearchResult] = useState(center);
   const [errorMessage, setErrorMessage] = useState('');
-  const [searchBoxVisible, setSearchBoxVisible] = useState(false); // 검색 박스 토글 상태
-
+  const [searchBoxVisible, setSearchBoxVisible] = useState(false);
 
   const onLoad = ref => {
     setSearchBox(ref);
   };
-
 
   const onPlacesChanged = () => {
     const places = searchBox.getPlaces();
@@ -70,7 +64,6 @@ export default function BookmarkDetails() {
 
   const toggleSearchBox = () => {
     setSearchBoxVisible(!searchBoxVisible);
-
   };
 
   const openMemoModal = () => {
@@ -146,15 +139,8 @@ export default function BookmarkDetails() {
     setEndDate(null);
   };
 
-  const handleDateChange = (dates) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  };
-
   const formatDate = (date) => {
-
-    return date ? date.toLocaleDateString() : '';
+    return date ? dayjs(date).format('YYYY-MM-DD') : '';
   };
 
   return (
@@ -205,65 +191,91 @@ export default function BookmarkDetails() {
         {errorMessage && <div className={styles.error}>{errorMessage}</div>}
       </div>
   
-      <CustomModal
-        isOpen={memoModalIsOpen}
-        onRequestClose={closeMemoModal}
-        contentLabel="메모 추가"
-      >
-        <h2>메모 추가</h2>
-        <textarea 
-          value={memo} 
-          onChange={handleMemoChange} 
-          maxLength="250"
-          placeholder="메모 추가"
-        />
-        <div>{memo.length}/250자</div>
-        <div className={styles.buttonContainer}>
-          <button className={styles.clearButton} onClick={handleClearMemo}>모두 지우기</button>
-          <button className={styles.saveButton} onClick={handleSaveMemo}>저장</button>
-        </div>
-      </CustomModal>
-  
-      <CustomModal
-        isOpen={guestModalIsOpen}
-        onRequestClose={closeGuestModal}
-        contentLabel="게스트 설정"
-      >
-        <h2>게스트 설정</h2>
-        <GuestCounter 
-        guests={guests}
-        handleGuestChange={handleGuestChange}
-        />
-        <button className={styles['reset-button']} onClick={handleReset}>다시 설정</button>
-        <button className={styles['save-button']} onClick={closeGuestModal}>저장</button>
-      </CustomModal>
-  
-      <CustomModal
-        isOpen={dateModalIsOpen}
-        onRequestClose={closeDateModal}
-        contentLabel="날짜 선택"
-      >
-        <h2>날짜 선택</h2>
-        <div className={styles['datepicker-container']}>
-          <div className={styles['datepicker-wrapper']}>
-            <DatePicker
-              selected={startDate}
-              onChange={handleDateChange}
-              startDate={startDate}
-              endDate={endDate}
-              selectsRange
-              inline
-              monthsShown={2} 
-              className={`${styles.datepicker} ${styles.customDatepicker}`}
+      <MuiModal
+        open={memoModalIsOpen}
+        onClose={closeMemoModal}
+        title="메모 추가"
+        content={
+          <>
+            <textarea 
+              value={memo} 
+              onChange={handleMemoChange} 
+              maxLength="250"
+              placeholder="메모 추가"
+              className={styles.textarea} 
             />
-          </div>
-        </div>
-        <div className={styles['datepicker-button-container']}>
-          <button className={styles['reset-button']} onClick={handleReset}>다시 설정</button>
-          <button className={styles['save-button']} onClick={closeDateModal}>저장</button>
-        </div>
-      </CustomModal>
+            <div>{memo.length}/250자</div>
+          </>
+        }
+        actions={[
+          <Button key="clear" onClick={handleClearMemo} variant="contained" color="error">
+            모두 지우기
+          </Button>,
+          <Button key="save" onClick={handleSaveMemo} variant="contained" color="primary">
+            저장
+          </Button>
+        ]}
+      />
+  
+      <MuiModal
+        open={guestModalIsOpen}
+        onClose={closeGuestModal}
+        title="게스트 설정"
+        content={
+          <GuestCounter 
+            guests={guests}
+            handleGuestChange={handleGuestChange}
+          />
+        }
+        actions={[
+          <Button key="reset" onClick={handleReset} variant="contained" color="error">
+            다시 설정
+          </Button>,
+          <Button key="save" onClick={closeGuestModal} variant="contained" color="primary">
+            저장
+          </Button>
+        ]}
+      />
+  
+      <MuiModal
+      open={dateModalIsOpen}
+      onClose={closeDateModal}
+      title="날짜 선택"
+      content={
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>  {/* 여백 추가 */}
+            <DatePicker
+              label="시작 날짜"
+              value={startDate}
+              onChange={(newValue) => {
+                setStartDate(newValue);
+                //dayjs()는 현재 날짜와 시간을 반환
+                if (newValue && endDate && dayjs(newValue).isAfter(dayjs(endDate))) {
+                  setEndDate(null);  // 시작 날짜가 종료 날짜보다 이후인 경우 종료 날짜를 초기화
+                }
+              }}
+              renderInput={(params) => <TextField {...params} fullWidth />}
+              minDate={dayjs()}  // 오늘 이전 날짜는 선택할 수 없게 설정
+            />
+            <DatePicker
+              label="종료 날짜"
+              value={endDate}
+              onChange={(newValue) => setEndDate(newValue)}
+              renderInput={(params) => <TextField {...params} fullWidth />}
+              minDate={startDate || dayjs()}  // 시작 날짜 또는 오늘 이전 날짜는 선택할 수 없게 설정
+            />
+          </Box>
+        </LocalizationProvider>
+      }
+      actions={[
+        <Button key="reset" onClick={handleReset} variant="contained" color="error">
+          다시 설정
+        </Button>,
+        <Button key="save" onClick={closeDateModal} variant="contained" color="primary">
+          저장
+        </Button>
+      ]}
+    />
     </div>
   );
-  
 }
