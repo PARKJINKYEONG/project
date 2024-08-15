@@ -10,6 +10,7 @@
     "@fullcalendar/react": "^6.1.15",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
+    "@mui/base": "^5.0.0-beta.40",
     "@mui/icons-material": "^5.16.7",
     "@mui/lab": "^5.0.0-alpha.173",
     "@mui/material": "^5.16.7",

@@ -1,0 +1,10 @@
+@keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  .blinkingBorder {
+    border: 2px solid blue;
+    animation: blink 1s infinite;
+  }

@@ -6,7 +6,6 @@ import Privacy from '../changeInfoAsManager/privacy';
 import LoginSecurity from '../changeInfoAsManager/loginSecurity';
 import AccountLock from '../changeInfoAsManager/accountLock';
 import NoticeManagement from './notice/noticeManagement';
-import PostManagement from './postManagement';
 import CommentManagement from './commentManagement';
 import QuestionManagement from './QnA/questionManagement';
 import CollapsibleTable from './reportManagement';
@@ -20,7 +19,6 @@ const AdminRoutes = () => {
                 <Route path="delete" element={<LoginSecurity />} />
                 <Route path="restrict" element={<AccountLock />} />
                 <Route path="notice" element={<NoticeManagement />} />
-                <Route path="posts" element={<PostManagement />} />
                 <Route path="comments" element={<CommentManagement />} />
                 <Route path="questions" element={<QuestionManagement />} />
                 <Route path="reports" element={<CollapsibleTable />} />

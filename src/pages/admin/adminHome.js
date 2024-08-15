@@ -89,11 +89,8 @@ const AdminHome = () => {
                             <ListItemButton component={Link} to="notice" sx={{ pl: 4 }}>
                                 <ListItemText primary="공지 사항" /> 
                             </ListItemButton>
-                            <ListItemButton component={Link} to="posts" sx={{ pl: 4 }}>
-                                <ListItemText primary="게시글 관리" />
-                            </ListItemButton>
                             <ListItemButton component={Link} to="comments" sx={{ pl: 4 }}>
-                                <ListItemText primary="댓글 관리" />
+                                <ListItemText primary="채팅 문의 관리" />
                             </ListItemButton>
                             <ListItemButton component={Link} to="questions" sx={{ pl: 4 }}>
                                 <ListItemText primary="문의 관리" />

@@ -12,6 +12,9 @@ import BookmarkRoutes from "../bookmark/bookmarkRoutes";
 
 import ProfilePage from "./profilePage";
 import AddSpeciality from "./addSpeciality";
+import AlarmDetail from "./alarmDetail";
+import AlarmView from "./alarmView";
+
 
 export default function MyPageRoutes(){
 
@@ -30,6 +33,8 @@ export default function MyPageRoutes(){
                 <Route path="/bookmark" element={<BookmarkRoutes/>}/>
                 <Route path="/profile" element={<ProfilePage/>}/>
                 <Route path="/addspecial" element={<AddSpeciality/>}/>
+                <Route path="/alarmDetail" element={<AlarmDetail/>}/>
+                <Route path="/alarmView" element={<AlarmView/>}/>                
             </Route>
         </Routes>
     </>

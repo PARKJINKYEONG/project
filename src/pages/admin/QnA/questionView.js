@@ -17,13 +17,15 @@ const QuestionView = ({setIsEditing }) => {
               <label>내용</label>
               <textarea>문의 사항입니다</textarea>
             </div>
-            <button type="button" onClick={() => setIsEditing(false)}>삭제</button>
+            <button type="button" onClick={() => setIsEditing(false)} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}}>삭제</button>
             <div>
               <label>답변</label>
               <textarea>문의 답변입니다</textarea>
             </div>
-            <button type="button" onClick={handleSave} style={{ marginRight: '10px' }}>답변</button>
-            <button type="button" onClick={handleSave}>뒤로가기</button>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+            <button type="button" onClick={handleSave} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}}>답변</button>
+            <button type="button" onClick={handleSave} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}}>뒤로</button>
+            </div>
           </form>
         </div>
       );

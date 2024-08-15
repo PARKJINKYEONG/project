@@ -17,9 +17,11 @@ const EditNotice = ({ setIsEditing }) => {
               <label>내용:</label>
               <textarea>어떤 사항에 대한 공지사항입니다.</textarea>
             </div>
-            <button type="button" onClick={handleSave} style={{ marginRight: '10px' }}>수정</button>
-            <button type="button" onClick={() => setIsEditing(false)} style={{ marginRight: '10px' }}>삭제</button>
-            <button type="button" onClick={() => setIsEditing(false)}>뒤로가기</button>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+            <button type="button" onClick={handleSave} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}} >수정</button>
+            <button type="button" onClick={() => setIsEditing(false)} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70spx'}}>삭제</button>
+            <button type="button" onClick={() => setIsEditing(false)} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}}>뒤로</button>
+            </div>
           </form>
         </div>
       );

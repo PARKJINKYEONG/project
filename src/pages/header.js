@@ -4,13 +4,16 @@ import style from "../styles/Header.module.css";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Icon from '@mdi/react';
 import { mdiMessageDraw } from '@mdi/js';
-import { Tooltip, Menu, MenuItem, IconButton } from "@mui/material";
+import { Tooltip, Menu, MenuItem, IconButton, Badge } from "@mui/material";
+import Alarm from './mypage/alarm';
 
 export default function Header() {
 
     const activeStyle = { fontWeight: 'normal' };
     const [isShow, setIsShow] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const [alarmCount, setAlarmCount] = useState(1);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -18,6 +21,10 @@ export default function Header() {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const toggleDropdown = () => {        
+        setIsDropdownVisible(prev => !prev);
     };
 
     return (
@@ -126,9 +133,20 @@ export default function Header() {
                                         </Menu>
                                     </li>
                                     <li className="nav-item">
-                                        <NavLink className={`nav-link ${style.iconStyle}`} to="/" style={({ isActive }) => isActive ? activeStyle : null}>
-                                            <img src="/images/bell.svg" style={{ width: '20px', height: '20px' }} alt="alarm" />
-                                        </NavLink>
+                                        <NavLink 
+                                        className={`nav-link ${style.iconStyle}`}                                         
+                                        onClick={toggleDropdown}
+                                        style={({ isActive }) => isActive ? activeStyle : null}
+                                    >
+                                        <Badge badgeContent={alarmCount} color="error">
+                                        <img src="/images/bell.svg" style={{ width: '20px', height: '20px' }} alt="alarm" />
+                                        </Badge>        
+                                    </NavLink>
+
+                                    {/* Alarm 컴포넌트로 말풍선 표시 */}
+                                    <Alarm isDropdownVisible={isDropdownVisible} style={{ backgroundColor: '#f9f9f9', minWidth: '150px' }} setIsDropdownVisible={setIsDropdownVisible}>
+                                        <p style={{ margin: 0 }}>새 알림이 없습니다.</p>
+                                    </Alarm>
                                     </li>
                                     <li className="nav-item">
                                         <Tooltip title="여행 후기 목록">
