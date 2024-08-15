@@ -19,12 +19,12 @@ import com.ict.traveljoy.place.transportation.service.TransportationDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity; 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name="Place Management", description = "CRUD operations for places like events, foods, hotels, sights, and transportations.")
+@Tag(name="Place 관리", description = "이벤트, 식당, 숙박, 명소, 교통수단, 지역에 대한 CRUD.")
 @RestController
 @RequestMapping("/places")
 public class PlaceController {

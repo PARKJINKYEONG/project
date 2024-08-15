@@ -21,6 +21,13 @@ public class FeedbackService {
         this.feedbackRepository = feedbackRepository;
     }
 
+    public List<FeedbackDTO> getAllFeedbacks() {
+        List<Feedback> feedbacks = feedbackRepository.findAll(); // 모든 피드백을 조회합니다.
+        return feedbacks.stream()
+                .map(FeedbackDTO::toDto)
+                .collect(Collectors.toList());
+    }
+
     // planId로 Feedback 조회
     public List<FeedbackDTO> getFeedbacksByPlanId(Long planId) {
         List<Feedback> feedbacks = feedbackRepository.findByPlanId(planId);

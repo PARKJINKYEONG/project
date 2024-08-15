@@ -75,7 +75,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 // HTTP 요청에 대한 접근 권한을 설정합니다.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**","/register","/logout", "/login", "/reissue", "/swagger-ui/**","/statistics/**","/reviewList/**","/places/**").permitAll() // 해당 경로들은 인증 없이 접근 가능합니다.
+                        .requestMatchers("/api/**","/register","/logout", "/login", "/reissue", "/swagger-ui/**","/statistics/**","/reviewList/**","/places/**","feedbacks/**").permitAll() // 해당 경로들은 인증 없이 접근 가능합니다.
                         .anyRequest().authenticated()) // 그 외의 모든 요청은 인증을 요구합니다.
                 // JWTFilter와 LoginFilter를 필터 체인에 등록합니다.
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtility), LoginFilter.class)
