@@ -1,0 +1,38 @@
+server:
+  port: 8080
+jwt:
+  secret: asfewyahew231daaqaasdWEFfwersdf3erwWet24easdf234aWEsdfwewrsWF56FeWGSWQR1qwetfzew23afwawqr31dAQ
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@211.109.103.98:51521/XEPDB1
+    username: ICTUSER
+    password: ICT1234
+
+    
+    hikari:
+      auto-commit: true # default(false)
+      connection-timeout: 30000 # default(30000)
+      maximum-pool-size: 50 # default(10)
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update # create = ddl 자동생성, create-drop은 재시작
+      #create이후에는 update, 테이블만들어놓고하면 none, 비교만 하려면 valid
+
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # column명 전략
+    properties:
+      hibernate:
+        format_sql: true #DDL문을 가독성 있게 표시
+    show-sql: true  #JPA로그 확인용
+
+  # Swagger 설정
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html
+      operations-sorter: alpha
+      tags-sorter: alpha
+    api-docs:
+      path: /api-docs
