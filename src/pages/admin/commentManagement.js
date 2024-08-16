@@ -1,5 +1,7 @@
 import React, { useState } from'react';
-import styles from '../../styles/chatMenagement.module.css';
+
+import styles from '../../styles/chatManagement.module.css';
+
 
 const CommentManagement = () => {
   const [chats, setChats] = useState([
