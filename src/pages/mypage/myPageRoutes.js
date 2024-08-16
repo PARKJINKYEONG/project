@@ -27,7 +27,7 @@ export default function MyPageRoutes(){
                 <Route path="/myreview" element={<MyReview/>}/>
                 <Route path="/create-review" element={<MyReViewCreate/>}/>
                 <Route path="/edit-review" element={<MyReViewEdit/>}/>
-
+                
                 <Route path="/memberInfoEdit" element={<MemberInfoEdit/>}/>
                 <Route path="/reportAndInqueiryList" element={<ReportAndInquiryList/>}/>
                 <Route path="/bookmark" element={<BookmarkRoutes/>}/>

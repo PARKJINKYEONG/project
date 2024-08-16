@@ -15,17 +15,19 @@ import EditReview from "./pages/tripreview/EditReview"
 import UserRoutes from "./pages/member/userRoutes";
 import CreatePlan from "./pages/plan/createPlan";
 
-import QnA from "./pages/clientService/userQna";
+
 import Announcement from "./pages/clientService/announcement";
 import MyPageRoutes from "./pages/mypage/myPageRoutes";
-
-
+import QnA from "./pages/clientService/userQna";
+import Ecrm from "./pages/clientService/eCrm";
 import AdminRoutes from "./pages/admin/adminRoutes";
 
 import { RouteMap } from "./pages/routeMap";
 import BoardRoutes from "./pages/board/boardRoutes";
 import FaQ from "./pages/clientService/userFaq";
 import AreaRoutes from "./pages/area/areaRoutes";
+import CreateUserQnA from "./pages/clientService/createUserQnA";
+import AnnouncementView from "./pages/clientService/announcementView";
 
 
 function App() {
@@ -44,13 +46,17 @@ function App() {
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
                 <Route path="/userQna" element={<QnA/>}></Route>
                 <Route path="/userFaq" element={<FaQ/>}></Route>
+                <Route path="/eCrm" element={<Ecrm/>}></Route>
                 <Route path="/announcement" element={<Announcement/>}></Route>
+                <Route path="/announcement/:id" element={<AnnouncementView/>}/>
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/mypage/*" element={<MyPageRoutes />} />
                 <Route path="/ReviewList" element={<ReviewList />}/>
                 <Route path="/CreateReview" element={<CreateReview />}/>
                 <Route path="/EditReview/:id" element={<EditReview />} />
                 <Route path="/board/*" element={<BoardRoutes />} />
+                <Route path="/userQna/create" element={<CreateUserQnA />} />
+                
             </Route>
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<RouteMap/>} />

@@ -83,6 +83,12 @@ export default function Header() {
                                             </NavLink>
                                         </Tooltip>
                                     </li>
+
+                                    <li className="nav-item">
+                                        <Tooltip title='여행 정보'>
+                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/place" style={({ isActive }) => isActive ? activeStyle : null}> 여행 정보 </NavLink>
+                                        </Tooltip>
+                                    </li>
                                     <li className="nav-item">
                                         <Tooltip title='공지사항'>
                                             <NavLink className={`nav-link ${style.iconStyle}`} to="/announcement" style={({ isActive }) => isActive ? activeStyle : null}> Notice </NavLink>
@@ -99,6 +105,7 @@ export default function Header() {
                                                 <img src="/images/person-circle.svg" style={{ width: '20px', height: '20px' }} alt="profile" />
                                             </IconButton>
                                         </Tooltip>
+                                        
                                         <Menu
                                             anchorEl={anchorEl}
                                             open={Boolean(anchorEl)}
@@ -110,7 +117,7 @@ export default function Header() {
                                             sx={{ transition: 'all 0.3s ease', '&:hover': 
                                             { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>일정</MenuItem>
 
-                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/review" 
+                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/myreview" 
                                             sx={{ transition: 'all 0.3s ease', '&:hover': 
                                             { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>리뷰</MenuItem>
 
