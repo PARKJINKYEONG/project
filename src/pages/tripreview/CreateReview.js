@@ -80,9 +80,8 @@ const CreateTripReview = () => {
                 endDate={formData.endDate}
                 selectsRange
                 inline
-                minDate={new Date()}
                 dateFormat="yyyy-MM-dd"
-                required
+                calendarClassName="scrollable-datepicker" 
               />
             </Grid>
             <Grid item xs={12}>
