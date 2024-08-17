@@ -15,5 +15,6 @@ export default function Template(){
             <Outlet />
         </div>
         <Footer/>
+        {/* footer 경미님이 만드신것처럼 mui 말고 div로 만들어주세요 */}
     </>
 }
