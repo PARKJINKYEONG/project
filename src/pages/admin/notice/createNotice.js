@@ -32,8 +32,10 @@ const CreateNotice = ({ setIsCreating }) => {
             style={{ width: '100%', marginBottom: '10px' }}
           ></textarea>
         </div>
-      <button onClick={handleCreate} style={{ marginRight: '10px' }} variant="contained">공지 생성</button>
-      <button onClick={() => setIsCreating(false)} variant="contained">취소</button>
+      <div>
+      <button onClick={handleCreate} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px', marginRight: '5px'}} variant="contained">생성</button>
+      <button onClick={() => setIsCreating(false)} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}} variant="contained">취소</button>
+      </div>
       </form>
     </div>  
   );

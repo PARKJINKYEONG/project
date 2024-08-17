@@ -2,7 +2,6 @@ import React, { useState } from'react';
 
 import styles from '../../styles/chatManagement.module.css';
 
-
 const CommentManagement = () => {
   const [chats, setChats] = useState([
     { id: 1, name: 'User1', messages: ['Hello!'] },
