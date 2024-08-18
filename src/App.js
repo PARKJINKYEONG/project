@@ -28,13 +28,15 @@ import FaQ from "./pages/clientService/userFaq";
 import AreaRoutes from "./pages/area/areaRoutes";
 import CreateUserQnA from "./pages/clientService/createUserQnA";
 import AnnouncementView from "./pages/clientService/announcementView";
+import { UserContext } from "./contexts/userContext";
 
 
 function App() {
-
-
+const [accessToken,setAccessToken] = useState();
+const [email, setEmail] = useState()
 
     return <>
+    <UserContext.Provider value={{accessToken, setAccessToken, email, setEmail}}>
         <Routes>
             <Route element={<Template/>}>
                 <Route path="/" element={<Home/>} />
@@ -61,6 +63,7 @@ function App() {
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<RouteMap/>} />
         </Routes>
+        </UserContext.Provider>
     </>
 }
 

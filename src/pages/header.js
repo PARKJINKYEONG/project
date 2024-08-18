@@ -6,6 +6,7 @@ import Icon from '@mdi/react';
 import { mdiMessageDraw } from '@mdi/js';
 import { Tooltip, Menu, MenuItem, IconButton, Badge } from "@mui/material";
 import Alarm from './mypage/alarm';
+import SignOutButton from './member/signout';
 
 export default function Header() {
 
@@ -53,6 +54,7 @@ export default function Header() {
                                             <NavLink className={`nav-link ${style.iconStyle}`} to="/user/signin"> Sign In </NavLink>
                                         </Tooltip>
                                     </li>
+                                    <SignOutButton/>
                                     <li className="nav-item">
                                         <Tooltip title="회원가입">
                                             <NavLink className={`nav-link ${style.iconStyle}`} to="/user/signup"> Sign Up </NavLink>

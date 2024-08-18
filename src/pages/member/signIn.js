@@ -1,4 +1,3 @@
-
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,23 +11,46 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/userContext';
 
 const defaultTheme = createTheme();
-export default function SignIn(){
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-        });
-      };
 
-    return <>
-     <ThemeProvider theme={defaultTheme}>
+export default function SignIn() {
+  const navigate = useNavigate();
+
+  const { setAccessToken, setEmail } = useContext(UserContext);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const loginData = {
+      email: data.get('email'),
+      password: data.get('password'),
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8080/login', loginData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true, // 쿠키를 포함하여 요청 보냄
+      });
+
+      setAccessToken(response.headers['authorization'].split(' ')[1]);
+      setEmail(loginData.email);
+      navigate('/mypage');
+    } catch (error) {
+      console.error('로그인 요청 중 오류 발생:', error);
+      alert('아이디 혹은 비밀번호가 다릅니다');
+    }
+  };
+
+  return <>
+    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        
         <Box
           sx={{
             marginTop: 8,
@@ -36,7 +58,7 @@ export default function SignIn(){
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '70vh'
+            minHeight: '70vh',
           }}
         >
           <Typography component="h1" variant="h5">
@@ -76,26 +98,17 @@ export default function SignIn(){
               로그인
             </Button>
             
-            <Grid container sx={{justifyContent: 'space-between'}}>
-              {/* 생각해보니 아이디를 찾을 수 있는것도 없고 이메일이라
-              <Grid item >
-                <Link href="findid" variant="body2" sx={{color: "black", textDecoration: 'none'}}>
-                  아이디 찾기
-                </Link>
-              </Grid>
-              <Grid item  sx={{borderRight: 1}}/>
-              */}
+            <Grid container sx={{ justifyContent: 'space-between' }}>
               <Grid item>
-                <Link href="findpw" variant="body2" sx={{color: "black", textDecoration: 'none'}}>
+                <Link href="findpw" variant="body2" sx={{ color: "black", textDecoration: 'none' }}>
                   비밀번호 찾기
                 </Link>
               </Grid>
-              <Grid item >
-                <Link href="signup" variant="body2" sx={{color: "black", textDecoration: 'none'}}>
+              <Grid item>
+                <Link href="signup" variant="body2" sx={{ color: "black", textDecoration: 'none' }}>
                   회원가입
                 </Link>
               </Grid>
-              
             </Grid>
             <Box sx={{ display: 'flex', alignItems: 'center', my: 5 }}>
               <Box sx={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
@@ -109,8 +122,7 @@ export default function SignIn(){
               </Typography>
               <Box sx={{ flex: 1, height: '1px', backgroundColor: 'gray' }} />
             </Box>
-            <Grid container sx={{justifyContent: 'center', textAlign: 'center'}} spacing={1}>
-              
+            <Grid container sx={{ justifyContent: 'center', textAlign: 'center' }} spacing={1}>
               <Grid item>
                 <Button
                   fullWidth
@@ -123,8 +135,8 @@ export default function SignIn(){
                     width: '220px',
                     backgroundColor: 'transparent',
                     '&:hover': { backgroundColor: 'transparent' },
-                    padding: 0,  // 패딩 제거
-                    minWidth: 'auto', // 최소 너비 자동 조정
+                    padding: 0,
+                    minWidth: 'auto',
                   }}
                 />
               </Grid>
@@ -163,11 +175,9 @@ export default function SignIn(){
                 />
               </Grid>
             </Grid>
-            
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
-
     </>
 }

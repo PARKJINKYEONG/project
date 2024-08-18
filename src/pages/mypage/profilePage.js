@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import style from "../../styles/profilePage.module.css";
 import MuiModal from '../../components/muiModal';
+import { UserContext } from '../../contexts/userContext';
 
 
 export default function ProfilePage() {
+  const {accessToken, email} = useContext(UserContext);
   const [name, setName] = useState('크아악');
-  const [email, setEmail] = useState('jay5693@naver.com');
+  //const [email, setEmail] = useState('jay5693@naver.com');
   const [introduce, setIntroduce] = useState('집에 가고 싶다');
   const [profileImage, setProfileImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
