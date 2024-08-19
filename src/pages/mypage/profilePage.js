@@ -1,16 +1,35 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import style from "../../styles/profilePage.module.css";
 import MuiModal from '../../components/muiModal';
 import { UserContext } from '../../contexts/userContext';
+import useRequest from '../../hooks/useRequest';
 
 
 export default function ProfilePage() {
-  const {accessToken, email} = useContext(UserContext);
-  const [name, setName] = useState('크아악');
-  //const [email, setEmail] = useState('jay5693@naver.com');
-  const [introduce, setIntroduce] = useState('집에 가고 싶다');
+  const { email } = useContext(UserContext); // email을 UserContext에서 가져옵니다.
+  const [name, setName] = useState('');
+  const [introduce, setIntroduce] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { get } = useRequest(); // useRequest 훅의 get 메서드를 가져옵니다.
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const data = await get('/getprofile'); // 서버에서 프로필 데이터를 가져옵니다.
+        setName(data.name || '');
+        setIntroduce(data.introduce || '');
+        if (data.profileImageUrl) {
+          setProfileImage(data.profileImageUrl);
+        }
+        console.log(data);
+      } catch (error) {
+        console.error('프로필 데이터를 가져오는 중 오류가 발생했습니다.', error);
+      }
+    };
+
+    fetchProfileData(); // 컴포넌트가 마운트될 때 프로필 데이터를 가져옵니다.
+  }, [get]);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -34,6 +53,7 @@ export default function ProfilePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert('프로필이 업데이트되었습니다!');
+    // 서버에 프로필 업데이트 요청을 보낼 로직을 추가할 수 있습니다.
   };
 
   const toggleModal = () => {

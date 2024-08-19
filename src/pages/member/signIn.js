@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/userContext';
+import { URL } from '../../config/constraint';
 
 const defaultTheme = createTheme();
 
@@ -32,7 +33,7 @@ export default function SignIn() {
     };
 
     try {
-      const response = await axios.post('http://211.109.103.98:8080/login', loginData, {
+      const response = await axios.post(URL.DB+'/login', loginData, {
         headers: {
           'Content-Type': 'application/json',
         },
