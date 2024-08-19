@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import AreaHome from "./areaHome";
+import WeatherSearch from './weatherSearch';
 
-import AreaWeather from './areaWeather';
 const AreaRoutes = () => {
     return (
         <>
@@ -12,7 +12,8 @@ const AreaRoutes = () => {
                 <Route path="/accomodation"  />
                 <Route path="/restaurant"  />
                 <Route path="/transport" />
-                <Route path="/weather" element={<AreaWeather/>}/>
+                <Route path="/weather" element={<WeatherSearch/>}/>
+
             </Routes>
         </>
     );
