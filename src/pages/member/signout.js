@@ -11,7 +11,7 @@ const SignOutButton = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8080/logout', null, {
+      await axios.post('http://211.109.103.98:8080/logout', null, {
         headers: {
           Authorization: `Bearer ${accessToken}`, // 액세스 토큰을 헤더에 추가
         },

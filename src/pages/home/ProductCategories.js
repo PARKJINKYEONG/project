@@ -58,31 +58,31 @@ const images = [
   {
     url: 'https://images.unsplash.com/photo-1534081333815-ae5019106622?auto=format&fit=crop&w=400',
     title: 'Introduce',
-    width: '40%',
+    width: '34%',
     link:'/',
   },
   {
     url: 'https://images.unsplash.com/photo-1531299204812-e6d44d9a185c?auto=format&fit=crop&w=400',
     title: 'Notice',
-    width: '20%',
+    width: '33%',
     link:'/announcement',
   },
   {
     url: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=400',
     title: 'Recommended',
-    width: '40%',
+    width: '33%',
     link:'/place',
   },
   {
     url: 'https://images.unsplash.com/photo-1453747063559-36695c8771bd?auto=format&fit=crop&w=400',
     title: 'Review',
-    width: '70%',
+    width: '50%',
     link:'/ReviewList',
   },
   {
     url: 'https://images.unsplash.com/photo-1523309996740-d5315f9cc28b?auto=format&fit=crop&w=400',
     title: 'My page',
-    width: '30%',
+    width: '50%',
     link:'/mypage',
   }
   //width 합쳐서 100%되는게 한줄(flex), 

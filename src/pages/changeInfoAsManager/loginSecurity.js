@@ -60,7 +60,6 @@ export default function LoginSecurity() {
     }
 
     alert(`${oldId}님의 정보가 변경되었습니다`);
-    navigate('/changeInfo');
 
     // 추가 로직을 여기에 추가
   };

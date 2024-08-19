@@ -15,6 +15,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Collapse from '@mui/material/Collapse';
 import Modal from '@mui/material/Modal';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -75,6 +76,7 @@ const SearchAppBar = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const navigate = useNavigate();
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -83,6 +85,7 @@ const SearchAppBar = () => {
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
     let query = searchTerm;
+
     if (selectedSubmenuItem) {
       switch (selectedSubmenuItem) {
         case '해외관광':
@@ -112,10 +115,15 @@ const SearchAppBar = () => {
         case '교통':
           query = `교통 ${searchTerm}`;
           break;
+        case '날씨':
+          navigate('/place/weather');  
+          return;
         default:
           break;
       }
     }
+
+    // 검색 결과 로직
     try {
       const response = await axios.get(`http://localhost:5000/search`, {
         params: { q: query, site: 'google' }
@@ -140,6 +148,10 @@ const SearchAppBar = () => {
     setSelectedSubmenuItem('');
     setImageResults([]);
     setOpenMenu(openMenu === text ? null : text);
+
+    if (text === '날씨') {
+      navigate('/place/weather');
+    }
   };
 
   const handleSubmenuItemClick = (text) => {
@@ -189,7 +201,7 @@ const SearchAppBar = () => {
           >
             <Box sx={{ width: 250 }}>
               <List>
-                {['관광지', '숙박업소', '맛집', '교통'].map((text) => (
+                {['관광지', '숙박업소', '맛집', '교통', '날씨'].map((text) => (
                   <React.Fragment key={text}>
                     <ListItem button onClick={() => handleMenuItemClick(text)}>
                       <ListItemText primary={text} />
