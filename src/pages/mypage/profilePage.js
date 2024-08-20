@@ -29,7 +29,7 @@ export default function ProfilePage() {
     };
 
     fetchProfileData(); // 컴포넌트가 마운트될 때 프로필 데이터를 가져옵니다.
-  }, [get]);
+  }, []);
 
   const handleNameChange = (e) => {
     setName(e.target.value);

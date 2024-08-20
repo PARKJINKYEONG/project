@@ -16,7 +16,7 @@ const useTokenReissue = () => {
   // 요청 인터셉터 설정
   axiosInstance.interceptors.request.use(
     (config) => {
-      if (accessToken) {
+      if (accessToken && !config.skipAuth) {  // skipAuth 옵션이 false거나 없으면 토큰 추가
         config.headers['Authorization'] = `Bearer ${accessToken}`;
       }
       return config;
@@ -31,7 +31,7 @@ const useTokenReissue = () => {
       const originalRequest = error.config;
 
       // 액세스 토큰이 만료된 경우
-      if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      if (error.response && error.response.status === 401 && !originalRequest._retry && !originalRequest.skipAuth) {
         originalRequest._retry = true;
 
         try {

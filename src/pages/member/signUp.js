@@ -5,27 +5,57 @@ import SignUpStep3 from "./signUpStep3";
 import SignUpStepEnd from "./signUpStepEnd";
 import { Box, Button, Grid } from "@mui/material";
 import SignUpStepper from "./signUpStepper";
+import useRequest from '../../hooks/useRequest';
 
-export default function SignUp(){
+export default function SignUp() {
   const steps = ['필수 정보 입력', '이메일 인증', '선택 정보 입력'];
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [failed, setFailed] = useState(new Set());
   const optionalSteps = new Set([2]);
 
-  const handleFailed = () => {
-    //조건 만족 안되면 여기서 작동하게
-  }
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailValid, setEmailValid] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
 
-  const handleNext = () => {
+  const { post } = useRequest();
+
+  const handleNext = async () => {
+    if (activeStep === 0 && (!emailValid || password !== confirmPassword)) {
+      alert('이메일이 중복되었거나, 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
+    if (activeStep === steps.length - 1) {
+      await handleRegister();
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSkipped(newSkipped);
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      const registrationData = {
+        email,
+        password,
+        ...userInfo,
+      };
+      await post('/register', registrationData
+      );
+      alert('회원가입이 완료되었습니다.');
+    } catch (error) {
+      console.error('회원가입 요청 중 오류 발생:', error);
+      alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const handleBack = () => {
@@ -47,79 +77,80 @@ export default function SignUp(){
 
   const handleReset = () => {
     setActiveStep(0);
-  };
-
-  const isStepFailed = (step) => {
-    return failed.has(step);
+    setFailed(new Set()); // 초기화 시 오류도 초기화
   };
 
   const isStepOptional = (step) => {
-    if(optionalSteps.has(step))
-        return true;
-    else
-        return false;
+    return optionalSteps.has(step);
   };
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
 
-  return <>
+  const isStepFailed = (step) => {
+    return failed.has(step);
+  };
 
-  <SignUpStepper steps={steps} activeStep={activeStep} isStepFailed={isStepFailed} isStepOptional={isStepOptional} isStepSkipped={isStepSkipped}/>
-  {activeStep === steps.length ? (// 모든 단계 종료시 출력
-                
+  return (
+    <>
+      <SignUpStepper 
+        steps={steps} 
+        activeStep={activeStep} 
+        isStepFailed={isStepFailed} 
+        isStepOptional={isStepOptional} 
+        isStepSkipped={isStepSkipped} 
+      />
+      {activeStep === steps.length ? (
+        <Fragment>
+          <SignUpStepEnd />
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Box sx={{ flex: '1 1 auto' }} />
+            <Button onClick={handleReset}>초기화</Button>
+          </Box>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <Grid container sx={{ minHeight: '50dvh' }} spacing={2} justifyContent="center">
+            <Grid item xs={10} sx={{ mt: '4%' }}>
+              {activeStep === 0 && (
+                <SignUpStep1 
+                  setEmail={setEmail} 
+                  setPassword={setPassword} 
+                  setConfirmPassword={setConfirmPassword} 
+                  email={email} 
+                  password={password} 
+                  confirmPassword={confirmPassword} 
+                  setEmailValid={setEmailValid}
+                  setFailed={setFailed}
+                />
+              )}
+              {activeStep === 1 && <SignUpStep2 email={email} />}
+              {activeStep === 2 && <SignUpStep3 setUserInfo={setUserInfo} />}
+            </Grid>
+          </Grid>
 
-                <Fragment> 
-                <SignUpStepEnd/>
-                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                    <Box sx={{ flex: '1 1 auto' }} />
-                    <Button onClick={handleReset}>초기화</Button>
-                </Box>
-                </Fragment>
-            ) : (
-                <Fragment>
-
-                <Grid container sx={{minHeight: '50dvh'}} spacing={2} justifyContent="center"> 
-                  <Grid item xs={10} sx={{mt: '4%'}}>
-
-                
-                {activeStep === 0 && ( //1단계
-                    <SignUpStep1 />
-                )}
-                
-                {activeStep === 1 && ( //2단계
-                    <SignUpStep2 />
-                )}
-
-                {activeStep === 2 && ( //3단계
-                    <SignUpStep3 />
-                )}
-
-                </Grid>
-                </Grid>
-
-                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                    <Button
-                    color="inherit"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    sx={{ mr: 1 }}
-                    >
-                    뒤로가기
-                    </Button>
-                    <Box sx={{ flex: '1 1 auto' }} />
-                    {isStepOptional(activeStep) && (
-                    <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                        건너뛰기
-                    </Button>
-                    )}
-
-                    <Button onClick={handleNext}>
-                    {activeStep === steps.length - 1 ? '종료' : '다음'}
-                    </Button>
-                </Box>
-                </Fragment>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              뒤로가기
+            </Button>
+            <Box sx={{ flex: '1 1 auto' }} />
+            {isStepOptional(activeStep) && (
+              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                건너뛰기
+              </Button>
             )}
-  </>
+            <Button onClick={handleNext}>
+              {activeStep === steps.length - 1 ? '종료' : '다음'}
+            </Button>
+          </Box>
+        </Fragment>
+      )}
+    </>
+  );
 }
