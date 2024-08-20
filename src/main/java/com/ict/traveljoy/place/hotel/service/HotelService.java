@@ -52,8 +52,11 @@ public class HotelService {
         if (hotelOpt.isPresent()) {
         	Hotel hotel = hotelOpt.get();
             hotel.setHotelName(hotelDTO.getHotelname());
+            hotel.setDescriptions(hotelDTO.getDescriptions());
+            hotel.setAddress(hotelDTO.getAddress());
             hotel.setRegion(hotelDTO.getRegion());
             hotel.setAveragePrice(hotelDTO.getAveragePrice());
+            hotel.setTotalReviewCount(hotelDTO.getTotalReviewCount());
             hotel.setAverageReviewRate(hotelDTO.getAverageReviewRate());
             
             Hotel updatedHotel = hotelRepository.save(hotel);

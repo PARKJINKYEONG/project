@@ -1,5 +1,6 @@
 package com.ict.traveljoy.feedback.repository;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ict.traveljoy.plan.repository.Plan;
 
 import jakarta.persistence.Column;
@@ -34,6 +35,7 @@ public class Feedback {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
     @JoinColumn(name = "PLAN_ID")
     private Plan plan;
 

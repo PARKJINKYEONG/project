@@ -54,7 +54,11 @@ public class EventService {
         if (eventOpt.isPresent()) {
         	Event event = eventOpt.get();
         	event.setEventName(eventDto.getEventName());
+        	event.setDescriptions(eventDto.getDescriptions());
+        	event.setEntranceFee(eventDto.getEntranceFee());
         	event.setRegion(eventDto.getRegion());
+        	event.setAddress(eventDto.getAddress());
+        	event.setTotalReviewCount(eventDto.getTotalReviewCount());
         	event.setAverageReviewRate(eventDto.getAverageReviewRate());
         	event.setEventStartDate(eventDto.getEventStartDate());
         	event.setEventEndDate(eventDto.getEventEndDate());

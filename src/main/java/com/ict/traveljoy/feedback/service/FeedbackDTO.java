@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Builder
 public class FeedbackDTO {
     private Long id;
+	@JsonIgnore
     private Plan plan; 
     private String owner;
     private Integer rate;
