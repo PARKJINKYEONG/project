@@ -158,6 +158,10 @@ const SearchAppBar = () => {
     setSelectedSubmenuItem(text);
     setImageResults([]);
     handleMenuClose(); // Close the popover when a submenu item is clicked
+
+    if (text === '항공권 검색') {
+      navigate('/place/flightSearch');
+    }
   };
 
   const handleImageClick = (url) => {
@@ -257,10 +261,10 @@ const SearchAppBar = () => {
                             <ListItemText primary={submenu} />
                           </ListItem>
                         ))}
-                        {text === '교통' && (
+                        {text === '교통' && ['네이버 길찾기', '항공권 검색'].map((submenu) => (
                           <ListItem
                             button
-                            key="네이버 길찾기"
+                            key={submenu}
                             sx={{
                               pl: 4,
                               backgroundColor: (theme) => alpha(theme.palette.common.white, 0.15),
@@ -268,11 +272,11 @@ const SearchAppBar = () => {
                                 backgroundColor: (theme) => alpha(theme.palette.common.white, 0.25),
                               },
                             }}
-                            onClick={() => handleSubmenuItemClick('네이버 길찾기')}
+                            onClick={() => handleSubmenuItemClick(submenu)}
                           >
-                            <ListItemText primary="네이버 길찾기" />
+                            <ListItemText primary={submenu} />
                           </ListItem>
-                        )}
+                        ))}
                       </List>
                     </Collapse>
                     <Divider />

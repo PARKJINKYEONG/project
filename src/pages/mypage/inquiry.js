@@ -54,10 +54,10 @@ export default function Inquiry() {
           rows={6} 
         />
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
-          <Button variant="contained" sx={{ backgroundColor: 'blue', color: 'white' }} onClick={handleSubmit} style={{ marginRight: '10px' }}>
+          <Button variant="contained" sx={{ backgroundColor: 'blue', color: 'white', width:'100px'}} onClick={handleSubmit} style={{ marginRight: '10px' }}>
             제출
           </Button>
-          <Button variant="outlined" sx={{ backgroundColor: 'red', color: 'white' }} onClick={handleCancel}>
+          <Button variant="outlined" sx={{ backgroundColor: 'red', color: 'white', width:'100px' }} onClick={handleCancel}>
             취소
           </Button>
         </div>

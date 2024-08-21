@@ -1,5 +1,22 @@
 /* profilePage.module.css */
 
+/* 기존 버튼 스타일을 클래스명으로 변경 */
+.updateButton {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+    width: 200px;
+}
+
+.updateButton:hover {
+    background-color: #0056b3;
+}
+
+/* 나머지 기존 스타일은 그대로 유지 */
 .profilePage {
     margin-top: 30px;
     padding: 20px;
@@ -55,21 +72,6 @@
 }
 
 .customButton:hover {
-    background-color: #0056b3;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
-    border-radius: 5px;
-    width: 200px;
-}
-
-button:hover {
     background-color: #0056b3;
 }
 
