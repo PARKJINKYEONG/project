@@ -28,7 +28,7 @@ export default function ProfilePage() {
     };
 
     fetchProfileData();
-  }, [get]);
+  }, []);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
