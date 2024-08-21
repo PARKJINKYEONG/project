@@ -4,19 +4,18 @@ import MuiModal from '../../components/muiModal';
 import { UserContext } from '../../contexts/userContext';
 import useRequest from '../../hooks/useRequest';
 
-
 export default function ProfilePage() {
-  const { email } = useContext(UserContext); // email을 UserContext에서 가져옵니다.
+  const { email } = useContext(UserContext);
   const [name, setName] = useState('');
   const [introduce, setIntroduce] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { get } = useRequest(); // useRequest 훅의 get 메서드를 가져옵니다.
+  const { get } = useRequest();
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const data = await get('/getprofile'); // 서버에서 프로필 데이터를 가져옵니다.
+        const data = await get('/getprofile');
         setName(data.name || '');
         setIntroduce(data.introduce || '');
         if (data.profileImageUrl) {
@@ -28,7 +27,7 @@ export default function ProfilePage() {
       }
     };
 
-    fetchProfileData(); // 컴포넌트가 마운트될 때 프로필 데이터를 가져옵니다.
+    fetchProfileData();
   }, [get]);
 
   const handleNameChange = (e) => {
@@ -90,7 +89,8 @@ export default function ProfilePage() {
           <label htmlFor="introduce">자기소개:</label>
           <textarea id="introduce" value={introduce} onChange={handleIntroduceChange} />
         </div>
-        <button type="submit">프로필 업데이트</button>
+        {/* 클래스명을 추가하여 버튼 스타일을 적용 */}
+        <button type="submit" className={style.updateButton}>프로필 업데이트</button>
       </form>
 
       <MuiModal

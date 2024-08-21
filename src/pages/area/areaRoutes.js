@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import AreaHome from "./areaHome";
 import WeatherSearch from './weatherSearch';
+import FlightSearch from './flightSearch';
 
 const AreaRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const AreaRoutes = () => {
                 <Route path="/restaurant"  />
                 <Route path="/transport" />
                 <Route path="/weather" element={<WeatherSearch/>}/>
+                <Route path="/flightSearch" element={<FlightSearch/>}/>
 
             </Routes>
         </>

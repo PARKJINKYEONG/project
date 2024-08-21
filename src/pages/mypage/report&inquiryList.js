@@ -129,19 +129,19 @@ export default function ReportAndInquiryList() {
         actions={
           selectedInquiry ? (
             <>
-              <Button onClick={handleReinquiry} variant="contained" color="primary" sx={{ marginRight: 1 }}>
+              <Button onClick={handleReinquiry} variant="contained" color="primary" sx={{ marginRight: 1, width:'100px'}}>
                 재문의
               </Button>
-              <Button onClick={handleCloseModal} variant="contained" color="error" sx={{ marginLeft: 2 }}>
+              <Button onClick={handleCloseModal} variant="contained" color="error" sx={{ marginLeft: 2, width:'100px' }}>
                 닫기
               </Button>
             </>
           ) : (
             <>
-              <Button onClick={handleConfirmDelete} variant="contained" color="error" sx={{ marginRight: 1 }}>
+              <Button onClick={handleConfirmDelete} variant="contained" color="error" sx={{ marginRight: 1, width:'100px'}}>
                 예
               </Button>
-              <Button onClick={handleCloseModal} variant="contained" color="primary" sx={{ marginLeft: 2 }}>
+              <Button onClick={handleCloseModal} variant="contained" color="primary" sx={{ marginLeft: 2, width:'100px'}}>
                 아니오
               </Button>
             </>

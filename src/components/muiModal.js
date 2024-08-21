@@ -7,7 +7,7 @@ const MuiModal = ({
   title,
   content,
   actions,
-  width = 400, // 기본 넓이를 설정할 수 있음
+  width = 500, // 기본 넓이를 설정할 수 있음
   hideActions = false, // 액션 버튼을 숨길지 여부
 }) => {
   return (
