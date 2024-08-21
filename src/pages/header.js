@@ -6,7 +6,6 @@ import Icon from '@mdi/react';
 import { mdiMessageDraw } from '@mdi/js';
 import { Tooltip, Menu, MenuItem, IconButton, Badge } from "@mui/material";
 import Alarm from './mypage/alarm';
-import SignOutButton from './member/signout';
 
 export default function Header() {
 

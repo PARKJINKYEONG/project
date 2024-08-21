@@ -1,9 +1,19 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 
-const CreateNotice = ({ setIsCreating }) => {
+const CreateNotice = ({ setIsCreating, fetchNotices  }) => {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
-  const handleCreate = () => {
-    setIsCreating(false);
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:8080/api/notices', { title, content });
+      fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
+      setIsCreating(false); // 공지사항 생성 화면에서 나옵니다.
+    } catch (error) {
+      console.error('공지사항을 생성하는 중 오류가 발생했습니다.', error);
+    }
   };
 
   return (
@@ -11,25 +21,25 @@ const CreateNotice = ({ setIsCreating }) => {
       <h2>공지 사항 추가</h2>
       <form>
         <div>
-          <label htmlFor="title">제목:</label>
           <input
             type="text"
             id="title"
             name="title"
+            value={title}
             placeholder="제목을 입력하세요"
             required
-            style={{ width: '100%', marginBottom: '10px' }}
+            style={{ width: '600px', marginBottom: '10px' }}
           />
         </div>
         <div>
-          <label htmlFor="content">내용:</label>
+          <label htmlFor="content">내용:</label><br/>
           <textarea
             id="content"
             name="content"
             placeholder="내용을 입력하세요"
             rows="5"
             required
-            style={{ width: '100%', marginBottom: '10px' }}
+            style={{ width: '600px', marginBottom: '10px',height: '400px' }}
           ></textarea>
         </div>
       <div>

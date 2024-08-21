@@ -27,6 +27,7 @@ export default function ProfilePage() {
       }
     };
 
+
     fetchProfileData();
   }, []);
 

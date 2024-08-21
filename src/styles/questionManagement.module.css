@@ -10,17 +10,18 @@
 
 .idColumn {
     width: 80px;
-    text-align: left; 
+    text-align: center; 
 
-}
-
-.dateColumn {
-    width: 150px; 
-    text-align: center;
 }
 
 .titleColumn {
+    width: 400px;
     text-align: center; 
+}
+
+.dateColumn {
+    width: 100px; 
+    text-align: center;
 }
 
 .clickableCell {

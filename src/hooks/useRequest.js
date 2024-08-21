@@ -11,7 +11,7 @@ const useRequest = () => {
           ...config,
           params,
         });
-        return response.data;
+        return response;
       } catch (error) {
         handleError(error);
         throw error; // 예외를 다시 던져서 호출자에게 알림
@@ -24,7 +24,7 @@ const useRequest = () => {
     async (url, data = {}, config = {}) => {
       try {
         const response = await axiosInstance.post(url, data, config);
-        return response.data;
+        return response;
       } catch (error) {
         handleError(error);
         throw error;
@@ -37,7 +37,7 @@ const useRequest = () => {
     async (url, data = {}, config = {}) => {
       try {
         const response = await axiosInstance.put(url, data, config);
-        return response.data;
+        return response;
       } catch (error) {
         handleError(error);
         throw error;
@@ -53,7 +53,7 @@ const useRequest = () => {
           ...config,
           params,
         });
-        return response.data;
+        return response;
       } catch (error) {
         handleError(error);
         throw error;
@@ -64,6 +64,10 @@ const useRequest = () => {
 
   const handleError = (error) => {
     console.error('API 요청 중 오류 발생:', error);
+    if (error.response) {
+      console.error('응답 데이터:', error.response.data);
+      console.error('응답 상태 코드:', error.response.status);
+    }
     // 추가적인 예외 처리 로직을 여기에 추가할 수 있음
   };
 

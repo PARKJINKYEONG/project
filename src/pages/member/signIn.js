@@ -1,28 +1,24 @@
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/userContext';
-import { URL } from '../../config/constraint';
+import useRequest from '../../hooks/useRequest';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
-
   const { setAccessToken, setEmail } = useContext(UserContext);
+  const {post} = useRequest();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,22 +27,19 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     };
-
     try {
-      const response = await axios.post(URL.DB+'/login', loginData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true, // 쿠키를 포함하여 요청 보냄
-      });
-
-      setAccessToken(response.headers['authorization'].split(' ')[1]);
-      setEmail(loginData.email);
-      navigate('/mypage');
-    } catch (error) {
-      console.error('로그인 요청 중 오류 발생:', error);
-      alert('아이디 혹은 비밀번호가 다릅니다');
-    }
+      const resp = await post('/login', loginData, {
+        skipAuth: true
+    });
+    console.log(resp);
+    console.log(resp.headers);
+    setAccessToken(resp.headers['authorization'].split(' ')[1]);
+    setEmail(resp.data.username);
+    navigate('/mypage');
+  } catch (error) {
+    console.error('로그인 요청 중 오류 발생:', error);
+    alert('아이디 혹은 비밀번호가 다릅니다');
+  }
   };
 
   return <>

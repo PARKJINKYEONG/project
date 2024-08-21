@@ -1,69 +1,128 @@
-import React, { useState } from'react';
 
-import styles from '../../styles/chatManagement.module.css';
+import React, { useState } from "react";
+
+import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  MessageInput,
+  Avatar,
+  Sidebar,
+  ConversationList,
+  Conversation,
+  ConversationHeader,
+  MessageSeparator,
+  Message,
+} from "@chatscope/chat-ui-kit-react";
 
 const CommentManagement = () => {
-  const [chats, setChats] = useState([
-    { id: 1, name: 'User1', messages: ['Hello!'] },
-    { id: 2, name: 'User2', messages: ['Hi there!'] },
-    { id: 3, name: 'User3', messages: ['Good day!'] },
-  ]);
-  const [selectedChat, setSelectedChat] = useState(null);
-    const [newMessage, setNewMessage] = useState('');
+    const [activeConversation, setActiveConversation] = useState("bloodstrawberry");
+    const [conversations, setConversations] = useState({
+      bloodstrawberry: [
+        {
+          content: "This is bloodstrawberry's message",
+          sender: "bloodstrawberry",
+          direction: "incoming",
+          sentTime: "10 mins ago",
+        },
+      ],
+      Patrik: [
+        {
+          content: "This is Patrik's message.",
+          sender: "Patrik",
+          direction: "incoming",
+          sentTime: "5 mins ago",
+        },
+      ],
+    });   
 
-    const handleChatClick = (chat) => {
-        setSelectedChat(chat);
-    };
+  const handleSend = (message) => {
+    const newMessage = {
+        content: message,
+        sender: "User",
+        direction: "outgoing",
+      };
+  
+      setConversations({
+        ...conversations,
+        [activeConversation]: [...conversations[activeConversation], newMessage],
+      });
+  };
 
-    const handleSendMessage = () => {
-        if (newMessage.trim() !== '' && selectedChat) {
-            const updatedChats = chats.map(chat => 
-                chat.id === selectedChat.id 
-                    ? { ...chat, messages: [...chat.messages, newMessage] } 
-                    : chat
-            );
-            setChats(updatedChats);
-            setNewMessage('');
-        }
-    };
-    return <>
-      <div className={styles.container}>
-            <div className={styles.leftPanel}>
-              {chats.map(chat => (
-                      <div 
-                          key={chat.id} 
-                          onClick={() => handleChatClick(chat)}
-                          className={styles.chatItem}
-                      >
-                          {chat.name}
-                      </div>
-                  ))}
-            </div>
-            <div className={styles.topRightPanel}>
-              {selectedChat ? (
-                      selectedChat.messages.map((msg, index) => (
-                          <div key={index} className={styles.message}>
-                              {msg}
-                          </div>
-                      ))
-                  ) : (
-                      <div className={styles.placeholder}>Select a chat to view messages</div>
-                  )}
-            </div>
-            <div className={styles.bottomRightPanel}>
-                <input 
-                        type="text" 
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type a message..."
-                        className={styles.inputField}
-                    />
-                <button onClick={handleSendMessage} className={styles.sendButton}>
-                    Send
-                </button>
-            </div>
-        </div>
-    </>
+  const handleConversationClick = (name) => {
+    setActiveConversation(name);
+  };
+
+  return (
+    <div>
+      
+      <MainContainer
+        responsive
+        style={{
+          height: "600px",
+        }}
+      >
+        <Sidebar position="left">
+          <ConversationList>
+            <Conversation
+              active={activeConversation === "bloodstrawberry"}
+              info="This is bloodstrawberry's message"
+              lastSenderName="bloodstrawberry"
+              name="bloodstrawberry"
+              onClick={() => handleConversationClick("bloodstrawberry")}
+            >
+              <Avatar
+                status="available"
+                src="https://chatscope.io/storybook/react/assets/joe-v8Vy3KOS.svg"
+                
+              />
+            </Conversation>
+            <Conversation
+              active={activeConversation === "Patrik"}
+              info="This is Patrik's message"
+              lastSenderName="Patrik"
+              name="Patrik"
+              onClick={() => handleConversationClick("Patrik")}
+            >
+              <Avatar
+                name="Patrik"
+                src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
+                status="invisible"
+              />
+            </Conversation>
+          </ConversationList>
+        </Sidebar>
+        <ChatContainer>
+          <ConversationHeader>
+            <ConversationHeader.Back />
+            <Avatar />
+            <ConversationHeader.Content
+              info="Active 10 mins ago"
+              userName={activeConversation}
+              
+            />
+          </ConversationHeader>
+          <MessageList>
+            {conversations[activeConversation].map((msg, index) => (
+              <Message
+                key={index}
+                model={{
+                  message: msg.content,
+                  sentTime: msg.sentTime || "just now",
+                  sender: msg.sender,
+                  direction: msg.direction,
+                }}
+              />
+            ))}
+          </MessageList>
+          <MessageInput placeholder="Type message here" onSend={handleSend} />
+        </ChatContainer>
+      </MainContainer>
+    </div>
+  );
 };
 export default CommentManagement;
+
 
