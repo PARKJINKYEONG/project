@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 const ProductHeroLayoutRoot = styled('section')(({ theme }) => ({
   color: theme.palette.common.white,
@@ -11,7 +12,7 @@ const ProductHeroLayoutRoot = styled('section')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   [theme.breakpoints.up('sm')]: {
-    height: '50vh',
+    height: '60vh',
     minHeight: 500,
     maxHeight: 800,
   },
@@ -29,7 +30,28 @@ const Background = styled('div')({
 });
 
 function ProductHeroLayout(props) {
-  const { sxBackground, children } = props;
+  const { children } = props;
+
+  // 이미지 배열을 정의합니다.
+  const images = [
+    '/images/title-img01.jpg',
+    '/images/title-img02.jpg',
+    '/images/title-img03.jpg',
+    // 추가 이미지 경로를 여기에 추가
+  ];
+
+  // 현재 이미지 인덱스를 관리하는 상태
+  const [currentImage, setCurrentImage] = React.useState(0);
+
+  // 몇 초마다 이미지를 변경하는 useEffect
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 3000); // 3초마다 이미지 변경
+
+    // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
+    return () => clearInterval(intervalId);
+  }, [images.length]);
 
   return (
     <ProductHeroLayoutRoot>
@@ -42,11 +64,15 @@ function ProductHeroLayout(props) {
           alignItems: 'center',
         }}
       >
-        <img
-          alt="travel joy"
-          width="147"
-          height="80"
-        />
+         <Typography
+          variant="h4" // 텍스트 크기를 설정합니다. 필요에 따라 변경 가능
+          align="center"
+          color="inherit"
+          sx={{ marginBottom: '20px'}} // 텍스트와 다른 요소 간의 간격 조정
+        >
+          Travel Joy
+        </Typography>
+
         {children}
         <Box
           sx={{
@@ -60,10 +86,11 @@ function ProductHeroLayout(props) {
             zIndex: 2,
           }}
         />
-        <Background sx={sxBackground} />
+        <Background />
         <Box
           component="img"
-          src="/images/title-img01.jpg"
+          src={images[currentImage]}
+          
           sx={{
             position: 'absolute',
             top: 0,
@@ -81,13 +108,6 @@ function ProductHeroLayout(props) {
 
 ProductHeroLayout.propTypes = {
   children: PropTypes.node,
-  sxBackground: PropTypes.oneOfType([
-    PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool]),
-    ),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
 };
 
 export default ProductHeroLayout;

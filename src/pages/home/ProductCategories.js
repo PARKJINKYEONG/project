@@ -56,46 +56,40 @@ const ImageIconButton = styled(ButtonBase)(({ theme }) => ({
 
 const images = [
   {
-    url: 'https://images.unsplash.com/photo-1534081333815-ae5019106622?auto=format&fit=crop&w=400',
+    url: '/images/introduce.gif',
     title: 'Introduce',
-    width: '34%',
-    link:'/',
+    width: '40%',
+    link: '/',
   },
   {
-    url: 'https://images.unsplash.com/photo-1531299204812-e6d44d9a185c?auto=format&fit=crop&w=400',
+    url: '/images/notice.jpg',
     title: 'Notice',
-    width: '33%',
-    link:'/announcement',
+    width: '20%',
+    link: '/announcement',
   },
   {
-    url: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=400',
+    url: '/images/recommended.jpg',
     title: 'Recommended',
-    width: '33%',
-    link:'/place',
+    width: '40%',
+    link: '/place',
   },
   {
-    url: 'https://images.unsplash.com/photo-1453747063559-36695c8771bd?auto=format&fit=crop&w=400',
+    url: '/images/review.jpg',
     title: 'Review',
-    width: '50%',
-    link:'/ReviewList',
+    width: '70%',
+    link: '/ReviewList',
   },
   {
-    url: 'https://images.unsplash.com/photo-1523309996740-d5315f9cc28b?auto=format&fit=crop&w=400',
+    url: '/images/mypage.jpg',
     title: 'My page',
-    width: '50%',
-    link:'/mypage',
+    width: '30%',
+    link: '/mypage',
   }
-  //width 합쳐서 100%되는게 한줄(flex), 
-
-  
 ];
 
-
-//mui컴포넌트 최대한 줄이기 - box=>div로
-//NavLink는 현재 링크 경로가 라우트의 경로와 일치하는 경우 특정 스타일/클래스 지정할 때 사용
 export default function ProductCategories() {
   return (
-    <Container component="section" sx={{ mt: 15, mb: 4}}>
+    <Container component="section" sx={{ mt: 15, mb: 4 }}>
       <Box sx={{ mt: 8, display: 'flex', flexWrap: 'wrap' }}>
         {images.map((image) => (
           <ImageIconButton
@@ -104,43 +98,43 @@ export default function ProductCategories() {
               width: image.width,
             }}
           >
-            <Link to={image.link} >
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center 40%',
-                backgroundImage: `url(${image.url})`,
-              }}
-            />
-            <ImageBackdrop className="imageBackdrop" />
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'common.white',
-              }}
-            >
-              <Typography
-                component="h3"
-                variant="h6"
-                color="inherit"
-                className="imageTitle"
+            <Link to={image.link} style={{ display: 'block', height: '100%' }}>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center 40%',
+                  backgroundImage: `url(${image.url})`,
+                }}
+              />
+              <ImageBackdrop className="imageBackdrop" />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'common.white',
+                }}
               >
-                {image.title}
-                <div className="imageMarked" />
-              </Typography>
-            </Box>
+                <Typography
+                  component="h3"
+                  variant="h6"
+                  color="inherit"
+                  className="imageTitle"
+                >
+                  {image.title}
+                  <div className="imageMarked" />
+                </Typography>
+              </Box>
             </Link>
           </ImageIconButton>
         ))}
