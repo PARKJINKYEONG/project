@@ -18,7 +18,10 @@ const ScrollToTopButton = () => {
 
   return (
     showScrollTopButton && (
-      <button className="scroll-to-top" onClick={scrollToTop}>
+      <button className="scroll-to-top" onClick={(e) => {
+        e.preventDefault();
+        scrollToTop();
+      }}>
         ↑
       </button>
     )

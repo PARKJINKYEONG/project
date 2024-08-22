@@ -72,7 +72,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function AdminHome() {
   const [open, setOpen] = useState(true);
   const [openMember, setOpenMember] = useState(true);
   const [openBoard, setOpenBoard] = useState(true);
@@ -102,7 +102,7 @@ export default function Dashboard() {
 
   const handleItemClick = () => {
     if (!open) toggleDrawer(); 
-
+  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,7 +15,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Collapse from '@mui/material/Collapse';
 import Modal from '@mui/material/Modal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -71,12 +71,30 @@ const SearchAppBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [imageResults, setImageResults] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedMenuItem, setSelectedMenuItem] = useState('');
+  const [selectedMenuItem, setSelectedMenuItem] = useState('관광지');
   const [selectedSubmenuItem, setSelectedSubmenuItem] = useState('');
   const [openMenu, setOpenMenu] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // 페이지 경로에 따라 메뉴 상태 초기화
+    if (location.pathname === '/place/flightSearch') {
+      setSelectedMenuItem('교통');
+      setSelectedSubmenuItem('항공권 검색');
+      setOpenMenu('교통');
+    } else if (location.pathname === '/place/weather') {
+      setSelectedMenuItem('날씨');
+      setSelectedSubmenuItem('');
+      setOpenMenu(null);
+    } else {
+      setSelectedMenuItem('관광지');
+      setSelectedSubmenuItem('');
+      setOpenMenu(null);
+    }
+  }, [location]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -116,19 +134,17 @@ const SearchAppBar = () => {
           query = `교통 ${searchTerm}`;
           break;
         case '날씨':
-          navigate('/place/weather');  
+          navigate('/place/weather');
           return;
         default:
           break;
       }
     }
 
-    // 검색 결과 로직
     try {
       const response = await axios.get(`http://localhost:5000/search`, {
         params: { q: query, site: 'google' }
       });
-      console.log(`Fetched images for query '${query}':`, response.data);
       setImageResults(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -157,10 +173,12 @@ const SearchAppBar = () => {
   const handleSubmenuItemClick = (text) => {
     setSelectedSubmenuItem(text);
     setImageResults([]);
-    handleMenuClose(); // Close the popover when a submenu item is clicked
+    handleMenuClose();
 
     if (text === '항공권 검색') {
       navigate('/place/flightSearch');
+    } else if (text === '탐색') {
+      navigate('/place/restaurantSearch'); 
     }
   };
 
@@ -245,7 +263,7 @@ const SearchAppBar = () => {
                             <ListItemText primary={submenu} />
                           </ListItem>
                         ))}
-                        {text === '맛집' && ['AI추천', '크롤링 추천'].map((submenu) => (
+                        {text === '맛집' && ['AI추천', '크롤링 추천', '탐색'].map((submenu) => (
                           <ListItem
                             button
                             key={submenu}
@@ -291,7 +309,7 @@ const SearchAppBar = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            {selectedSubmenuItem || selectedMenuItem || '관광지'}
+            {selectedSubmenuItem || selectedMenuItem}
           </Typography>
           <Search>
             <SearchIconWrapper>
