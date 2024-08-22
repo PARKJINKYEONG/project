@@ -18,6 +18,14 @@ function AnnouncementView() {
     }
     const {state} = useLocation();
 
+    const tdStyle = {
+        // 여기에 td 스타일을 정의하세요.
+        borderBottom: "1px solid #ddd",
+        padding: "8px",
+        textAlign: "left",
+        cursur:'pointer'
+      };
+
   return <>
     <div className="qna-container">
                 <div className={`text-center ${QnAstyle.headerImage}`}>

@@ -32,8 +32,16 @@ import { UserContext } from "./contexts/userContext";
 
 
 function App() {
-const [accessToken,setAccessToken] = useState();
-const [email, setEmail] = useState()
+  const [accessToken,setAccessToken] = useState(localStorage.getItem('accessToken') || "");
+  const [email, setEmail] = useState(localStorage.getItem('email') || "");
+
+  useEffect(() => {
+    localStorage.setItem('accessToken', accessToken);
+  }, [accessToken]);
+
+  useEffect(() => {
+    localStorage.setItem('email', email);
+  }, [email]);
 
     return <>
     <UserContext.Provider value={{accessToken, setAccessToken, email, setEmail}}>

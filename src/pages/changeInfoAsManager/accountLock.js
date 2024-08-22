@@ -6,12 +6,14 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import RadioGroupSection from '../../components/accountLock_';
 
-
 export default function AccountLock() {
   const [reason, setReason] = useState(''); 
   const [otherReason, setOtherReason] = useState(''); 
   const [period, setPeriod] = useState('');
   const [accountId, setAccountId] = useState('');
+
+  const [unlockReason, setUnlockReason] = useState('');
+  const [accountUnlockId, setAccountUnlockId] = useState('');
 
   const navigate = useNavigate();
 
@@ -45,7 +47,18 @@ export default function AccountLock() {
       return;
     }
     alert(`${accountId}님이 ${period} 정지되었습니다`);
-    navigate('/changeInfo');
+  };
+
+  const handleUnlockAccount = () => {
+    if (!accountUnlockId) {
+      alert('해제 할 아이디를 입력하세요');
+      return;
+    }
+    if (!unlockReason) {
+      alert('해제 사유를 선택하세요');
+      return;
+    }
+    alert(`${accountUnlockId}님의 계정이 해제되었습니다`);
   };
 
   const searchId = (id) => {
@@ -63,6 +76,13 @@ export default function AccountLock() {
     { value: '욕설', label: '욕설' },
     { value: '계정도용', label: '계정도용' },
     { value: '불법광고', label: '불법광고' },
+    { value: '기타', label: '기타' },
+  ];
+
+  const unlockReasonOptions = [
+    { value: '오류', label: '시스템 오류' },
+    { value: '조사 완료', label: '조사 완료' },
+    { value: '광복절 특사', label: '광복절 특사' },
     { value: '기타', label: '기타' },
   ];
 
@@ -100,12 +120,43 @@ export default function AccountLock() {
             onOtherReasonChange={handleOtherReasonChange}
           />
         </div>
+        <div className={styles.lockButtonContainer}>
+          <Button variant="contained" color="error" onClick={handleLockAccount}>
+            계정 제한
+          </Button>
+        </div>
       </div>
-      <div className={styles.lockButtonContainer}>
-        <Button variant="contained" color="error" onClick={handleLockAccount}>
-          계정 제한
-        </Button>
+      
+      <div className={styles.privacyContainer} style={{ marginTop: '50px' }}>
+        <h2>계정 제한 해제</h2>
+        <div className={styles.privacyContent}>
+          <div className={styles.privacyItem}>
+            <label className={styles.formLabel}>해제 할 아이디</label>
+            <div className={styles.inputGroup}>
+              <input 
+                type="text" 
+                className={styles.formControl} 
+                value={accountUnlockId} 
+                onChange={(e) => setAccountUnlockId(e.target.value)}
+              />
+              <button onClick={() => searchId(accountUnlockId)} className="btn btn-outline-primary">검색</button>
+            </div>
+          </div>
+
+          <RadioGroupSection
+            title="해제 사유"
+            options={unlockReasonOptions}
+            value={unlockReason}
+            onChange={(e) => setUnlockReason(e.target.value)}
+          />
+        </div>
+          <div className={styles.lockButtonContainer}>
+            <Button variant="contained" color="primary" onClick={handleUnlockAccount}>
+              계정 제한 해제
+            </Button>
+          </div>
       </div>
+      
     </div>
   );
 }

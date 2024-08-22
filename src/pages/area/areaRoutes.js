@@ -9,7 +9,6 @@ export default function MainLayout() {
       <div style={{ width: '240px', flexShrink: 0 }}>
         <AreaPage />
       </div>
-
       {/* 우측 메인 콘텐츠 */}
       <div style={{ flexGrow: 1, padding: '16px' }}>
         <AreaSearch />

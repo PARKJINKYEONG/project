@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import QnAstyle from '../../styles/userQna.module.css';
 import { FAQ_CONTENT } from './faqContent';
 import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/material';
 
 const FaQ = () => {
     const [expanded, setExpanded] = useState(false);
@@ -34,9 +35,18 @@ const FaQ = () => {
     return (
         <>
             <div className="qna-container">
-                <div className={`text-center ${QnAstyle.headerImage}`}>
-                    <img src="/images/Mask_group.png" alt="Header" className="header-image" />
-                </div>
+                <Box 
+                    sx={{ 
+                        textAlign: 'center', 
+                        mb: 2, 
+                        p: 2, 
+                        backgroundImage: 'url(/images/QnA.webp)', 
+                        backgroundSize: 'cover', 
+                        backgroundPosition: 'center 50%', 
+                        height: 300
+                    }}
+                >
+                </Box>
                 <div className="menu" style={{ display: 'flex', alignItems: 'center' }}>
                     <div style={{ flex: 1 }}>
                         <button onClick={handleQNAClick}>Q&A</button>

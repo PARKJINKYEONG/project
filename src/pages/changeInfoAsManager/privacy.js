@@ -45,7 +45,7 @@ export default function Privacy() {
     }
 
     alert(`${userId}님의 정보가 수정되었습니다`);
-    navigate('/changeInfo');
+   
   };
 
   const handleAddressSelect = (data) => {
