@@ -1,183 +1,182 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from "react-router-dom";
-import style from "../styles/Header.module.css";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import Icon from '@mdi/react';
+import { AppBar, Toolbar, IconButton, Typography, Box, Button, Tooltip, Badge } from '@mui/material';
 import { mdiMessageDraw } from '@mdi/js';
-import { Tooltip, Menu, MenuItem, IconButton, Badge } from "@mui/material";
+import Icon from '@mdi/react';
 import Alarm from './mypage/alarm';
 import SignOutButton from './member/signout';
+import style from "../styles/Header.module.css";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function Header() {
-
-    const activeStyle = { fontWeight: 'normal' };
-    const [isShow, setIsShow] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [alarmCount, setAlarmCount] = useState(1);
+    const [showTravelMenu, setShowTravelMenu] = useState(false);
+    const [showPlanMenu, setShowPlanMenu] = useState(false);
+    const [showQnAMenu, setShowQnAMenu] = useState(false);
+    const [showMyPageMenu, setShowMyPageMenu] = useState(false);
 
-    const handleClick = (event) => {
+    const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleMenuClose = () => {
         setAnchorEl(null);
     };
 
-    const toggleDropdown = () => {        
-        setIsDropdownVisible(prev => !prev);
-    };
+    const handleTravelMenuOpen = () => setShowTravelMenu(true);
+    const handleTravelMenuClose = () => setShowTravelMenu(false);
+
+    const handlePlanMenuOpen = () => setShowPlanMenu(true);
+    const handlePlanMenuClose = () => setShowPlanMenu(false);
+
+    const handleQnAMenuOpen = () => setShowQnAMenu(true);
+    const handleQnAMenuClose = () => setShowQnAMenu(false);
+
+    const handleMyPageMenuOpen = () => setShowMyPageMenu(true);
+    const handleMyPageMenuClose = () => setShowMyPageMenu(false);
 
     return (
-        <>
-            <nav className="navbar navbar-expand-md fixed-top style.header roboto-condensed-engfont " id="bg-color">
-                {(!isShow) ? (
-                    <div className="container-fluid">
-                        <div className="col-4">
-                            <Link className="navbar-brand" to="/">
-                                <Tooltip title='홈화면'>
-                                    <img src="/images/sample_logo.png" className={style.logoStyle} style={{ width: '50px', height: '50px' }} alt="logo" />
-                                </Tooltip>
-                            </Link>
-                        </div>
-                        <div className="col-4 text-center fs-2 playwrite-dk-loopet-engfont" onClick={() => { setIsShow(!isShow) }}>
-                            <span className={style.headerTitle}>Travel Joy</span>
-                        </div>
-                        <div className="col-4">
-                            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                                <span className="navbar-toggler-icon"></span>
-                            </button>
-                            <div className="collapse navbar-collapse" id="mynavbar">
-                                <ul className="navbar-nav ms-auto ">
-                                    <li className="nav-item">
-                                        <Tooltip title="로그인">
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/user/signin"> Sign In </NavLink>
-                                        </Tooltip>
-                                    </li>
-                                    <SignOutButton/>
-                                    <li className="nav-item">
-                                        <Tooltip title="회원가입">
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/user/signup"> Sign Up </NavLink>
-                                        </Tooltip>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+        <AppBar position="fixed" color="primary" sx={{ height: '56px', zIndex: 1300 }}>
+            <Toolbar sx={{ minHeight: '56px', paddingLeft: '16px', paddingRight: '16px' }}>
+                <Link to="/" className={style.logoContainer} style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/images/sample_logo.png" alt="logo" className={style.logoStyle} style={{ height: '40px', marginRight: '8px' }} />
+                    <Typography variant="h6" noWrap className={style.headerTitle} sx={{ fontSize: '1.25rem' }}>
+                        Travel Joy
+                    </Typography>
+                </Link>
+
+                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
+                    <div 
+                        onMouseEnter={handlePlanMenuOpen}
+                        onMouseLeave={handlePlanMenuClose}
+                        style={{ position: 'relative' }}
+                    >
+                        <Button color="inherit" className={style.navLink}>
+                            New Plan
+                        </Button>
+                        {showPlanMenu && (
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: 0,
+                                    backgroundColor: 'white',
+                                    border: '1px solid rgba(0, 0, 0, 0.12)',
+                                    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+                                    zIndex: 1400,
+                                    minWidth: '180px',
+                                }}
+                                onMouseEnter={handlePlanMenuOpen}
+                                onMouseLeave={handlePlanMenuClose}
+                            >
+                                <Link to="/createPlan" className={style.menuItem}>계획</Link>
+                            </Box>
+                        )}
                     </div>
-                ) : (
-                    <div className="container-fluid {style.tjheader}">
-                        <div className="col-6">
-                            <Link className={`navbar-brand ${style.iconStyle}`} to="/">
-                                <img src="/images/sample_logo.png" style={{ width: '50px', height: '50px' }} alt="logo" />
-                            </Link>
-                            <div className={style.headerTitle} onClick={() => { setIsShow(!isShow) }}>Travel Joy</div>
-                        </div>
-                        <div className="col-6 text-end">
-                            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                                <span className="navbar-toggler-icon"></span>
-                            </button>
-                            <div className="collapse navbar-collapse" id="mynavbar">
-                                <ul className="navbar-nav ms-auto gap-3">
-                                    <li className="nav-item">
-                                        <Tooltip title='일정 계획'>
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/createPlan" style={({ isActive }) => isActive ? activeStyle : null}>
-                                                New Plan <img src="/images/plus-circle.svg" style={{ width: '15px', height: '15px' }} alt="new plan" />
-                                            </NavLink>
-                                        </Tooltip>
-                                    </li>
 
-                                    <li className="nav-item">
-                                        <Tooltip title='여행 정보'>
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/place" style={({ isActive }) => isActive ? activeStyle : null}> 여행 정보 </NavLink>
-                                        </Tooltip>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Tooltip title='공지사항'>
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/announcement" style={({ isActive }) => isActive ? activeStyle : null}> Notice </NavLink>
-                                        </Tooltip>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Tooltip title='문의사항'>
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/userQna" style={({ isActive }) => isActive ? activeStyle : null}> Q&A </NavLink>
-                                        </Tooltip>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Tooltip title="마이페이지">
-                                            <IconButton onClick={handleClick} className={style.iconStyle}>
-                                                <img src="/images/person-circle.svg" style={{ width: '20px', height: '20px' }} alt="profile" />
-                                            </IconButton>
-                                        </Tooltip>
-                                        
-                                        <Menu
-                                            anchorEl={anchorEl}
-                                            open={Boolean(anchorEl)}
-                                            onClose={handleClose}
-                                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                        >
-                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/plan" 
-                                            sx={{ transition: 'all 0.3s ease', '&:hover': 
-                                            { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>일정</MenuItem>
-
-                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/myreview" 
-                                            sx={{ transition: 'all 0.3s ease', '&:hover': 
-                                            { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>리뷰</MenuItem>
-
-                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/bookmark" 
-                                            sx={{ transition: 'all 0.3s ease', '&:hover': 
-                                            { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>즐겨찾기</MenuItem>
-
-                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/profile" 
-                                            sx={{ transition: 'all 0.3s ease', '&:hover': 
-                                            { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>프로필</MenuItem>
-
-                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/reportAndInqueiryList" 
-                                            sx={{ transition: 'all 0.3s ease', '&:hover': 
-                                            { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>신고 및 문의</MenuItem>
-
-                                            <MenuItem onClick={handleClose} component={Link} to="/mypage/memberInfoEdit" 
-                                            sx={{ transition: 'all 0.3s ease', '&:hover': 
-                                            { backgroundColor: '#f0f0f0', transform: 'scale(1.05)' } }}>내 정보 수정</MenuItem>
-
-                                        </Menu>
-                                    </li>
-                                    <li className="nav-item">
-                                        <NavLink 
-                                        className={`nav-link ${style.iconStyle}`}                                         
-                                        onClick={toggleDropdown}
-                                        style={({ isActive }) => isActive ? activeStyle : null}
-                                    >
-                                        <Badge badgeContent={alarmCount} color="error">
-                                        <img src="/images/bell.svg" style={{ width: '20px', height: '20px' }} alt="alarm" />
-                                        </Badge>        
-                                    </NavLink>
-
-                                    {/* Alarm 컴포넌트로 말풍선 표시 */}
-                                    <Alarm isDropdownVisible={isDropdownVisible} style={{ backgroundColor: '#f9f9f9', minWidth: '150px' }} setIsDropdownVisible={setIsDropdownVisible}>
-                                        <p style={{ margin: 0 }}>새 알림이 없습니다.</p>
-                                    </Alarm>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Tooltip title="여행 후기 목록">
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/ReviewList" style={({ isActive }) => isActive ? activeStyle : null}>
-                                                <Icon path={mdiMessageDraw} size={1} />
-                                            </NavLink>
-                                        </Tooltip>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Tooltip title="관리자페이지">
-                                            <NavLink className={`nav-link ${style.iconStyle}`} to="/admin" style={({ isActive }) => isActive ? activeStyle : null}>
-                                                <ManageAccountsIcon />
-                                            </NavLink>
-                                        </Tooltip>
-                                        
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div 
+                        onMouseEnter={handleTravelMenuOpen}
+                        onMouseLeave={handleTravelMenuClose}
+                        style={{ position: 'relative' }}
+                    >
+                        <Button color="inherit" className={style.navLink}>
+                            여행 정보
+                        </Button>
+                        {showTravelMenu && (
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: 0,
+                                    backgroundColor: 'white',
+                                    border: '1px solid rgba(0, 0, 0, 0.12)',
+                                    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+                                    zIndex: 1400,
+                                    minWidth: '180px',
+                                }}
+                                onMouseEnter={handleTravelMenuOpen}
+                                onMouseLeave={handleTravelMenuClose}
+                            >
+                                <Link to="/place" className={style.menuItem}>해외여행</Link>
+                                <Link to="/domesticTravel" className={style.menuItem}>국내여행</Link>
+                                <Link to="/popularTravel" className={style.menuItem}>인기여행</Link>
+                            </Box>
+                        )}
                     </div>
-                )}
-            </nav>
-        </>
+
+                    <div 
+                        onMouseEnter={handleQnAMenuOpen}
+                        onMouseLeave={handleQnAMenuClose}
+                        style={{ position: 'relative' }}
+                    >
+                        <Button color="inherit" className={style.navLink}>
+                            Q&A
+                        </Button>
+                        {showQnAMenu && (
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: 0,
+                                    backgroundColor: 'white',
+                                    border: '1px solid rgba(0, 0, 0, 0.12)',
+                                    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+                                    zIndex: 1400,
+                                    minWidth: '180px',
+                                }}
+                                onMouseEnter={handleQnAMenuOpen}
+                                onMouseLeave={handleQnAMenuClose}
+                            >
+                                <Link to="/FaQ" className={style.menuItem}>FAQ</Link>
+                                <Link to="/Ecrm" className={style.menuItem}>신고접수</Link>
+                            </Box>
+                        )}
+                    </div>
+
+                    
+                    <Button component={NavLink} to="/announcement" color="inherit" className={style.navLink}>
+                        Notice
+                    </Button>
+                    
+                    <Button component={NavLink} to="/ReviewList" color="inherit" className={style.navLink}>
+                        <Icon path={mdiMessageDraw} size={1} />
+                    </Button>
+                </Box>
+
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <IconButton color="inherit">
+                        <Badge badgeContent={alarmCount} color="error">
+                            <img src="/images/bell.svg" alt="alarm" style={{ width: '24px', height: '24px' }} />
+                        </Badge>
+                    </IconButton>
+
+                    <Alarm isDropdownVisible={false} setIsDropdownVisible={() => {}} />
+
+                    <Tooltip title="마이페이지">
+                        <IconButton onClick={handleMenuOpen} color="inherit">
+                            <img src="/images/person-circle.svg" alt="profile" style={{ width: '24px', height: '24px' }} />
+                        </IconButton>
+                    </Tooltip>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    >
+                        <MenuItem onClick={handleMenuClose} component={Link} to="/mypage/plan">일정</MenuItem>
+                        <MenuItem onClick={handleMenuClose} component={Link} to="/mypage/myreview">리뷰</MenuItem>
+                        <MenuItem onClick={handleMenuClose} component={Link} to="/mypage/bookmark">즐겨찾기</MenuItem>
+                        <MenuItem onClick={handleMenuClose} component={Link} to="/mypage/profile">프로필</MenuItem>
+                        <MenuItem onClick={handleMenuClose} component={Link} to="/mypage/reportAndInqueiryList">신고 및 문의</MenuItem>
+                        <MenuItem onClick={handleMenuClose} component={Link} to="/mypage/memberInfoEdit">내 정보 수정</MenuItem>
+                    </Menu>
+                    
+                    <SignOutButton />
+                </Box>
+            </Toolbar>
+        </AppBar>
     );
 }

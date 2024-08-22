@@ -1,152 +1,120 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import React from 'react';
 
-const item = {
+const containerStyle = {
+  marginTop: '40px',
+  marginBottom: '64px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  px: 5,
+  position: 'relative',
 };
 
+const gridContainerStyle = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'space-between',
+  gap: '20px',
+  width: '100%',
+};
+
+const cardStyle = {
+  flex: '1 1 calc(25% - 16px)',
+  maxWidth: 'calc(25% - 16px)',
+  padding: '24px',
+  textAlign: 'center',
+  border: '1px solid #e0e0e0',
+  boxSizing: 'border-box',
+};
+
+const itemStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '16px',
+};
+
+const imageStyle = {
+  height: '200px',
+  width: '200px',
+  objectFit: 'cover',
+  transition: 'transform 0.3s ease-in-out',
+};
 
 function ProductValues() {
   return (
-    <Box
-      component="section"
-      sx={{ display: 'flex', overflow: 'hidden', bgcolor: 'white' }}
-    >
-      <Container sx={{ mt: 5, mb: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{ mb: 5, textAlign: 'left', width: '100%' }}
-        >
-          인기여행지
-        </Typography>
+    <section style={{ display: 'flex', overflow: 'hidden', backgroundColor: 'white' }}>
+      <div style={containerStyle}>
+        <h2 style={{ marginBottom: '40px', textAlign: 'left', width: '100%' }}>인기여행지</h2>
 
-        <Grid container spacing={4} sx={{ justifyContent: 'space-between' }}>
+        <div style={gridContainerStyle}>
+          {/* 첫 번째 줄의 카드 4개 */}
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>세계여행</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>Paris, France</h5>
+              <img src="/images/parieiffel.jpg" alt="world" style={imageStyle} />
+            </div>
+          </div>
 
-          {/* 카드 1 */}
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper elevation={3} sx={{ padding: 3, textAlign: 'center' }}>
-              <Typography variant="h6" sx={{ mb: 3 }}>
-                세계여행
-              </Typography>
-              <Box sx={item}>
-                <Typography variant="h5" sx={{ mb: 3 }}>
-                  Paris, France
-                </Typography>
-                <Box component="img" src="/images/parieiffel.jpg" alt="world"
-                  sx={{ 
-                    height: 200,
-                    width: 200,
-                    borderRadius: '10%',
-                    objectFit: 'cover',
-                    transition: 'transform 0.3s ease-in-out',
-                    '&:hover': {
-                      transform: 'scale(1.2)', 
-                    },  
-                  }}
-                />
-              </Box>
-            </Paper>
-          </Grid>
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>국내여행</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>Jejudo, Korea</h5>
+              <img src="/images/local.jpg" alt="local" style={imageStyle} />
+            </div>
+          </div>
 
-          {/* 카드 2 */}
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper elevation={3} sx={{ padding: 3, textAlign: 'center' }}>
-              <Typography variant="h6" sx={{ mb: 3 }}>
-                국내여행
-              </Typography>
-              <Box sx={item}>
-                <Typography variant="h5" sx={{ mb: 3 }}>
-                  Jejudo, Korea
-                </Typography>
-                <Box
-                  component="img"
-                  src="/images/local.jpg"
-                  alt="world"
-                  sx={{ 
-                    height: 200,
-                    width: 200,
-                    borderRadius: '10%',
-                    objectFit: 'cover',
-                    transition: 'transform 0.3s ease-in-out',
-                    '&:hover': {
-                      transform: 'scale(1.2)', 
-                    },  
-                  }}
-                />
-              </Box>
-            </Paper>
-          </Grid>
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>문화관광부 추천</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>Seoul, Korea</h5>
+              <img src="/images/localseoul.jpg" alt="world" style={imageStyle} />
+            </div>
+          </div>
 
-          {/* 카드 3 */}
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper elevation={3} sx={{ padding: 3, textAlign: 'center' }}>
-              <Typography variant="h6" sx={{ mb: 3 }}>
-                문화관광부 추천
-              </Typography>
-              <Box sx={item}>
-                <Typography variant="h5" sx={{ mb: 3 }}>
-                  Seoul, Korea
-                  {/* 여기 div로 감싸서 min-height 똑같이 하게 하기, overflow는 ...으로해도되지않을까요 */}
-                </Typography>
-                <Box
-                  component="img"
-                  src="/images/localseoul.jpg"
-                  alt="world"
-                  sx={{ 
-                    height: 200,
-                    width: 200,
-                    borderRadius: '10%',
-                    objectFit: 'cover',
-                    transition: 'transform 0.3s ease-in-out',
-                    '&:hover': {
-                      transform: 'scale(1.2)', 
-                    },  
-                  }}
-                />
-              </Box>
-            </Paper>
-          </Grid>
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>추천여행지</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>London, British</h5>
+              <img src="/images/worldlodon01.jpg" alt="world" style={imageStyle} />
+            </div>
+          </div>
 
-          {/* 카드 4 */}
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper elevation={3} sx={{ padding: 3, textAlign: 'center' }}>
-              <Typography variant="h6" sx={{ mb: 3 }}>
-                추천여행지
-              </Typography>
-              <Box sx={item}>
-                <Typography variant="h5" sx={{ mb: 3 }}>
-                  London, British
-                </Typography>
-                <Box
-                  component="img"
-                  src="/images/worldlodon01.jpg"
-                  alt="world"
-                  sx={{ 
-                    height: 200,
-                    width: 200,
-                    borderRadius: '10%',
-                    objectFit: 'cover',
-                    transition: 'transform 0.3s ease-in-out',
-                    '&:hover': {
-                      transform: 'scale(1.2)', 
-                    },  
-                  }}
-                />
-              </Box>
-            </Paper>
-          </Grid>
+          {/* 두 번째 줄의 카드 4개 */}
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>미국여행</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>New York, USA</h5>
+              <img src="/images/worldusa01.jpg" alt="nyc" style={imageStyle} />
+            </div>
+          </div>
 
-        </Grid>
-      </Container>
-    </Box>
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>동남아여행</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>Bangkok, Thailand</h5>
+              <img src="/images/worldthailand.jpg" alt="bangkok" style={imageStyle} />
+            </div>
+          </div>
+
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>유럽여행</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>Rome, Italy</h5>
+              <img src="/images/worlditaly.jpg" alt="rome" style={imageStyle} />
+            </div>
+          </div>
+
+          <div style={cardStyle}>
+            <h5 style={{ marginBottom: '20px' }}>오세아니아여행</h5>
+            <div style={itemStyle}>
+              <h5 style={{ marginBottom: '24px' }}>Sydney, Australia</h5>
+              <img src="/images/worldAustralia.jpg" alt="sydney" style={imageStyle} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
