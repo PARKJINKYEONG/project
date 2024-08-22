@@ -9,6 +9,7 @@ import useRequest from '../../hooks/useRequest';
 
 export default function SignUp() {
   const steps = ['필수 정보 입력', '이메일 인증', '선택 정보 입력'];
+  const [required, setRequired] = useState(new Set());
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [failed, setFailed] = useState(new Set());
@@ -23,8 +24,8 @@ export default function SignUp() {
   const { post } = useRequest();
 
   const handleNext = async () => {
-    if (activeStep === 0 && (!emailValid || password !== confirmPassword)) {
-      alert('이메일이 중복되었거나, 비밀번호가 일치하지 않습니다.');
+    if (required.has(activeStep)) {
+      alert('모든 필수 정보를 정확히 입력해 주세요.');
       return;
     }
 
@@ -49,8 +50,7 @@ export default function SignUp() {
         password,
         ...userInfo,
       };
-      await post('/register', registrationData
-      );
+      await post('/register', registrationData, {skipAuth:true});
       alert('회원가입이 완료되었습니다.');
     } catch (error) {
       console.error('회원가입 요청 중 오류 발생:', error);
@@ -92,6 +92,8 @@ export default function SignUp() {
     return failed.has(step);
   };
 
+  const isNextDisabled = required.has(activeStep);
+
   return (
     <>
       <SignUpStepper 
@@ -123,9 +125,10 @@ export default function SignUp() {
                   confirmPassword={confirmPassword} 
                   setEmailValid={setEmailValid}
                   setFailed={setFailed}
+                  setRequired={setRequired}
                 />
               )}
-              {activeStep === 1 && <SignUpStep2 email={email} />}
+              {activeStep === 1 && <SignUpStep2 email={email} setRequired={setRequired} />}
               {activeStep === 2 && <SignUpStep3 setUserInfo={setUserInfo} />}
             </Grid>
           </Grid>
@@ -145,7 +148,7 @@ export default function SignUp() {
                 건너뛰기
               </Button>
             )}
-            <Button onClick={handleNext}>
+            <Button onClick={handleNext} disabled={isNextDisabled}>
               {activeStep === steps.length - 1 ? '종료' : '다음'}
             </Button>
           </Box>

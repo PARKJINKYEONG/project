@@ -1,25 +1,24 @@
 import { Box, TextField, Grid } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useRequest from '../../hooks/useRequest';
 
-export default function SignUpStep1({ setEmail, setPassword, setConfirmPassword, email, password, confirmPassword, setEmailValid, setFailed }) {
+export default function SignUpStep1({ setEmail, setPassword, setConfirmPassword, email, password, confirmPassword, setEmailValid, setFailed, setRequired }) {
   const [emailError, setEmailError] = useState('');
   const { get } = useRequest();
 
   const handleEmailBlur = async () => {
     try {
       const resp = await get('/checkemail', { email }, { skipAuth: true });
-      console.log(resp);
       if (resp.data.exists) {
         setEmailError('이미 존재하는 이메일입니다.');
         setEmailValid(false);
-        setFailed((prev) => new Set(prev).add(0));  // Stepper의 첫 번째 스텝에 오류 표시
+        setFailed((prev) => new Set(prev).add(0));
       } else {
         setEmailError('');
         setEmailValid(true);
         setFailed((prev) => {
           const newFailed = new Set(prev);
-          newFailed.delete(0);  // 오류가 해결되면 첫 번째 스텝의 오류를 제거
+          newFailed.delete(0);
           return newFailed;
         });
       }
@@ -27,9 +26,22 @@ export default function SignUpStep1({ setEmail, setPassword, setConfirmPassword,
       console.error('이메일 확인 중 오류 발생:', error);
       setEmailError('서버와 통신 중 오류가 발생했습니다.');
       setEmailValid(false);
-      setFailed((prev) => new Set(prev).add(0));  // 서버 오류 시에도 첫 번째 스텝에 오류 표시
+      setFailed((prev) => new Set(prev).add(0));
     }
   };
+
+  useEffect(() => {
+    const isAllFilled = email && password && confirmPassword && !emailError && password === confirmPassword;
+    setRequired((prev) => {
+      const newRequired = new Set(prev);
+      if (isAllFilled) {
+        newRequired.delete(0);
+      } else {
+        newRequired.add(0);
+      }
+      return newRequired;
+    });
+  }, [email, password, confirmPassword, emailError, setRequired]);
 
   return (
     <Box component="form" noValidate sx={{ mt: 1 }}>
@@ -40,7 +52,7 @@ export default function SignUpStep1({ setEmail, setPassword, setConfirmPassword,
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="이메일 주소"
             name="email"
             autoComplete="email"
             autoFocus
@@ -57,7 +69,7 @@ export default function SignUpStep1({ setEmail, setPassword, setConfirmPassword,
             required
             fullWidth
             name="password"
-            label="Password"
+            label="비밀번호"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -71,7 +83,7 @@ export default function SignUpStep1({ setEmail, setPassword, setConfirmPassword,
             required
             fullWidth
             name="confirmPassword"
-            label="Confirm Password"
+            label="비밀번호 확인"
             type="password"
             id="confirmPassword"
             autoComplete="current-password"
