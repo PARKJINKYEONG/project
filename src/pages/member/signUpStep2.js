@@ -1,27 +1,37 @@
 import { Box, Grid, TextField, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import useRequest from '../../hooks/useRequest';
+import { LoadingButton } from "@mui/lab";
 
 export default function SignUpStep2({ email, setRequired }) {
   const { post } = useRequest();
   const [verificationSent, setVerificationSent] = useState(false);
   const [inputCode, setInputCode] = useState('');
   const [verificationError, setVerificationError] = useState('');
+  const [loadcheck, setLoadcheck] = useState(false);
+  const [loadvalid, setLoadvalid] = useState(false);
 
   const handleSendVerification = async () => {
     try {
+      setLoadcheck(true);
       const resp = await post('/checkemail', { email }, { skipAuth: true });
       console.log(resp);
       setVerificationSent(true);
+      if(resp.data==="5times")
+        throw new Error("일일 인증 최대횟수 초과(5회)");
       
-      alert('인증 코드가 전송되었습니다.');
+      if(resp.data==="already")
+        throw new Error("이미 인증 완료된 계정입니다")
+      alert('인증 코드가 전송되었습니다.'+ resp.data+ '(하루 최대 5회)');
     } catch (error) {
-      console.error('인증 코드 전송 중 오류 발생:', error);
+      alert(error);
     }
+    setLoadcheck(false);
   };
 
   const handleVerifyCode = async () => {
     try {
+      setLoadvalid(true);
       const resp = await post('/validemail', { email, authCode: inputCode }, { skipAuth: true });
       console.log(resp);
       if (resp.data === 'success') {
@@ -41,6 +51,7 @@ export default function SignUpStep2({ email, setRequired }) {
       console.error('인증 중 오류 발생:', error);
       setVerificationError('서버와 통신 중 오류가 발생했습니다.');
     }
+    setLoadvalid(false);
   };
 
   useEffect(() => {
@@ -66,9 +77,9 @@ export default function SignUpStep2({ email, setRequired }) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button variant="contained" onClick={handleSendVerification}>
+          <LoadingButton loading={loadcheck} variant="contained" onClick={handleSendVerification}>
             {verificationSent ? '인증 코드 재발송' : '인증 코드 보내기'}
-          </Button>
+          </LoadingButton>
         </Grid>
         {verificationSent && (
           <>
@@ -85,9 +96,9 @@ export default function SignUpStep2({ email, setRequired }) {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" onClick={handleVerifyCode}>
+              <LoadingButton loading={loadvalid} variant="contained" onClick={handleVerifyCode}>
                 인증
-              </Button>
+              </LoadingButton>
             </Grid>
           </>
         )}
