@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from "react";
-import axios from "axios";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/home/home";
 import Template from "./pages/template";
@@ -25,10 +24,11 @@ import AdminRoutes from "./pages/admin/adminRoutes";
 import { RouteMap } from "./pages/routeMap";
 import BoardRoutes from "./pages/board/boardRoutes";
 import FaQ from "./pages/clientService/userFaq";
-import AreaRoutes from "./pages/area/areaRoutes";
+
 import CreateUserQnA from "./pages/clientService/createUserQnA";
 import AnnouncementView from "./pages/clientService/announcementView";
 import { UserContext } from "./contexts/userContext";
+import AreaRoutes from "./pages/area/areaRoutes";
 
 
 function App() {

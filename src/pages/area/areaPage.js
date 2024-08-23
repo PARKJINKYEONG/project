@@ -11,8 +11,15 @@ const drawerWidth = 240;
 export default function AreaPage() {
   const listNames = ['해외관광', '국내관광', '인기관광'];
   const listLinks = ['plan', 'myreview', 'bookmark'];
-  const listNames2 = ['숙박업소', ' AI 추천맛집', '크롤링추천 맛집', '교통'];
-  const listLinks2 = ['profile', 'reportAndInqueiryList', 'memberInfoEdit', 'alarmDetail'];
+  const listNames2 = ['숙박업소'];
+  const listLinks2 = ['hotelSearch'];
+  const listNames3=['맛집 검색'];
+  const listLinks3=['restaurantSearch'];
+  const listNames4=['항공권 검색'];
+  const listLinks4=['flightSearch'];
+  const listNames5=['날씨'];
+  const listLinks5=['weatherSearch']
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -27,9 +34,15 @@ export default function AreaPage() {
       >
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
-          <ListComponent listNames={listNames} listLinks={listLinks} />
+            <ListComponent listNames={listNames} listLinks={listLinks} />
           <Divider />
-          <ListComponent listNames={listNames2} listLinks={listLinks2} />
+            <ListComponent listNames={listNames2} listLinks={listLinks2} />
+          <Divider />
+            <ListComponent listNames={listNames3} listLinks={listLinks3} />
+          <Divider />
+            <ListComponent listNames={listNames4} listLinks={listLinks4} />
+          <Divider />
+            <ListComponent listNames={listNames5} listLinks={listLinks5} />
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

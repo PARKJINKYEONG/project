@@ -1,19 +1,29 @@
 import React from 'react';
+import { Route, Routes, Outlet } from "react-router-dom";
 import AreaPage from './areaPage';
-import AreaSearch  from './areaSearch';
+import RestaurantSearch from './restaurantSearch';
+import WeatherSearch from './weatherSearch';
+import FlightSearch from './flightSearch';
 
-export default function MainLayout() {
-  return (
-    <div style={{ display: 'flex' }}>
-      {/* 좌측 내비게이션 바 */}
-      <div style={{ width: '240px', flexShrink: 0 }}>
-        <AreaPage />
-      </div>
-      {/* 우측 메인 콘텐츠 */}
-      <div style={{ flexGrow: 1, padding: '16px' }}>
-        <AreaSearch />
-        {/* 이곳에 추가적인 콘텐츠를 넣을 수 있음 */}
-      </div>
-    </div>
-  );
-}
+const AreaRoutes = () => {
+    return (
+        <div style={{ display: 'flex' }}>
+            {/* 좌측 내비게이션 바 */}
+            <div style={{ width: '10px', flexShrink: 0 }}>
+                <AreaPage />
+            </div>
+            {/* 우측 메인 콘텐츠 */}
+            <div style={{ flexGrow: 1, padding: '16px' }}>
+                <Routes>
+                    <Route path="/restaurantSearch" element={<RestaurantSearch/>} />
+                    <Route path="/weatherSearch" element={<WeatherSearch/>} />
+                    <Route path="/flightSearch" element={<FlightSearch/>} />
+
+                </Routes>
+                <Outlet />
+            </div>
+        </div>
+    );
+};
+
+export default AreaRoutes;

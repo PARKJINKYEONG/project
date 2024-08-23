@@ -10,8 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton'; 
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import ScrollToTopButton from '../../components/scrollToTopButton';
-import SearchAppBar from './areaContent';
-import ConnectingAirportsIcon from '@mui/icons-material/ConnectingAirports'; // 추가된 아이콘 임포트
+import ConnectingAirportsIcon from '@mui/icons-material/ConnectingAirports';
 
 function FlightSearch() {
   const [tripType] = useState('편도');
@@ -146,7 +145,6 @@ function FlightSearch() {
 
   return (
     <>
-      <SearchAppBar/> 
       <form onSubmit={handleSubmit}>
         <Paper elevation={3} style={{ padding: '20px', borderRadius: '10px' }}>
           <Grid container spacing={2} alignItems="center" justifyContent="center">

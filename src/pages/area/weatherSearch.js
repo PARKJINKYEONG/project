@@ -6,7 +6,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import ScrollToTopButton from '../../components/scrollToTopButton';
-import SearchAppBar from './areaContent';
 
 const containerStyle = {
   width: '70%',
@@ -114,7 +113,6 @@ const WeatherSearch = () => {
     return (
         <div className="area">
             <div className="content">
-                <SearchAppBar />
                 <h2>날씨 검색</h2>
                 <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
                     <GoogleMap

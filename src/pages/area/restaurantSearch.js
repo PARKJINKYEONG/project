@@ -4,12 +4,11 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Button, TextField } from '@mui/material';
 import MuiModal from '../../components/muiModal'; 
-import SearchAppBar from './areaContent';
 
 const RestaurantSearch = () => {
   const [query, setQuery] = useState('');  // 음식 검색어
   const [userLocation, setUserLocation] = useState('');  // 사용자 위치
-  const [radius, setRadius] = useState('2500');  // 반경 (초기값 설정)
+  const [radius, setRadius] = useState(2500);  // 반경 (초기값 설정)
   const [places, setPlaces] = useState([]);
   const [showReviews, setShowReviews] = useState({});
   const [nextPageToken, setNextPageToken] = useState(null);
@@ -25,46 +24,57 @@ const RestaurantSearch = () => {
   const [favoritePlaces, setFavoritePlaces] = useState({});  // 각 장소의 즐겨찾기 상태를 저장
 
   useEffect(() => {
+    const loadMap = () => {
+      if (window.google && window.google.maps) {
+        const mapInstance = new window.google.maps.Map(mapRef.current, {
+          center: mapCenter,
+          zoom: 11,
+        });
+
+        setMap(mapInstance);
+        geocoderRef.current = new window.google.maps.Geocoder();
+
+        const handleMapClick = (event) => {
+          const latLng = event.latLng;
+          if (geocoderRef.current) {
+            geocoderRef.current.geocode({ location: latLng }, (results, status) => {
+              if (status === 'OK' && results.length > 0) {
+                setUserLocation(results[0].formatted_address);
+                setMapCenter({ lat: latLng.lat(), lng: latLng.lng() });
+                mapInstance.setCenter(latLng);
+                performSearch(mapInstance, query, latLng, radius);
+              } else {
+                alert('주소를 찾을 수 없습니다.');
+              }
+            });
+          }
+        };
+
+        // 지도 클릭 이벤트 리스너 등록
+        mapInstance.addListener('click', handleMapClick);
+
+        return () => {
+          // 컴포넌트 언마운트 시 지도 클릭 이벤트 리스너 해제
+          window.google.maps.event.clearListeners(mapInstance, 'click');
+        };
+      } else {
+        console.error('Google Maps API 로드에 실패했습니다.');
+      }
+    };
+
+    // Google Maps API가 로드된 후에 지도 초기화
     if (window.google && window.google.maps) {
-      const mapInstance = new window.google.maps.Map(mapRef.current, {
-        center: mapCenter,
-        zoom: 11,
-      });
-
-      setMap(mapInstance);
-
-      // 지도를 클릭했을 때 위치를 검색하여 userLocation을 업데이트합니다.
-      mapInstance.addListener('click', (event) => {
-        const latLng = event.latLng;
-        if (geocoderRef.current) {
-          geocoderRef.current.geocode({ location: latLng }, (results, status) => {
-            if (status === 'OK' && results.length > 0) {
-              setUserLocation(results[0].formatted_address);
-              setMapCenter({ lat: latLng.lat(), lng: latLng.lng() });  // 클릭한 위치로 지도 중심 업데이트
-              mapInstance.setCenter(latLng);  // 지도 중심을 클릭한 위치로 이동
-              performSearch(mapInstance, query, latLng, radius);  // 새로운 위치로 검색 수행
-            } else {
-              alert('주소를 찾을 수 없습니다.');
-            }
-          });
-        }
-      });
-
-      // Geocoder 인스턴스를 생성하여 ref에 저장
-      geocoderRef.current = new window.google.maps.Geocoder();
-
-      // 처음 지도 생성 시, Geocoder 인스턴스도 함께 생성
-      return () => {
-        if (geocoderRef.current) {
-          geocoderRef.current = null;
-        }
-      };
+      loadMap();
     } else {
-      console.error('Google Maps API 로드에 실패했습니다.');
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = loadMap;
+      document.head.appendChild(script);
     }
   }, [mapCenter, query, radius]);
 
-  // 새로 정렬 기준이 변경되면 현재의 places를 정렬합니다.
   useEffect(() => {
     if (places.length > 0) {
       const sortedPlaces = [...places];
@@ -90,7 +100,7 @@ const RestaurantSearch = () => {
   };
 
   const handleRadiusChange = (event) => {
-    setRadius(event.target.value);
+    setRadius(Number(event.target.value));
   };
 
   const handleSortChange = (event) => {
@@ -218,36 +228,40 @@ const RestaurantSearch = () => {
 
   return (
     <div>
-    <SearchAppBar />
-    <div className={styles.searchContainer}>
-      <input
-        type="text"
-        value={userLocation}
-        onChange={handleUserLocationChange}
-        placeholder="위치를 입력"
-      />
-      <input
-        type="text"
-        value={query}
-        onChange={handleQueryChange}
-        placeholder="음식 또는 음식점"
-      />
-      
-      <select value={sortOrder} onChange={handleSortChange}>
-        <option value="rating">별점 순</option>
-        <option value="distance">거리 가까운 순</option>
-        <option value="reviews">댓글 수 순</option>
-      </select>
-      <div className={styles.searchButtonContainer}>
-        <button onClick={handleSearch} className={styles.searchButton}>
-          검색
-        </button>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          value={userLocation}
+          onChange={handleUserLocationChange}
+          placeholder="위치를 입력"
+        />
+        <input
+          type="text"
+          value={query}
+          onChange={handleQueryChange}
+          placeholder="음식 또는 음식점"
+        />
+        <input
+          type="number"
+          value={radius}
+          onChange={handleRadiusChange}
+          placeholder="반경 (미터)"
+        />
+        <select value={sortOrder} onChange={handleSortChange}>
+          <option value="rating">별점 순</option>
+          <option value="distance">거리 가까운 순</option>
+          <option value="reviews">댓글 수 순</option>
+        </select>
+        <div className={styles.searchButtonContainer}>
+          <button onClick={handleSearch} className={styles.searchButton}>
+            검색
+          </button>
+        </div>
       </div>
-    </div>
-    <div
-      ref={mapRef}
-      style={{ height: '400px', width: '100%' }}  // 지도 표시 영역
-    ></div>
+      <div
+        ref={mapRef}
+        style={{ height: '400px', width: '100%' }}  // 지도 표시 영역
+      ></div>
       <div className={styles.placesContainer}>
         {places.map((place) => (
           <div key={place.place_id} className={styles.placeCard}>
