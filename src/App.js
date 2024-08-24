@@ -34,6 +34,7 @@ import AreaRoutes from "./pages/area/areaRoutes";
 function App() {
   const [accessToken,setAccessToken] = useState(localStorage.getItem('accessToken') || "");
   const [email, setEmail] = useState(localStorage.getItem('email') || "");
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') || "");
 
   useEffect(() => {
     localStorage.setItem('accessToken', accessToken);
@@ -43,8 +44,12 @@ function App() {
     localStorage.setItem('email', email);
   }, [email]);
 
+  useEffect(() => {
+    localStorage.setItem('isAdmin', isAdmin);
+  }, [isAdmin]);
+
     return <>
-    <UserContext.Provider value={{accessToken, setAccessToken, email, setEmail}}>
+    <UserContext.Provider value={{accessToken, setAccessToken, email, setEmail, isAdmin, setIsAdmin}}>
         <Routes>
             <Route element={<Template/>}>
                 <Route path="/" element={<Home/>} />

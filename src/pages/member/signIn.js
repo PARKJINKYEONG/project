@@ -17,7 +17,7 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const { setAccessToken, setEmail } = useContext(UserContext);
+  const { setAccessToken, setEmail, setIsAdmin } = useContext(UserContext);
   const {post} = useRequest();
 
   const handleSubmit = async (event) => {
@@ -35,6 +35,7 @@ export default function SignIn() {
     console.log(resp.headers);
     setAccessToken(resp.headers['authorization'].split(' ')[1]);
     setEmail(resp.data.username);
+    setIsAdmin(resp.data.isAdmin);
     navigate('/mypage');
   } catch (error) {
     console.error('로그인 요청 중 오류 발생:', error);
