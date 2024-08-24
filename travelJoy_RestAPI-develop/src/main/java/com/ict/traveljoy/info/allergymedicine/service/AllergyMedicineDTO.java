@@ -16,17 +16,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AllergyMedicineDto {
+public class AllergyMedicineDTO {
 	private Long id;
-	private Long allergyId;
-	private Long medicineId;
+	private Allergy allergy;
+	private Medicine medicine;
 	
 	public AllergyMedicine toEntity() {
-		Allergy allergy = new Allergy();
-		Medicine medicine = new Medicine();
-		
-		allergy.setId(allergyId);
-		medicine.setId(medicineId);
 		return AllergyMedicine.builder()
 		.id(id)
 		.allergy(allergy)
@@ -35,11 +30,11 @@ public class AllergyMedicineDto {
 		
 	}
 	
-	public static AllergyMedicineDto toDto(AllergyMedicine allergyMedicine) {
-		return AllergyMedicineDto.builder()
+	public static AllergyMedicineDTO toDTO(AllergyMedicine allergyMedicine) {
+		return AllergyMedicineDTO.builder()
 				.id(allergyMedicine.getId())
-				.allergyId(allergyMedicine.getAllergy() != null ? allergyMedicine.getAllergy().getId() : null)
-				.medicineId(allergyMedicine.getMedicine() != null ? allergyMedicine.getMedicine().getId() : null)
+				.allergy(allergyMedicine.getAllergy())
+				.medicine(allergyMedicine.getMedicine())
 				.build();
 	}
 }

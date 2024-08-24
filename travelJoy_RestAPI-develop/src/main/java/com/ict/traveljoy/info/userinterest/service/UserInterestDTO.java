@@ -15,28 +15,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserInterestDto {
+public class UserInterestDTO {
 	private Long id;
-	private Long userId;
-	private Long interestId;
+	private Users user;
+	private Interest interest;
 	
 	public UserInterest toEntity() {
-		Users user = new Users();
-		Interest interest = new Interest();
-		
-		user.setId(userId);
-		interest.setId(interestId);
 		return UserInterest.builder()
 				.id(id)
 				.user(user)
 				.interest(interest)
 				.build();
 	}
-	public static UserInterestDto toDto(UserInterest userInterest) {
-		return UserInterestDto.builder()
+	public static UserInterestDTO toDTO(UserInterest userInterest) {
+		return UserInterestDTO.builder()
 				.id(userInterest.getId())
-				.userId(userInterest.getUser() != null ? userInterest.getUser().getId() : null)
-				.interestId(userInterest.getInterest() != null ? userInterest.getInterest().getId() : null)
+				.user(userInterest.getUser())
+				.interest(userInterest.getInterest())
 				.build();
 	}
 	

@@ -2,7 +2,9 @@ package com.ict.traveljoy.pushalarm.service;
 
 import java.time.LocalDateTime;
 
+import com.ict.traveljoy.pushalarm.repository.PushAlarm;
 import com.ict.traveljoy.pushalarm.repository.PushAlarmSend;
+import com.ict.traveljoy.users.repository.Users;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +20,15 @@ import lombok.Setter;
 public class PushAlarmSendDTO {
 
 	private Long id;
-	private Long pushAlarmId;
-	private Long userId;
+	private PushAlarm pushAlarm;
+	private Users user;
 	private LocalDateTime pushAlarmSendDate;
 	
 	public PushAlarmSend toEntity() {
 		return PushAlarmSend.builder()
 				.id(id)
-				.pushAlarmId(pushAlarmId)
-				.userId(userId)
+				.pushAlarm(pushAlarm)
+				.user(user)
 				.pushAlarmSendDate(pushAlarmSendDate)
 				.build();
 	}
@@ -34,8 +36,8 @@ public class PushAlarmSendDTO {
 	public static PushAlarmSendDTO toDTO(PushAlarmSend pushAlarmSend) {
 		return PushAlarmSendDTO.builder()
 				.id(pushAlarmSend.getId())
-				.pushAlarmId(pushAlarmSend.getPushAlarmId())
-				.userId(pushAlarmSend.getUserId())
+				.pushAlarm(pushAlarmSend.getPushAlarm())
+				.user(pushAlarmSend.getUser())
 				.pushAlarmSendDate(pushAlarmSend.getPushAlarmSendDate())
 				.build();
 	}

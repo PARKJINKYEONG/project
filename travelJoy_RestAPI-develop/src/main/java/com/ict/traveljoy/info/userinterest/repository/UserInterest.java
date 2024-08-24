@@ -1,7 +1,7 @@
 package com.ict.traveljoy.info.userinterest.repository;
 
 import com.ict.traveljoy.info.interest.repository.Interest;
-import com.ict.traveljoy.info.userhandicap.service.UserHandicapDto;
+import com.ict.traveljoy.info.userhandicap.service.UserHandicapDTO;
 import com.ict.traveljoy.users.repository.Users;
 
 import jakarta.persistence.Column;
@@ -34,11 +34,11 @@ public class UserInterest {
 	@Column(name="user_interest_id")
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "interest_id", nullable = false)
     private Interest interest;
 }

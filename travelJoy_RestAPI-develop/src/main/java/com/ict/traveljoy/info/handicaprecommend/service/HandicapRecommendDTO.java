@@ -1,6 +1,5 @@
 package com.ict.traveljoy.info.handicaprecommend.service;
 
-import com.ict.traveljoy.info.allergymedicine.service.AllergyMedicineDto;
 import com.ict.traveljoy.info.handicap.repository.Handicap;
 import com.ict.traveljoy.info.handicaprecommend.repository.HandicapRecommend;
 import com.ict.traveljoy.info.interest.repository.Interest;
@@ -16,32 +15,27 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HandicapRecommendDto {
+public class HandicapRecommendDTO {
 	
 	private Long id;
-	private Long handicapId;
-	private Long interestId;
+	private Handicap handicap;
+	private Interest interest;
 	
 	public HandicapRecommend toEntity() {
-		Handicap handicap = new Handicap();
-		Interest interest = new Interest();
-		
-		handicap.setId(handicapId);
-		interest.setId(interestId);
 		
 		return HandicapRecommend.builder()
-				.id(handicapId)
+				.id(id)
 				.handicap(handicap)
 				.interest(interest)
 				.build();
 	}
 	
-	public static HandicapRecommendDto toDto(HandicapRecommend handicapRecommend) {
+	public static HandicapRecommendDTO toDTO(HandicapRecommend handicapRecommend) {
 		
-		return HandicapRecommendDto.builder()
+		return HandicapRecommendDTO.builder()
 				.id(handicapRecommend.getId())
-				.handicapId(handicapRecommend.getHandicap() != null ? handicapRecommend.getHandicap().getId() : null)
-				.interestId(handicapRecommend.getInterest() != null ? handicapRecommend.getInterest().getId() : null)
+				.handicap(handicapRecommend.getHandicap())
+				.interest(handicapRecommend.getInterest())
 				.build();
 	}
 }

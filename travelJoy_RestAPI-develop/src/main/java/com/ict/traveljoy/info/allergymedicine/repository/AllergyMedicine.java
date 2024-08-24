@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="allergy_medicine")
+@Table(name="ALLERGY_MEDICINE")
 @Getter
 @Setter
 @NoArgsConstructor

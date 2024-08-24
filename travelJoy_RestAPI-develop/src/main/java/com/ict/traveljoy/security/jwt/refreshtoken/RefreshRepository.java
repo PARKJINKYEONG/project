@@ -13,8 +13,8 @@ public interface RefreshRepository extends JpaRepository<RefreshToken, Long> {
 
     void deleteByTokenValue(String refresh);
 
-    Optional<RefreshToken> findByUserId(Long id);
+    Optional<RefreshToken> findByUserEmail(String email);
 
-	Optional<RefreshToken> findByUserIdAndUserAgent(Long id, String userAgent);
+	Optional<RefreshToken> findByUserEmailAndUserAgent(String email, String userAgent);
 
 }

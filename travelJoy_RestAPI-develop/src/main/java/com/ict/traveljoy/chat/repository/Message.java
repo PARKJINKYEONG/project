@@ -35,29 +35,29 @@ public class Message {
 	@Id
 	@SequenceGenerator(name = "seq_message",sequenceName = "seq_message",allocationSize = 1,initialValue = 1)
 	@GeneratedValue(generator = "seq_message",strategy = GenerationType.SEQUENCE)
-	@Column(name = "message_id")
+	@Column(name = "MESSAGE_ID")
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_room_id", nullable = false)
+    @JoinColumn(name = "CHATROOM_ID", nullable = false)
 	private ChatRoom chatRoom;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
 	private Users user;
 	
-	@Column(length=2000)
+	@Column(name="MESSAGE_CONTENT",length=2000)
 	private String messageContent;
 	
 	
 	@ColumnDefault("SYSDATE")
+	@Column(name="MESSAGE_SEND_DATE")
 	@CreationTimestamp
 	private LocalDateTime messageSendDate;
 	
-	
 
 	@ColumnDefault("1")
-	@Column(columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_ACTIVE",columnDefinition = "NUMBER(1, 0)")
 	private Integer isActive;
 	
 	/*

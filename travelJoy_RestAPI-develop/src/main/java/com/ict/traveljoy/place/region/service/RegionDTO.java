@@ -18,13 +18,13 @@ public class RegionDTO {
 	
 	private Long id;
 	private String name;
-	private String R_info;
+	private String regionInfo;
 	//DTO를 Entity로 변환하는 메소드 
 		public Region toEntity() {
 			return Region.builder()
 					.id(id)
 					.name(name)
-					.R_info(R_info)
+					.regionInfo(regionInfo)
 					.build();
 		}
 		//Entity를 DTO로 변환하는 메소드
@@ -32,7 +32,7 @@ public class RegionDTO {
 			return RegionDTO.builder()
 							.id(region.getId())
 							.name(region.getName())
-							.R_info(region.getR_info())
+							.regionInfo(region.getRegionInfo())
 							.build();
 		}
 		

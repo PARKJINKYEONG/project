@@ -33,10 +33,10 @@ public class Handicap {
 	@Column(name="handicap_id")
 	private Long id;
 	
-	@Column(length = 50)
+	@Column(length = 50,name="HANDICAP_CODE")
 	private String handicapCode;
 	
-	@Column(length = 2000)
+	@Column(length = 2000,name="HANDICAP_TYPE")
 	private String handicapType;
 	
 	@OneToMany(mappedBy = "handicap", cascade = CascadeType.ALL, orphanRemoval = true)

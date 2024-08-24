@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MedicineDto {
+public class MedicineDTO {
 	private Long id;
 	private String description;
 	private String medicineName;
@@ -26,8 +26,8 @@ public class MedicineDto {
 				.build();
 		
 	}
-	public static MedicineDto toDto(Medicine medicine) {
-		return MedicineDto.builder()
+	public static MedicineDTO toDTO(Medicine medicine) {
+		return MedicineDTO.builder()
 				.id(medicine.getId())
 				.description(medicine.getDescription())
 				.medicineName(medicine.getMedicineName())

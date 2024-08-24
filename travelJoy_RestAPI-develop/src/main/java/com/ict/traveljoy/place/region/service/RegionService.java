@@ -47,7 +47,7 @@ public class RegionService {
 
 			// Update fields with values from regionDto
 			existingRegion.setName(regionDto.getName());
-			existingRegion.setR_info(regionDto.getR_info());
+			existingRegion.setRegionInfo(regionDto.getRegionInfo());
 
 			// Save the updated region
 			Region updatedRegion = regionRepository.save(existingRegion);

@@ -52,20 +52,24 @@ public class EventService {
         Optional<Event> eventOpt = eventRepository.findById(id);
 
         if (eventOpt.isPresent()) {
-            Event event = eventOpt.get();
-            event.setEventName(eventDto.getEventName());
-            event.setRegion(eventDto.getRegion());
-            event.setAverageReviewRate(eventDto.getAverageReviewRate());
-            event.setEventStartDate(eventDto.getEventStartDate());
-            event.setEventEndDate(eventDto.getEventEndDate());
-
+        	Event event = eventOpt.get();
+        	event.setEventName(eventDto.getEventName());
+        	event.setEntranceFee(eventDto.getEntranceFee());
+            event.setDescriptions(eventDto.getDescriptions());
+            event.setAddress(eventDto.getAddress());
+            event.setTotalReviewCount(eventDto.getTotalReviewCount());
+        	event.setRegion(eventDto.getRegion());
+        	event.setAverageReviewRate(eventDto.getAverageReviewRate());
+        	event.setEventStartDate(eventDto.getEventStartDate());
+        	event.setEventEndDate(eventDto.getEventEndDate());
+            
             Event updatedEvent = eventRepository.save(event);
             return EventDTO.toDto(updatedEvent);
         } else {
             throw new IllegalArgumentException("주어진 번호의 이벤트를 찾을 수 없어요");
         }
     }
-
+    
     // ID로 이벤트 삭제
     @Transactional
     public void deleteEvent(Long id) {

@@ -21,8 +21,8 @@ import lombok.Setter;
 public class ReportDTO {
 
 	private Long id;
-	private Long userId;
-	private Long reportCategoryId;
+	private Users user;
+	private ReportCategory reportCategory;
 	private Long targetId;
 	private LocalDateTime reportDate;
 	private String reportContent;
@@ -32,11 +32,6 @@ public class ReportDTO {
 	private LocalDateTime reportResultDate;
 	
 	public Report toEntity() {
-		Users user = new Users();
-		ReportCategory reportCategory = new ReportCategory();
-		
-		user.setId(userId);
-		reportCategory.setId(reportCategoryId);
 		return Report.builder()
 				.id(id)
 				.user(user)
@@ -54,8 +49,8 @@ public class ReportDTO {
 	public static ReportDTO toDTO(Report report) {
 		return ReportDTO.builder()
 				.id(report.getId())
-				.userId(report.getUser()!=null?report.getUser().getId():null)
-				.reportCategoryId(report.getReportCategory()!=null?report.getReportCategory().getId():null)
+				.user(report.getUser())
+				.reportCategory(report.getReportCategory())
 				.targetId(report.getTargetId())
 				.reportDate(report.getReportDate())
 				.reportContent(report.getReportContent())

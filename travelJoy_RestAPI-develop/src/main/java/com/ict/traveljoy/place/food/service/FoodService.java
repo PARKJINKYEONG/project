@@ -50,11 +50,12 @@ public class FoodService {
 
         if (foodOpt.isPresent()) {
             Food food = foodOpt.get();
-            food.setFoodName(foodDto.getFoodName());
+            food.setFoodType(foodDto.getFoodType());
             food.setDescriptions(foodDto.getDescriptions());
+            food.setFoodName(foodDto.getFoodName());
+            food.setRegion(foodDto.getRegion());
             food.setAddress(foodDto.getAddress());
             food.setTotalReviewCount(foodDto.getTotalReviewCount());
-            food.setRegion(foodDto.getRegion());
             food.setAveragePrice(foodDto.getAveragePrice());
             food.setAverageReviewRate(foodDto.getAverageReviewRate());
             

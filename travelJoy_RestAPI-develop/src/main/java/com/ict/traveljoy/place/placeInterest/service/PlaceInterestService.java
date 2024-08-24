@@ -19,7 +19,7 @@ public class PlaceInterestService {
     @Autowired
     private PlaceInterestRepository placeInterestRepository;
 
-    // PlaceInterest 생성
+    // PlaceInterest 생성 또는 업데이트
     public PlaceInterestDTO savePlaceInterest(PlaceInterestDTO placeInterestDTO) {
         PlaceInterest placeInterest = placeInterestDTO.toEntity();
         placeInterest = placeInterestRepository.save(placeInterest);
@@ -38,7 +38,6 @@ public class PlaceInterestService {
                 .map(placeInterest -> PlaceInterestDTO.toDto(placeInterest))
                 .collect(Collectors.toList());
     }
-
 
     // ID로 PlaceInterest 삭제
     public void deletePlaceInterestById(Long id) {

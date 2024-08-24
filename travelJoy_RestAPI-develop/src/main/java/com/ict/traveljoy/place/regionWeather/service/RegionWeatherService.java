@@ -33,20 +33,9 @@ public class RegionWeatherService {
 
     // 지역별 날씨 상태 저장
     public RegionWeatherDTO saveRegionWeather(RegionWeatherDTO regionWeatherDto) {
-        if (regionWeatherDto == null) {
-            throw new IllegalArgumentException("RegionWeatherDTO must not be null");
-        }
-
         RegionWeather regionWeather = regionWeatherDto.toEntity();
-
-        // 필수 필드 확인
-        if (regionWeather.getRegion() == null || regionWeather.getWeather() == null) {
-            throw new IllegalArgumentException("Region ID and Weather ID must not be null");
-        }
-
-        // 저장
-        RegionWeather savedRegionWeather = regionWeatherRepository.save(regionWeather);
-        return RegionWeatherDTO.toDto(savedRegionWeather);
+        regionWeather = regionWeatherRepository.save(regionWeather);
+        return RegionWeatherDTO.toDto(regionWeather);
     }
 
     // ID로 지역별 날씨 상태 삭제

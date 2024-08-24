@@ -7,7 +7,6 @@ import com.ict.traveljoy.security.jwt.refreshtoken.RefreshRepository;
 import com.ict.traveljoy.security.jwt.refreshtoken.RefreshToken;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -19,7 +18,7 @@ public class RefreshService {
     }
 
     public void save(RefreshToken refreshToken) {
-    	refreshRepository.findByUserIdAndUserAgent(refreshToken.getUser().getId(), refreshToken.getUserAgent())
+    	refreshRepository.findByUserEmailAndUserAgent(refreshToken.getUser().getEmail(), refreshToken.getUserAgent())
     	.ifPresent(token -> refreshRepository.delete(token));
         refreshRepository.save(refreshToken);
     }
@@ -36,7 +35,10 @@ public class RefreshService {
         refreshRepository.deleteByTokenValue(tokenValue);
     }
 
-    public Optional<RefreshToken> findByUserId(Long id) {
-        return refreshRepository.findByUserId(id);
+    public Optional<RefreshToken> findByUserEmail(String email) {
+        return refreshRepository.findByUserEmail(email);
+    }
+    public Optional<RefreshToken> findByUserEmailAndUserAgent(String email, String userAgent) {
+        return refreshRepository.findByUserEmailAndUserAgent(email, userAgent);
     }
 }

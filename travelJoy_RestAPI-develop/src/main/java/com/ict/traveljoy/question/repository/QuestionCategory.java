@@ -28,6 +28,6 @@ public class QuestionCategory {
 	@Column(name="question_category_id")
 	private Long id;
 	
-	@Column(length = 50)
+	@Column(length = 50,name="QUESTION_CATEGORY_NAME")
 	private String questionCategoryName;
 }

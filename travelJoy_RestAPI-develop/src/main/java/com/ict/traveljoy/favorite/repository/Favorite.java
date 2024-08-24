@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="favorite")
+@Table(name="FAVORITE")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,46 +35,46 @@ public class Favorite {
 	@Id
 	@SequenceGenerator(name = "seq_favorite",sequenceName = "seq_favorite",allocationSize = 1,initialValue = 1)
 	@GeneratedValue(generator = "seq_favorite",strategy = GenerationType.SEQUENCE)
-	@Column(name="favorite_id")
+	@Column(name="FAVORITE_ID")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "USER_ID", nullable = false)
 	private Users user;
 
-	@Column(name="target_id")
+	@Column(name="TARGET_ID")
 	private Long targetId;
 
-	@Column(name="is_event", columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_EVENT", columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("0")
 	private Integer isEvent;
 
-	@Column(name="is_food", columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_FOOD", columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("0")
 	private Integer isFood;
 
-	@Column(name="is_sight", columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_SIGHT", columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("0")
 	private Integer isSight;
 
-	@Column(name="is_hotel", columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_HOTEL", columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("0")
 	private Integer isHotel;
 
-	@Column(name="is_active",nullable = false, columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_ACTIVE",nullable = false, columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("1")
 	private Integer isActive;
 
-	@Column(name="is_delete",nullable = false, columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_DELETE",nullable = false, columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("0")
 	private Integer isDelete;
 
-	@Column(name="create_date",nullable = false)
+	@Column(name="CREATE_DATE",nullable = false)
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
 	private LocalDateTime createDate;
 
-	@Column(name="delete_date")
+	@Column(name="DELETE_DATE")
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
 	private LocalDateTime deleteDate;

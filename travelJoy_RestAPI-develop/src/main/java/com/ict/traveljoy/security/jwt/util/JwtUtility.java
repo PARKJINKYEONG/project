@@ -83,4 +83,5 @@ public class JwtUtility {
         Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
         return claims.get("category", String.class);
     }
+    
 }

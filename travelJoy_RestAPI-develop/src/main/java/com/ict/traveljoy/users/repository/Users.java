@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.ict.traveljoy.converter.PermissionToNumberConverter;
+import com.ict.traveljoy.image.repository.Image;
 import com.ict.traveljoy.info.userallergy.repository.UserAllergy;
 import com.ict.traveljoy.info.userhandicap.repository.UserHandicap;
 import com.ict.traveljoy.info.userinterest.repository.UserInterest;
@@ -19,7 +20,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -52,7 +55,7 @@ public class Users {
 	@Column(length = 30)
 	private String name;
 	
-	@Column(length = 30,nullable = false)
+	@Column(length = 30)
 	private String nickname;
 	
 	@Column
@@ -122,6 +125,15 @@ public class Users {
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
 	private LocalDateTime updateDate;
+	
+	@Column
+	@ColumnDefault("'안녕하세요.'")
+	private String introduce;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_image_id", referencedColumnName = "image_id")
+    private Image profileImage;
+	
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserInterest> userInterest;

@@ -47,10 +47,8 @@ public class AnswerDTO {
 	public static AnswerDTO toDTO(Answer answer) {
 		return AnswerDTO.builder()
 				.id(answer.getId())
-//				.questionId(answer.getQuestion()!=null?answer.getQuestion().getId():null)
 				.question(answer.getQuestion())
 				.user(answer.getUser())
-//				.answerHandlerId(answer.getUser()!=null?answer.getUser().getId():null)
 				.answerDate(answer.getAnswerDate())
 				.answerContent(answer.getAnswerContent())
 				.build();

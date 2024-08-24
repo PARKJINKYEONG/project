@@ -25,9 +25,9 @@ public class ReportCategory {
 	@Id
 	@SequenceGenerator(name = "seq_report_category",sequenceName = "seq_report_category",allocationSize = 1,initialValue = 1)
 	@GeneratedValue(generator = "seq_report_category",strategy = GenerationType.SEQUENCE)
-	@Column(name = "report_category_id")
+	@Column(name = "REPORT_CATEGORY_ID")
 	private Long id;
 	
-	@Column(length=50,nullable=false)
+	@Column(name="REPORT_CATEGORY_NAME",length=50,nullable=false)
 	private String reportCategoryName;
 }

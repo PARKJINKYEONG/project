@@ -31,16 +31,19 @@ public class FavoriteDTO {
 	private LocalDateTime deleteDate;
 
 	public Favorite toEntity() {
+		
+		
 		return Favorite.builder()
 				.id(id)
 				.user(user)
 				.targetId(targetId)
-				.isEvent(isEvent == true ? 1 : 0)
-				.isFood(isFood == true ? 1 : 0)
-				.isSight(isSight == true ? 1 : 0)
-				.isHotel(isHotel == true ? 1 : 0)
-				.isActive(isActive == true ? 1 : 0)
-				.isDelete(isDelete == true ? 1 : 0)
+				.isEvent(isEvent == null||false?0:1)
+				//null?참:거짓
+				.isFood(isFood == null||false?0:1)
+				.isSight(isSight == null||false?0:1)
+				.isHotel(isHotel == null||false?0:1)
+				.isActive(isActive == null||false?0:1)
+				.isDelete(isDelete == null||false?0:1)
 				.createDate(createDate)
 				.deleteDate(deleteDate)
 				.build();

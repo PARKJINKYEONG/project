@@ -33,9 +33,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		// 요청에서 'Authorization' 헤더를 추출합니다.
         String authorization = request.getHeader("Authorization");
-
+        
         String requestURI = request.getRequestURI();
         if ("/reissue".equals(requestURI)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
+        if ("/logout".equals(requestURI)) {
             filterChain.doFilter(request, response);
             return;
         }

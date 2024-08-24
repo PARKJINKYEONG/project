@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(name="CHATROOM")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,23 +30,30 @@ public class ChatRoom {
 	@Id
 	@SequenceGenerator(name = "seq_chatroom",sequenceName = "seq_chatroom",allocationSize = 1,initialValue = 1)
 	@GeneratedValue(generator = "seq_chatroom",strategy = GenerationType.SEQUENCE)
-	@Column(name = "chat_room_id")
+	@Column(name = "CHATROOM_ID")
 	private Long id;
 	
+	@Column(name = "CREATE_DATE")
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
     private LocalDateTime createDate;
 
+	@Column(name = "DELETE_DATE")
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
     private LocalDateTime deleteDate;
 
 	@ColumnDefault("1")
-	@Column(columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_ACTIVE",columnDefinition = "NUMBER(1, 0)")
 	private Integer isActive;
 	
 	@ColumnDefault("0")
-	@Column(columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_DELETE",columnDefinition = "NUMBER(1, 0)")
 	private Integer isDelete;
+	
+	@Column(name="LAST_UPDATE_DATE")
+	@ColumnDefault("SYSDATE")
+	@CreationTimestamp
+	private LocalDateTime lastUpdateDate;
 	
 }

@@ -30,6 +30,7 @@ public class HistoryController {
 	@GetMapping
 	public ResponseEntity<List<SearchHistoryDTO>> getAllHistory() {
 		try {
+			
 			List<SearchHistoryDTO> historyList = searchHistoryService.getAll();
 			return ResponseEntity.status(200).header(HttpHeaders.CONTENT_TYPE,"application/json").body(historyList);
 		}

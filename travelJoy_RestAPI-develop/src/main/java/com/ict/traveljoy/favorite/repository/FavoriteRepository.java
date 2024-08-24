@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FavoriteRepository extends JpaRepository<Favorite, Long>{
 
-
+	List<Favorite> findAllByUser_Id(Long userId);
+	
     // 북마크한 모든 행사 조회
     List<Favorite> findAllByUser_IdAndIsEventAndIsActive(Long userId,Integer isEvent,Integer isActive);
     // 북마크한 행사를 행사 id(targetID)를 통해 조회
@@ -26,4 +27,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long>{
     List<Favorite> findAllByUser_IdAndIsHotelAndIsActive(Long userId,Integer isHotel,Integer isActive);
     // 북마크한 숙소를 숙소 id(targetID)를 통해 조회
     //Favorite findByHotelId(Long targetid);
+
+	
 }

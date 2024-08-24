@@ -1,6 +1,7 @@
 package com.ict.traveljoy.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import com.ict.traveljoy.security.jwt.refreshtoken.RefreshToken;
 import com.ict.traveljoy.security.jwt.service.RefreshService;
 import com.ict.traveljoy.security.jwt.util.JwtUtility;
 import com.ict.traveljoy.users.repository.Users;
+import com.ict.traveljoy.users.service.UserDTO;
 import com.ict.traveljoy.users.service.UserService;
 
 import java.io.IOException;
@@ -32,51 +34,43 @@ public class CustomLogoutHandler implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.startsWith("Bearer ")) {
-            String token = authorization.substring(7); // 'Bearer ' 문자 제거
+    	String authorization = request.getHeader("Authorization");
 
-            try {
-                jwtUtility.isTokenExpired(token);
-            } catch (ExpiredJwtException e) {
-                log.info("Token expired during logout: {}", e.getMessage());
-                // HTTP 응답을 설정하여 직접 클라이언트에게 오류 정보를 전달합니다.
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
-                response.setContentType("application/json");
+        try {
+            if (authorization != null && authorization.startsWith("Bearer ")) {
+                String token = authorization.substring(7); // 'Bearer ' 문자 제거
+
+                // 토큰이 만료되었는지 확인하고 예외 처리
                 try {
-                    response.getWriter().write("{\"error\":\"Session has expired. Please log in again.\"}");
-                    response.getWriter().flush();
-                } catch (IOException ioException) {
-                    log.error("Error writing to response", ioException);
+                    jwtUtility.isTokenExpired(token);
+                } catch (ExpiredJwtException e) {
+                    log.info("만료된 토큰입니다.");
+                    // 토큰이 만료된 경우, 사용자 정보를 조회하지 않고 바로 로그아웃 처리로 넘어갑니다.
                 }
-                return; // 메서드를 빠져나와 추가 처리를 중단합니다.
-            }
 
-            // 만료 여부와 상관없이 사용자 정보를 조회하여 로그아웃 처리를 합니다.
-            String userName = jwtUtility.getUserEmailFromToken(token);
-            Optional<Users> userOptional = userService.findByEmail(userName);
-            if (userOptional.isPresent()) {
-                Users user = userOptional.get();
-                /*
-                // 카카오 로그아웃 처리
-                if ("kakao".equals(user.getLoginType())) {
-                    String kakaoAccessToken = user.getSnsAccessToken(); // 저장된 카카오 액세스 토큰 사용
-                    String kakaoLogoutUrl = "https://kapi.kakao.com/v1/user/logout";
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.set("Authorization", "Bearer " + kakaoAccessToken);
+                // 토큰이 만료되지 않은 경우에만 사용자 정보를 조회하고 리프레시 토큰을 삭제합니다.
+                if (!jwtUtility.isTokenExpired(token)) {
+                    String userName = jwtUtility.getUserEmailFromToken(token);
+                    UserDTO userDTO = userService.findByEmail(userName);
+                    Users user = userDTO.toEntity();
 
-                    HttpEntity<String> kakaoRequestEntity = new HttpEntity<>(headers);
-                    RestTemplate restTemplate = new RestTemplate();
-                    ResponseEntity<String> kakaoResponse = restTemplate.exchange(kakaoLogoutUrl, HttpMethod.POST, kakaoRequestEntity, String.class);
-                    log.info("Kakao logout response = {}", kakaoResponse.getBody());
+                    String currentUserAgent = request.getHeader("User-Agent");
+
+                    // 특정 userAgent에 해당하는 RefreshToken 삭제
+                    Optional<RefreshToken> refreshTokenOptional = refreshService.findByUserEmailAndUserAgent(user.getEmail(), currentUserAgent);
+                    refreshTokenOptional.ifPresent(refreshToken -> refreshService.deleteByRefresh(refreshToken.getTokenValue()));
                 }
-				*/
-                Optional<RefreshToken> refresh = refreshService.findByUserId(user.getId());
-                refresh.ifPresent(refreshToken -> refreshService.deleteByRefresh(refreshToken.getTokenValue()));
             }
+        } finally {
+            // 리프레시 토큰 쿠키 삭제
+            Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setPath("/");
+            refreshTokenCookie.setMaxAge(0);
+            response.addCookie(refreshTokenCookie);
+
+            // 성공적인 로그아웃 응답을 설정합니다.
+            response.setStatus(HttpServletResponse.SC_OK);
         }
-
-        // 성공적인 로그아웃 응답을 설정합니다.
-        response.setStatus(HttpServletResponse.SC_OK);
     }
 }

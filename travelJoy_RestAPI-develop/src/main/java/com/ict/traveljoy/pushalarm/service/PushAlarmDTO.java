@@ -29,8 +29,8 @@ public class PushAlarmDTO {
 				.id(id)
 				.title(title)
 				.pushAlarmContent(pushAlarmContent)
-				.isActive(isActive == true ? 1 : 0)
-				.isDelete(isDelete == true ? 1 : 0)
+				.isActive(isActive!=null && isActive ? 1 : 0)
+				.isDelete(isDelete!=null && isDelete ? 1 : 0)
 				.deleteDate(deleteDate)
 				.build();
 	}
@@ -40,8 +40,8 @@ public class PushAlarmDTO {
 				.id(pushAlarm.getId())
 				.title(pushAlarm.getTitle())
 				.pushAlarmContent(pushAlarm.getPushAlarmContent())
-				.isActive(pushAlarm.getIsActive() == 1 ? true : false)
-				.isDelete(pushAlarm.getIsDelete() == 1 ? true : false)
+				.isActive(pushAlarm.getIsActive()!=null &&pushAlarm.getIsActive() == 1 ? true : false)
+				.isDelete(pushAlarm.getIsDelete()!=null &&pushAlarm.getIsDelete() == 1 ? true : false)
 				.deleteDate(pushAlarm.getDeleteDate())
 				.build();
 	}

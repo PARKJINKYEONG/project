@@ -1,6 +1,5 @@
 package com.ict.traveljoy.info.handicap.service;
 
-import com.ict.traveljoy.info.allergy.service.AllergyDto;
 import com.ict.traveljoy.info.handicap.repository.Handicap;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HandicapDto {
+public class HandicapDTO {
 	private Long id;
 	private String handicapCode;
 	private String handicapType;
@@ -26,8 +25,8 @@ public class HandicapDto {
 				.handicapType(handicapType)
 				.build();
 	}
-	public static HandicapDto toDto(Handicap handicap) {
-		return HandicapDto.builder()
+	public static HandicapDTO toDTO(Handicap handicap) {
+		return HandicapDTO.builder()
 				.id(handicap.getId())
 				.handicapCode(handicap.getHandicapCode())
 				.handicapType(handicap.getHandicapType())

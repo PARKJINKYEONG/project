@@ -46,14 +46,14 @@ public class Answer {
 	@JoinColumn(name = "user_id", nullable = false)
 	private Users user; //답변자
 
-	@Column(length = 50)
+	@Column(length = 50,name="ANSWER_HANDLER_NAME")
 	private String answerHandlerName;
 
-	@Column(nullable = false)
+	@Column(nullable = false,name="ANSWER_DATE")
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
 	private LocalDateTime answerDate;
 
-	@Column(length = 2000)
+	@Column(length = 2000,name="ANSWER_CONTENT")
 	private String answerContent;
 }

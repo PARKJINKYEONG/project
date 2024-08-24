@@ -8,9 +8,11 @@ import com.ict.traveljoy.security.jwt.refreshtoken.RefreshToken;
 import com.ict.traveljoy.security.jwt.service.RefreshService;
 import com.ict.traveljoy.security.jwt.util.JwtUtility;
 import com.ict.traveljoy.users.repository.Users;
+import com.ict.traveljoy.users.service.UserDTO;
 import com.ict.traveljoy.users.service.UserService;
 
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -79,13 +81,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = customUserDetails.getUsername();
 
         // 사용자 이름을 사용하여 JWT를 생성합니다.
-        String access  = jwtUtility.generateToken(username,"access",accessExpiredMs);
-        String refresh  = jwtUtility.generateToken(username,"refresh",refreshExpiredMs);
-        Optional<Users> userOptional = userService.findByEmail(username);
-        if(userOptional.isPresent()){
-            Users user = userOptional.get();
-            LocalDateTime now = LocalDateTime.now();
-            RefreshToken refreshToken = RefreshToken.builder()
+        String access = jwtUtility.generateToken(username, "access", accessExpiredMs);
+        String refresh = jwtUtility.generateToken(username, "refresh", refreshExpiredMs);
+
+        // RefreshToken 저장 로직
+        
+        Users user = userService.findEntityByEmail(username);
+        LocalDateTime now = LocalDateTime.now();
+        RefreshToken refreshToken = RefreshToken.builder()
                     .status("activated")
                     .userAgent(request.getHeader("User-Agent"))
                     .user(user)
@@ -93,34 +96,32 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
                     .issuedAt(now)
                     .expirationDate(now.plusSeconds(refreshExpiredMs / 1000))
                     .build();
-            
             refreshService.save(refreshToken);
-        }
 
-        // 응답 헤더에 JWT를 'Bearer' 토큰으로 추가합니다.
+        // 리프레쉬 토큰을 httpOnly 쿠키로 설정
+        Cookie refreshCookie = new Cookie("refreshToken", refresh);
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setPath("/"); // 모든 경로에서 쿠키 접근 가능
+        refreshCookie.setMaxAge(refreshExpiredMs.intValue() / 1000); // 쿠키 유효기간 설정
+        response.addCookie(refreshCookie);
+
+        // 응답 헤더에 액세스 토큰 추가
         response.addHeader("Authorization", "Bearer " + access);
-
-        // 클라이언트가 Authorization 헤더를 읽을 수 있도록, 해당 헤더를 노출시킵니다.
+        // 클라이언트가 Authorization 헤더를 읽을 수 있도록, 해당 헤더를 노출
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
-        // 여기서 부터 사용자 정보를 응답 바디에 추가하는 코드입니다.
-        // 사용자의 권한이나 추가 정보를 JSON 형태로 변환하여 응답 바디에 포함시킬 수 있습니다.
         boolean isAdmin = customUserDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("username", username);
         responseBody.put("isAdmin", isAdmin);
-        responseBody.put("refresh",refresh);
+        responseBody.put("success", true);
 
-        // ObjectMapper를 사용하여 Map을 JSON 문자열로 변환합니다.
         String responseBodyJson = new ObjectMapper().writeValueAsString(responseBody);
-
-        // 응답 컨텐츠 타입을 설정합니다.
         response.setContentType("application/json");
-
-        // 응답 바디에 JSON 문자열을 작성합니다.
         response.getWriter().write(responseBodyJson);
         response.getWriter().flush();
     }
+
 
     // 로그인 실패 시 실행되는 메소드입니다. 실패한 경우, HTTP 상태 코드 401을 반환합니다.
     @Override

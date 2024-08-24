@@ -1,6 +1,10 @@
 package com.ict.traveljoy.plan.progress.service;
 
 import com.ict.traveljoy.plan.repository.Plan;
+import com.ict.traveljoy.place.event.repository.Event;
+import com.ict.traveljoy.place.food.repository.Food;
+import com.ict.traveljoy.place.hotel.repository.Hotel;
+import com.ict.traveljoy.place.sight.repository.Sight;
 import com.ict.traveljoy.plan.progress.repository.PlanProgress2;
 
 import lombok.*;
@@ -23,10 +27,10 @@ public class PlanProgress2Dto {
     private Boolean isFood;
     private Boolean isSight;
     private Boolean isHotel;
-    private Long eventId;
-    private Long foodId;
-    private Long sightId;
-    private Long hotelId;
+    private Event event;
+    private Food food;
+    private Sight sight;
+    private Hotel hotel;
 
     public PlanProgress2 toEntity() {
         Plan plan = new Plan();
@@ -42,10 +46,10 @@ public class PlanProgress2Dto {
                 .isFood(isFood == true ? 1 : 0)
                 .isSight(isSight == true ? 1 : 0)
                 .isHotel(isHotel == true ? 1 : 0)
-                .eventId(eventId)
-                .foodId(foodId)
-                .sightId(sightId)
-                .hotelId(hotelId)
+                .event(event)
+                .food(food)
+                .sight(sight)
+                .hotel(hotel)
                 .build();
     }
 
@@ -60,10 +64,10 @@ public class PlanProgress2Dto {
                 .isFood(planProgress2.getIsFood()== 1 ? true : false)
                 .isSight(planProgress2.getIsSight()== 1 ? true : false)
                 .isHotel(planProgress2.getIsHotel()== 1 ? true : false)
-                .eventId(planProgress2.getEventId())
-                .foodId(planProgress2.getFoodId())
-                .sightId(planProgress2.getSightId())
-                .hotelId(planProgress2.getHotelId())
+                .event(planProgress2.getEvent())
+                .food(planProgress2.getFood())
+                .sight(planProgress2.getSight())
+                .hotel(planProgress2.getHotel())
                 .build();
     }
 }

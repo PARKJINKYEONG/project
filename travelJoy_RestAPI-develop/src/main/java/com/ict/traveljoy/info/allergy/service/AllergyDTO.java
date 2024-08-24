@@ -1,10 +1,6 @@
 package com.ict.traveljoy.info.allergy.service;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-
 import com.ict.traveljoy.info.allergy.repository.Allergy;
-import com.ict.traveljoy.users.service.UserDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AllergyDto {
+public class AllergyDTO {
 	private Long id;
 	private String interestTopic;
 	private Boolean activityPlace;
@@ -27,16 +23,16 @@ public class AllergyDto {
 		return Allergy.builder()
 				.id(id)
 				.interestTopic(interestTopic)
-				.activityPlace(activityPlace == true ? 1 : 0)
+				.activityPlace(activityPlace != null && activityPlace? 1 : 0)
 				.classification(classification)
 				.build();
 	}
 	
-	public static AllergyDto toDto(Allergy allergy) {
-		return AllergyDto.builder()
+	public static AllergyDTO toDTO(Allergy allergy) {
+		return AllergyDTO.builder()
 				.id(allergy.getId())
 				.interestTopic(allergy.getInterestTopic())
-				.activityPlace(allergy.getActivityPlace() == 1 ? true : false)
+				.activityPlace(allergy.getActivityPlace() != null && allergy.getActivityPlace() == 1 ? true : false)
 				.classification(allergy.getClassification())
 				.build();
 	}

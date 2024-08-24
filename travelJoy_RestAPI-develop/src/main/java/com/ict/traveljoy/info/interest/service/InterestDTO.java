@@ -1,6 +1,5 @@
 package com.ict.traveljoy.info.interest.service;
 
-import com.ict.traveljoy.info.handicaprecommend.service.HandicapRecommendDto;
 import com.ict.traveljoy.info.interest.repository.Interest;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InterestDto {
+public class InterestDTO {
 	private Long id;
 	private String interestTopic;
 	private Boolean activityPlace;
@@ -24,16 +23,16 @@ public class InterestDto {
 		return Interest.builder()
 				.id(id)
 				.interestTopic(interestTopic)
-				.activityPlace(activityPlace == true ? 1 : 0)
+				.activityPlace(activityPlace != null && activityPlace ? 1 : 0)
 				.classification(classification)
 				.build();
 	}
 	
-	public static InterestDto toDto(Interest interest) {
-		return InterestDto.builder()
+	public static InterestDTO toDTO(Interest interest) {
+		return InterestDTO.builder()
 				.id(interest.getId())
 				.interestTopic(interest.getInterestTopic())
-				.activityPlace(interest.getActivityPlace() == 1 ? true : false)
+				.activityPlace(interest.getActivityPlace()!=null && interest.getActivityPlace() == 1 ? true : false)
 				.classification(interest.getClassification())
 				.build();
 	}

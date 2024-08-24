@@ -35,13 +35,13 @@ public class Interest {
 	@Column(name = "interest_id")
 	private Long id;
 	
-	@Column(length = 50,nullable = false)
+	@Column(length = 50,nullable = false,name="INTEREST_TOPIC")
 	private String interestTopic;
 	
-	@Column(columnDefinition = "NUMBER(1, 0)")
+	@Column(columnDefinition = "NUMBER(1, 0)", name="ACTIVITY_PLACE")
 	private Integer activityPlace;
 	
-	@Column(length = 50)
+	@Column(length = 50,name="CLASSIFICATION")
 	private String classification;
 	
 	@OneToMany(mappedBy = "interest", cascade = CascadeType.ALL, orphanRemoval = true)

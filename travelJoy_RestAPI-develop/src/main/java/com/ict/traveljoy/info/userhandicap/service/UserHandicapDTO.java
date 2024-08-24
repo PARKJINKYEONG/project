@@ -15,28 +15,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserHandicapDto {
+public class UserHandicapDTO {
 	private Long id;
-	private Long userId;
-	private Long handicapId;
+	private Users user;
+	private Handicap handicap;
 	
 	public UserHandicap toEntity() {
-		Users user = new Users();
-		Handicap handicap = new Handicap();
-		
-		user.setId(userId);
-		handicap.setId(handicapId);
 		return UserHandicap.builder()
 				.id(id)
 				.user(user)
 				.handicap(handicap)
 				.build();
 	}
-	public static UserHandicapDto toDto(UserHandicap userHandicap) {
-		return UserHandicapDto.builder()
+	public static UserHandicapDTO toDTO(UserHandicap userHandicap) {
+		return UserHandicapDTO.builder()
 				.id(userHandicap.getId())
-				.userId(userHandicap.getUser() != null ? userHandicap.getUser().getId() : null)
-				.handicapId(userHandicap.getHandicap() != null ? userHandicap.getHandicap().getId() : null)
+				.user(userHandicap.getUser())
+				.handicap(userHandicap.getHandicap())
 				.build();
 	}
 }

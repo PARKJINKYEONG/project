@@ -33,7 +33,7 @@ public class Feedback {
     @Column(name = "FEEDBACK_ID", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PLAN_ID")
     private Plan plan;
 

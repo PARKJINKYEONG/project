@@ -32,14 +32,14 @@ public class UserAllergy {
 	@Column(name = "user_allergy_id")
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "allergy_id", nullable = false)
     private Allergy allergy;
     
-    @Column
+    @Column(name="ALLERGY_LEVEL")
     private Long allergyLevel;
 }

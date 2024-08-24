@@ -34,45 +34,46 @@ public class Report {
 
     //기본키, 일련번호
 	@Id
-	@Column(name="report_id")
+	@Column(name="REPORT_ID")
 	@SequenceGenerator(name = "seq_report",sequenceName = "seq_report",allocationSize = 1,initialValue = 1)
 	@GeneratedValue(generator = "seq_report",strategy = GenerationType.SEQUENCE)
     private Long id;
     
 	@ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "USER_ID")
 	private Users user;
     
     //신고대상
 	@ManyToOne
-    @JoinColumn(name = "report_category_id")
+    @JoinColumn(name = "REPORT_CATEGORY_ID")
 	private ReportCategory reportCategory;
     
-	@Column(nullable=false)
+	@Column(name="TARGET_ID",nullable=false)
     private Long targetId;
     
     //신고일자
-	@Column(name="report_date", nullable = false)
+	@Column(name="REPORT_DATE", nullable = false)
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
     private LocalDateTime reportDate;
     
     //신고내용
-	@Column(length=2000)
+	@Column(name="REPORT_CONTENT", nullable = false,length=2000)
     private String reportContent;
     
-    //신고처리 결과
-	@Column(nullable=false)
+    
+	@Column(name="REPORT_HANDLER_ID",nullable=false)
     private Long reportHandlerId;
     
-	@Column(length=50, nullable=false)
+	@Column(name="REPORT_HANDLER_NAME",length=50, nullable=false)
     private String reportHandlerName;
     
-	@Column(length=2000,nullable=false)
+	//신고처리 결과
+	@Column(name="REPORT_RESULT",length=2000,nullable=false)
     private String reportResult;
     
     //신고처리 일자
-    @Column(nullable = false)
+    @Column(name="REPORT_RESULT_DATE",nullable = false)
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
     private LocalDateTime reportResultDate;

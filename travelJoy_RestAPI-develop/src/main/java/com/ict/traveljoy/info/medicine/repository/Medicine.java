@@ -1,15 +1,17 @@
 package com.ict.traveljoy.info.medicine.repository;
 
+
 import java.util.List;
 
-import com.ict.traveljoy.info.allergy.repository.Allergy;
-import com.ict.traveljoy.info.userallergy.repository.UserAllergy;
+import com.ict.traveljoy.info.allergymedicine.repository.AllergyMedicine;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -33,10 +35,12 @@ public class Medicine {
 	@Column(name="medicine_id")
 	private Long id;
 	
-	@Column(length = 2000)
+	@Column(length = 2000,name="DESCRIPTION")
 	private String description;
 	
-	@Column(length = 100)
+	@Column(length = 100,name="MEDICINE_NAME")
 	private String medicineName;
 	
+	@OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AllergyMedicine> allergyMedicine;
 }

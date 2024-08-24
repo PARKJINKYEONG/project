@@ -1,6 +1,11 @@
 package com.ict.traveljoy.chat.repository;
 
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.ict.traveljoy.users.repository.Users;
 
 import jakarta.persistence.Column;
@@ -20,7 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(name="ENTER_CHATROOM")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,7 +36,7 @@ public class EnterChatRoom {
 	@Id
 	@SequenceGenerator(name = "seq_enter_chatroom",sequenceName = "seq_enter_chatroom",allocationSize = 1,initialValue = 1)
 	@GeneratedValue(generator = "seq_enter_chatroom",strategy = GenerationType.SEQUENCE)
-	@Column(name = "enter_chatroom_id")
+	@Column(name = "ENTER_CHATROOM_ID")
 	private Long id;
 	
 	
@@ -42,4 +47,5 @@ public class EnterChatRoom {
 	@ManyToOne(optional=false,fetch = FetchType.LAZY)
 	@JoinColumn(name="USER_ID", nullable = false)
 	private Users user;
+
 }

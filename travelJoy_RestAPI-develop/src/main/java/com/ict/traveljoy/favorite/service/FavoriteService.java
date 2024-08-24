@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ict.traveljoy.favorite.repository.Favorite;
 import com.ict.traveljoy.favorite.repository.FavoriteRepository;
+import com.ict.traveljoy.users.repository.UserRepository;
+import com.ict.traveljoy.users.repository.Users;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,10 +19,16 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteService {
 
 	private final FavoriteRepository favoriteRepository;
+	private final UserRepository userRepository;
 	private final ObjectMapper objectMapper;
 
-	public FavoriteDTO addFavorite(FavoriteDTO dto,String target) {
+	public FavoriteDTO addFavorite(String useremail, FavoriteDTO dto,String target) {
+
+		Users user = userRepository.findByEmail(useremail).get();
+		
 		Favorite newFav = dto.toEntity();
+		newFav.setUser(user);
+		
 		switch(target) {
 			case "event":
 				newFav.setIsEvent(1);
@@ -39,34 +47,38 @@ public class FavoriteService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<FavoriteDTO> favoriteAll() {
-		List<Favorite> favoriteEntityList =  favoriteRepository.findAll();
+	public List<FavoriteDTO> getFavoriteAll(String useremail) {
+		Users user = userRepository.findByEmail(useremail).get();
+		
+		List<Favorite> favoriteEntityList =  favoriteRepository.findAllByUser_Id(user.getId());
 
 		return objectMapper.convertValue(favoriteEntityList, objectMapper.getTypeFactory().defaultInstance().constructCollectionType(List.class,FavoriteDTO.class));
 	}
 
 	//target에 따라 favorite내용 모두 가져오기
 	@Transactional(readOnly = true)
-	public List<FavoriteDTO> getFavoriteAllByTarget(String target,long uid){
+	public List<FavoriteDTO> getFavoriteAllByTarget(String target,String useremail){
 		// target : event / food / sight / hotel
+		
+		Users user = userRepository.findByEmail(useremail).get();
+				
 		List<Favorite> favoriteEntityList;
 		switch(target) {
 			case "event":
-				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsEventAndIsActive(uid,1,1);
+				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsEventAndIsActive(user.getId(),1,1);
 				break;// findAllBy엔터티_필드명();
 			case "food":
-				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsFoodAndIsActive(uid,1,1);
+				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsFoodAndIsActive(user.getId(),1,1);
 				break;
 			case "sight":
-				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsSightAndIsActive(uid,1,1);
+				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsSightAndIsActive(user.getId(),1,1);
 				break;
 			default:
-				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsHotelAndIsActive(uid,1,1);
+				favoriteEntityList = favoriteRepository.findAllByUser_IdAndIsHotelAndIsActive(user.getId(),1,1);
 				break;
 		}
 
-		List<FavoriteDTO> favoriteDtos = favoriteEntityList.stream().map(fav->FavoriteDTO.toDTO(fav)).collect(Collectors.toList());
-		return favoriteDtos;
+		return objectMapper.convertValue(favoriteEntityList, objectMapper.getTypeFactory().defaultInstance().constructCollectionType(List.class,FavoriteDTO.class));
 	}
 
 	// targetId에 따라 내용 가져오기(url)

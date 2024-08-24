@@ -33,8 +33,8 @@ public class TripReviewDto {
                 .reviewContent(reviewContent)
                 .url(url)
                 .postDate(postDate)
-                .isActive(isActive == null ? 0 : (isActive ? 1 : 0))
-                .isDelete(isDelete == null ? 0 : (isDelete ? 1 : 0))
+                .isActive(isActive == true ? 1 : 0)
+                .isDelete(isDelete == true ? 1 : 0)
                 .deleteDate(deleteDate)
                 .build();
     }

@@ -1,7 +1,7 @@
 package com.ict.traveljoy.info.userhandicap.repository;
 
 import com.ict.traveljoy.info.handicap.repository.Handicap;
-import com.ict.traveljoy.info.userhandicap.service.UserHandicapDto;
+import com.ict.traveljoy.info.userhandicap.service.UserHandicapDTO;
 import com.ict.traveljoy.users.repository.Users;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,14 +33,14 @@ public class UserHandicap {
 	@Column(name="user_handicap_id")
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "handicap_id", nullable = false)
     private Handicap handicap;
     
-    @Column
+    @Column(name="HANDICAP_LEVEL")
     private Long handicapLevel;
 }

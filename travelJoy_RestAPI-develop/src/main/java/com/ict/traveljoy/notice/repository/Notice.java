@@ -39,6 +39,7 @@ public class Notice {
 	private Long id;
 	
 	@ColumnDefault("SYSDATE")
+	@Column(name="NOTICE_DATE")
 	@CreationTimestamp
 	private LocalDateTime noticeDate;
 	
@@ -48,19 +49,19 @@ public class Notice {
 	@Column(nullable = false,name="NOTICE_CONTENT",length = 2000)
 	private String content;
 	
-	@Column(columnDefinition = "NUMBER(1, 0)")
+	@Column(name = "IS_DELETE", length = 1, nullable = false,columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("0")
 	private Integer isDelete;
 	
-	@Column(columnDefinition = "NUMBER(1, 0)")
+	@Column(name = "IS_ACTIVE", length = 1, nullable = false,columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("1")
 	private Integer isActive;
 	
-	@Column(nullable = false)
+	@Column(nullable = false,name="WRITER")
 	private String writer;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@ManyToOne
+	@JoinColumn(name = "USER_ID")
 	private Users user;
 
 }

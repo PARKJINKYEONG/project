@@ -9,7 +9,7 @@ spring:
     username: ICTUSER
     password: ICT1234
 
-    
+
     hikari:
       auto-commit: true # default(false)
       connection-timeout: 30000 # default(30000)
@@ -18,7 +18,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update # create = ddl 자동생성, create-drop은 재시작
+      ddl-auto: create # create = ddl 자동생성, create-drop은 재시작
       #create이후에는 update, 테이블만들어놓고하면 none, 비교만 하려면 valid
 
       naming:
@@ -36,3 +36,29 @@ spring:
       tags-sorter: alpha
     api-docs:
       path: /api-docs
+     
+  #SMTP 설정(이메일 인증)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "sjd4154@gmail.com"  #이메일
+    password: "nofesspwahugqmfx"  #발급받은 비밀번호
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+      auth-code-expiration-millis: 1800000 
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        

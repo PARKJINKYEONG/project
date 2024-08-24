@@ -16,7 +16,7 @@ import java.util.List;
 
 @Tag(name="TripReviewPage", description = "여행 리뷰 페이지")
 @RestController
-@RequestMapping("/reviewList")
+@RequestMapping("/api/reviewList")
 public class TripReviewController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class TripReviewController {
     }
 
     // 모든 리뷰 조회
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<TripReviewDto>> getAllReviews() {
         try {
             List<TripReviewDto> reviews = tripReviewService.getAllReviews();
@@ -108,4 +108,39 @@ public class TripReviewController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }*/
+    // 작성자 이름으로 리뷰 조회
+    @GetMapping("/byWriter/{writer}")
+    public ResponseEntity<List<TripReviewDto>> getReviewsByWriter(@PathVariable("writer") String writer) {
+        try {
+            List<TripReviewDto> reviews = tripReviewService.getReviewsByWriter(writer);
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 계획 ID로 리뷰 조회
+    @GetMapping("/byPlanId/{planId}")
+    public ResponseEntity<List<TripReviewDto>> getReviewsByPlanId(@PathVariable("planId") Long planId) {
+        try {
+            List<TripReviewDto> reviews = tripReviewService.getReviewsByPlanId(planId);
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 제목에 특정 문자열이 포함된 리뷰 조회
+    @GetMapping("/byTitle/{title}")
+    public ResponseEntity<List<TripReviewDto>> getReviewsByTitleContaining(@PathVariable("title") String title) {
+        try {
+            List<TripReviewDto> reviews = tripReviewService.getReviewsByTitleContaining(title);
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package com.ict.traveljoy.info.userallergy.service;
 
 import com.ict.traveljoy.info.allergy.repository.Allergy;
-import com.ict.traveljoy.info.interest.service.InterestDto;
 import com.ict.traveljoy.info.userallergy.repository.UserAllergy;
 import com.ict.traveljoy.users.repository.Users;
 
@@ -16,17 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAllergyDto {
+public class UserAllergyDTO {
 	private Long id;
-	private Long userId;
-	private Long allergyId;
+	private Users user;
+	private Allergy allergy;
 	private Long allergyLevel;
 	public UserAllergy toEntity() {
-		Users user = new Users();
-		Allergy allergy = new Allergy();
-		
-		user.setId(userId);
-		allergy.setId(allergyId);
 		
 		return UserAllergy.builder()
 				.id(id)
@@ -35,11 +29,11 @@ public class UserAllergyDto {
 				.allergyLevel(allergyLevel)
 				.build();
 	}
-	public static UserAllergyDto toDto(UserAllergy userAllergy) {
-		return UserAllergyDto.builder()
+	public static UserAllergyDTO toDTO(UserAllergy userAllergy) {
+		return UserAllergyDTO.builder()
 				.id(userAllergy.getId())
-				.userId(userAllergy.getUser() != null ? userAllergy.getUser().getId() : null)
-				.allergyId(userAllergy.getAllergy() != null ? userAllergy.getAllergy().getId() : null)
+				.user(userAllergy.getUser())
+				.allergy(userAllergy.getAllergy())
 				.allergyLevel(userAllergy.getAllergyLevel())
 				.build();
 	}

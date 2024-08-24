@@ -102,10 +102,10 @@ public class PlanProgress2Service {
             existingPlanProgress2.setIsFood(planProgress2Dto.getIsFood() == true ? 1 : 0);
             existingPlanProgress2.setIsSight(planProgress2Dto.getIsSight() == true ? 1 : 0);
             existingPlanProgress2.setIsHotel(planProgress2Dto.getIsHotel() == true ? 1 : 0);
-            existingPlanProgress2.setEventId(planProgress2Dto.getEventId());
-            existingPlanProgress2.setFoodId(planProgress2Dto.getFoodId());
-            existingPlanProgress2.setSightId(planProgress2Dto.getSightId());
-            existingPlanProgress2.setHotelId(planProgress2Dto.getHotelId());
+//            existingPlanProgress2.setEventId(planProgress2Dto.getEvent());
+//            existingPlanProgress2.setFoodId(planProgress2Dto.getFood());
+//            existingPlanProgress2.setSightId(planProgress2Dto.getSight());
+//            existingPlanProgress2.setHotelId(planProgress2Dto.getHotel());
 
             // Plan 엔티티를 조회하여 설정
             if (planProgress2Dto.getPlanId() != null) {

@@ -3,7 +3,7 @@ package com.ict.traveljoy.info.handicaprecommend.repository;
 import java.util.List;
 
 import com.ict.traveljoy.info.handicap.repository.Handicap;
-import com.ict.traveljoy.info.handicaprecommend.service.HandicapRecommendDto;
+import com.ict.traveljoy.info.handicaprecommend.service.HandicapRecommendDTO;
 import com.ict.traveljoy.info.interest.repository.Interest;
 import com.ict.traveljoy.info.userhandicap.repository.UserHandicap;
 

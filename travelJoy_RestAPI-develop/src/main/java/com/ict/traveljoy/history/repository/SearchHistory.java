@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="search_history")
+@Table(name="SEARCH_HISTORY")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,30 +38,30 @@ public class SearchHistory {
 	@Id
 	@SequenceGenerator(name = "seq_search_history",sequenceName = "seq_search_history",allocationSize = 1,initialValue = 1)
 	@GeneratedValue(generator = "seq_search_history",strategy = GenerationType.SEQUENCE)
-	@Column(name="search_history_id")
+	@Column(name="SEARCH_HISTORY_ID")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "USER_ID", nullable = false)
 	private Users user;
 
-	@Column(name="search_word")
+	@Column(name="SEARCH_WORD")
 	private String searchWord;
 
-	@Column(name="search_date")
+	@Column(name="SEARCH_DATE")
 	@ColumnDefault("SYSDATE")
 	@CreationTimestamp
 	private LocalDateTime searchDate;
 
-	@Column(name="is_active",nullable = false, columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_ACTIVE",nullable = false, columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("1")
 	private Integer isActive;
 
-	@Column(name="is_delete",nullable = false, columnDefinition = "NUMBER(1, 0)")
+	@Column(name="IS_DELETE",nullable = false, columnDefinition = "NUMBER(1, 0)")
 	@ColumnDefault("0")
 	private Integer isDelete;
 
-	@Column(name="delete_date")
+	@Column(name="DELETE_DATE")
 	@CreationTimestamp
 	private LocalDateTime deleteDate;
 }

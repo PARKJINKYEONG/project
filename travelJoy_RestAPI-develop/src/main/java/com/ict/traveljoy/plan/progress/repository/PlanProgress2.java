@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.ict.traveljoy.place.event.repository.Event;
+import com.ict.traveljoy.place.food.repository.Food;
+import com.ict.traveljoy.place.hotel.repository.Hotel;
+import com.ict.traveljoy.place.sight.repository.Sight;
 import com.ict.traveljoy.plan.repository.Plan;
 
 import jakarta.persistence.Column;
@@ -65,16 +69,20 @@ public class PlanProgress2 {
     @ColumnDefault("0")
     private Integer isHotel;
 
-    @Column(name = "EVENT_ID")
-    private Long eventId;
+    @ManyToOne
+	@JoinColumn(name = "EVENT_ID")
+    private Event event;
 
-    @Column(name = "FOOD_ID")
-    private Long foodId;
+    @ManyToOne
+	@JoinColumn(name = "FOOD_ID")
+    private Food food;
 
-    @Column(name = "SIGHT_ID")
-    private Long sightId;
+    @ManyToOne
+   	@JoinColumn(name = "SIGHT_ID")
+    private Sight sight;
 
-    @Column(name = "HOTEL_ID")
-    private Long hotelId;
+    @ManyToOne
+   	@JoinColumn(name = "HOTEL_ID")
+    private Hotel hotel;
 
 }
