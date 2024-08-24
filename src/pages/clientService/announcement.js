@@ -4,26 +4,13 @@ import QnAstyle from '../../styles/userQna.module.css';
 
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
+import UserComponent from './userComponent';
 
-const testData = [
-  {   id:'1',
-      title:'공지사항1',
-      author:'석석이',
-      createdAt:'2024-08-15',
-      content:'첫번째 공지사항입니다'
-  },
-  {   id:'2',
-      title:'공지사항2',
-      author:'석석이',
-      createdAt:'2024-08-15',
-      content:'두번째 공지사항입니다'
-  },
-  {   id:'3',
-    title:'공지사항33333',
-    author:'석석이',
-    createdAt:'2024-08-15',
-    content:'세번째 공지사항입니다'
-},
+const rows = [
+  { no: 4, category: '석석이', title: '공지사항입니다', date: '2020-11-12' },
+  { no: 3, category: '덕덕이', title: '비공계인 공지사항입니다', date: '2017-11-22' },
+  { no: 2, category: '경경이', title: '안녕하세요', date: '2017-11-22' },
+  { no: 1, category: '진진이', title: '안녕하세요 질문합니다', date: '2017-11-22' },
 ];
 
 function Announcement() {
@@ -35,7 +22,7 @@ function Announcement() {
     };
     
     
-    const [qnaList, setQnaList] = useState(testData);
+
 
     const handleOnclickTitle = (qna) => {
       navigate('/announcement/'+qna.id, {state: qna});
@@ -76,6 +63,32 @@ function Announcement() {
         textAlign: "left",
         padding: "8px",
       };
+      
+      const containerStyle = {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: "20px",
+      };
+      
+      const searchBoxStyle = {
+        width: "60%", // 크기를 줄였습니다.
+        padding: "8px",
+        boxSizing: "border-box",
+      };
+      
+      const buttonStyle = {
+        padding: "10px 20px",
+        fontSize: "16px",
+        fontWeight: "bold",
+        color: "#fff",
+        backgroundColor: "#000",
+        border: "none",
+        cursor: "pointer",
+        borderRadius: "5px",
+        marginLeft: "10px", // 버튼과 검색 상자 사이의 간격
+      };
+
 
     
 
@@ -105,21 +118,24 @@ function Announcement() {
                 <table style={tableStyle}>
                     <thead>
                         <th style={thStyle}>No</th>
-                        <th style={thStyle}>제목</th>
                         <th style={thStyle}>작성자</th>
+                        <th style={thStyle}>제목</th>
                         <th style={thStyle}>작성시간</th>
                     </thead>
-                    <tbody>
-                        {qnaList.map((qna) => (
-                        <tr key={qna.id}>
-                            <td>{qna.id}</td>
-                            <td onClick={()=>{handleOnclickTitle(qna);}} style={{cursor: 'pointer'}}>{qna.title}</td>
-                            <td>{qna.author}</td>
-                            <td>{qna.createdAt}</td>
-                        </tr>
+                    <tbody> 
+                        {rows.map(row => (
+                          <UserComponent row={row} onClick={()=>navigate('/announcementView')} />
                         ))}
-                    </tbody>
+                      </tbody>
                 </table>
+                <div style={containerStyle}>
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        style={searchBoxStyle}
+                    />
+                    <button style={buttonStyle} onClick={()=>navigate('/createUserQnA')}>글쓰기</button>
+                </div>
                 </div>
             </div>
     </div>

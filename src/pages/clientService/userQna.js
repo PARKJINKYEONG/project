@@ -35,28 +35,6 @@ const QnA = () => {
       cursor: "pointer",
       fontWeight: "bold",
     };
-  
-    // const searchBoxStyle = {
-    //     width: "calc(100% - 100px)",
-    //     padding: "8px",
-    //     marginTop: "20px",
-    //     boxSizing: "border-box",
-    //     display: "inline-block",
-    //   };
-
-    // const buttonStyle = {
-    //     display: "block",
-    //     margin: "20px auto",
-    //     padding: "10px 20px",
-    //     fontSize: "16px",
-    //     fontWeight: "bold",
-    //     color: "#fff",
-    //     backgroundColor: "#000",
-    //     border: "none",
-    //     cursor: "pointer",
-    //     display: "inline-block",
-    //     borderRadius: "5px",
-    //   };
 
     const containerStyle = {
         display: "flex",
@@ -128,11 +106,11 @@ const QnA = () => {
                         <th style={thStyle}>작성시간</th>
                         </tr>
                     </thead>
-                    <tbody> 
-                      {rows.map(row => (
-                        <UserComponent row={row} onClick={()=>navigate('/qnaView')} />
-                      ))}
-                    </tbody>
+                      <tbody> 
+                        {rows.map(row => (
+                          <UserComponent row={row} onClick={()=>navigate('/qnaView')} />
+                        ))}
+                      </tbody>
                     </table>
             <div style={containerStyle}>
                 <input
