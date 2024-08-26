@@ -3,14 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Grid } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Rating from '@mui/material/Rating';
 
 const exampleReviews = [
-  { id: 1, title: 'Example Review1', author: 'Author1', content: 'This is a review content1.', itinerary: 'Sample itinerary1', startDate: new Date(), endDate: new Date(), package: '', images: [] },
-  { id: 2, title: 'Example Review2', author: 'Author2', content: 'This is a review content2.', itinerary: 'Sample itinerary2', startDate: new Date(), endDate: new Date(), package: '', images: [] },
-  { id: 3, title: 'Example Review3', author: 'Author3', content: 'This is a review content3.', itinerary: 'Sample itinerary3', startDate: new Date(), endDate: new Date(), package: '', images: [] },
-  { id: 4, title: 'Example Review4', author: 'Author4', content: 'This is a review content4.', itinerary: 'Sample itinerary4', startDate: new Date(), endDate: new Date(), package: '', images: [] },
-  { id: 5, title: 'Example Review5', author: 'Author5', content: 'This is a review content5.', itinerary: 'Sample itinerary5', startDate: new Date(), endDate: new Date(), package: '', images: [] },
-  { id: 6, title: 'Example Review6', author: 'Author6', content: 'This is a review content6.', itinerary: 'Sample itinerary6', startDate: new Date(), endDate: new Date(), package: '', images: [] }
+  { id: 1, title: 'Example Review1', author: 'Author1', content: 'This is a review content1.', itinerary: 'Sample itinerary1', startDate: new Date(), endDate: new Date(), package: '', images: [], rating: 4 },
+  { id: 2, title: 'Example Review2', author: 'Author2', content: 'This is a review content2.', itinerary: 'Sample itinerary2', startDate: new Date(), endDate: new Date(), package: '', images: [], rating: 5 },
+  { id: 3, title: 'Example Review3', author: 'Author3', content: 'This is a review content3.', itinerary: 'Sample itinerary3', startDate: new Date(), endDate: new Date(), package: '', images: [], rating: 3 },
+  { id: 4, title: 'Example Review4', author: 'Author4', content: 'This is a review content4.', itinerary: 'Sample itinerary4', startDate: new Date(), endDate: new Date(), package: '', images: [], rating: 2 },
+  { id: 5, title: 'Example Review5', author: 'Author5', content: 'This is a review content5.', itinerary: 'Sample itinerary5', startDate: new Date(), endDate: new Date(), package: '', images: [], rating: 4 },
+  { id: 6, title: 'Example Review6', author: 'Author6', content: 'This is a review content6.', itinerary: 'Sample itinerary6', startDate: new Date(), endDate: new Date(), package: '', images: [], rating: 5 }
 ];
 
 const EditReview = () => {
@@ -37,6 +38,13 @@ const EditReview = () => {
       ...prevReview,
       startDate: start,
       endDate: end
+    }));
+  };
+
+  const handleRatingChange = (event, newValue) => {
+    setReview(prevReview => ({
+      ...prevReview,
+      rating: newValue
     }));
   };
 
@@ -128,6 +136,15 @@ const EditReview = () => {
               multiline
               rows={4}
               required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">별점</Typography>
+            <Rating
+              name="rating"
+              value={review.rating}
+              onChange={handleRatingChange}
+              precision={0.1}
             />
           </Grid>
           <Grid item xs={12}>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Grid } from '@mui/material';
+import { TextField, Button, Typography, Grid, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Rating from '@mui/material/Rating';
 
 const CreateTripReview = () => {
   const [formData, setFormData] = useState({
@@ -13,8 +14,21 @@ const CreateTripReview = () => {
     package: '',
     itinerary: '',
     content: '',
-    images: []
+    images: [],
+    rating: 0
   });
+
+  const [errors, setErrors] = useState({
+    title: false,
+    author: false,
+    startDate: false,
+    endDate: false,
+    package: false,
+    itinerary: false,
+    content: false,
+    rating: false
+  });
+
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -35,10 +49,37 @@ const CreateTripReview = () => {
     }));
   };
 
+  const handleRatingChange = (event, newValue) => {
+    setFormData(prevData => ({
+      ...prevData,
+      rating: newValue
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      title: !formData.title,
+      author: !formData.author,
+      startDate: !formData.startDate,
+      endDate: !formData.endDate,
+      package: !formData.package,
+      itinerary: !formData.itinerary,
+      content: !formData.content,
+      rating: formData.rating === 0
+    };
+    setErrors(newErrors);
+    return !Object.values(newErrors).includes(true);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
-    navigate('/ReviewList');
+
+    if (validateForm()) {
+      console.log('Form Data Submitted:', formData);
+      navigate('/ReviewList');
+    } else {
+      console.log('Form validation failed');
+    }
   };
 
   return (
@@ -59,6 +100,8 @@ const CreateTripReview = () => {
                 onChange={handleInputChange}
                 fullWidth
                 required
+                error={errors.title}
+                helperText={errors.title ? '제목을 입력해주세요.' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -69,6 +112,8 @@ const CreateTripReview = () => {
                 onChange={handleInputChange}
                 fullWidth
                 required
+                error={errors.author}
+                helperText={errors.author ? '작성자를 입력해주세요.' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -81,8 +126,13 @@ const CreateTripReview = () => {
                 selectsRange
                 inline
                 dateFormat="yyyy-MM-dd"
-                calendarClassName="scrollable-datepicker" 
+                calendarClassName="scrollable-datepicker"
               />
+              {(errors.startDate || errors.endDate) && (
+                <Typography color="error" variant="body2" style={{ marginTop: '10px' }}>
+                  여행 기간을 선택해주세요.
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -91,7 +141,9 @@ const CreateTripReview = () => {
                 value={formData.package}
                 onChange={handleInputChange}
                 fullWidth
-               
+                required
+                error={errors.package}
+                helperText={errors.package ? '패키지를 입력해주세요.' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -102,6 +154,8 @@ const CreateTripReview = () => {
                 onChange={handleInputChange}
                 fullWidth
                 required
+                error={errors.itinerary}
+                helperText={errors.itinerary ? '일정을 입력해주세요.' : ''}
               />
             </Grid>
             <Grid item xs={12}>
@@ -114,7 +168,23 @@ const CreateTripReview = () => {
                 multiline
                 rows={4}
                 required
+                error={errors.content}
+                helperText={errors.content ? '후기 내용을 입력해주세요.' : ''}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6">별점</Typography>
+              <Rating
+                name="rating"
+                value={formData.rating}
+                onChange={handleRatingChange}
+                precision={0.1}
+              />
+              {errors.rating && (
+                <Typography color="error" variant="body2" style={{ marginTop: '10px' }}>
+                  별점을 선택해주세요.
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12}>
               <input
