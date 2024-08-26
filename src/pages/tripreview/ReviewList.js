@@ -5,6 +5,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import '../../styles/TripReview.css';
 import ScrollToTopButton from '../../components/scrollToTopButton';
+import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
+
 
 const exampleReviews = [
   {
@@ -368,6 +371,9 @@ const ReviewList = () => {
                         </>
                       ) : (
                         <>
+                        <Stack spacing={1}>
+                          <Rating name="half-rating" defaultValue={4.4} precision={0.1} readOnly/>
+                        </Stack>
                           <div className="review-itinerary">
                             <strong>일정:</strong> {review.itinerary.length > MAX_LENGTH ? `${review.itinerary.substring(0, MAX_LENGTH)}...` : review.itinerary}
                           </div>
