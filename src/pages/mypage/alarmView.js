@@ -43,16 +43,8 @@ const AlarmView = () => {
         <div ref={calendarRef} style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
             <div style={{ width: '100%', border: '1px solid #ddd', borderRadius: '8px', padding: '20px', backgroundColor: 'white' }}>
                 <Calendar/><br/>
-                <AlarmSpeechBubble
-                    style={{
-                        position: 'absolute',
-                        top: '570px',
-                        right: '637px',
-                        color: 'red',
-                        padding: '4px 3px 0px 2px',   
-                    }}
-                >
-                    <h6>일정이 임박했습니다</h6>
+                <AlarmSpeechBubble>
+            
                 </AlarmSpeechBubble>                
             </div>    
         </div>

@@ -1,16 +1,16 @@
-// CreatePlan.js
-
 import React, { useEffect, useState } from 'react';
-import { Box} from '@mui/material';
 import StepperComponent from './stepperComponent';
 import ContentComponent from './contentComponent';
-import Header from '../header';
 import { useLocation, useNavigate } from 'react-router-dom';
+import MapComponent from './mapComponent';
+import styles from '../../styles/createPlan.module.css'; 
+import SlidingPanel from './slidingPanel';
 
 function CreatePlan() {
-  const [activeStep, setActiveStep] = useState(0); // 현재 단계 상태 관리
-  const [completed, setCompleted] = useState(0);
-
+  const [activeStep, setActiveStep] = useState(0); // 현재 단계 상태 관리  
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [selectedPlaces, setSelectedPlaces] = useState([]);
+  
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,6 +19,15 @@ function CreatePlan() {
       setActiveStep(location.state.step);  // 전달된 단계로 이동
     }
   }, [location]);//2024.08.13한동진 PlanListView에서 수정시 각 단계로 이동할때 쓰려는 훅함수
+
+  useEffect(() => {
+    // activeStep이 1, 2, 3일 때만 패널을 열 수 있게 설정
+    if (activeStep >= 1 && activeStep <= 3) {
+      setIsPanelOpen(true); // 특정 단계에서는 패널이 자동으로 열리게 설정
+    } else {
+      setIsPanelOpen(false); // 그 외 단계에서는 패널이 닫히도록 설정
+    }
+  }, [activeStep]);
 
   const handleButtonClick = () => {
     if (activeStep === 5) {
@@ -32,37 +41,55 @@ function CreatePlan() {
   const handleNext = () => {
     setActiveStep((prevStep) => Math.min(prevStep + 1, 5));
   };
-
-  // 이전 단계로 이동
-  const handleBack = () => {
-    setActiveStep((prevStep) => Math.max(prevStep - 1, 0));
-  };
   
   //원하는 단계로 이동
-
   const handleStep = (step) => () => {
     setActiveStep(step);
   };
 
-  // 초기화
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
+  const handlePlaceClick = () => {
+    setIsPanelOpen(true);
   };
 
+  const handleClosePanel = () => {
+    console.log("Close panel triggered");
+    setIsPanelOpen(false);
+  };
 
-  return (
-    <div>
-      <Header />
-      <h2>계획단계</h2>
-      <div style={{ display: 'flex' }}>
-        {/* StepperComponent와 ContentComponent가 동일한 상태를 공유 */}
-        <StepperComponent activeStep={activeStep} handleBack={handleBack} handleStep={handleStep} handleReset={handleReset} handleButtonClick = {handleButtonClick}/>
-        <Box style={{ flexGrow: 1, border: '2px solid black', marginLeft: '20px'}}>
-          <ContentComponent activeStep={activeStep} handleBack={handleBack} handleStep={handleStep} handleReset={handleReset} handleButtonClick = {handleButtonClick}/>
-        </Box>
-      </div>
-    </div>
+  const handleShowPanel = (show) => {
+    setIsPanelOpen(show);
+  };
+
+  return (  
+      <div className={styles.customContainer}>
+        {/* 좌측 Stepper */}
+        <div className={styles.planController}>
+          <StepperComponent 
+            activeStep={activeStep} 
+            handleStep={handleStep} 
+            handleButtonClick={handleButtonClick} 
+          />
+        </div>
+
+        {/* 가운데 Content */}
+        <div className={styles.planContainer}>
+          <ContentComponent 
+            activeStep={activeStep} 
+            handlePlaceClick={handlePlaceClick}
+            onShowPanel={handleShowPanel} 
+          />
+        </div>
+
+        {/* 우측 지도 */}
+        <div className={styles.mapContainer}>
+          <MapComponent />{/* 지도 컴포넌트를 여기에 렌더링 */}
+        </div>
+
+        <SlidingPanel 
+        isOpen={isPanelOpen} 
+        onClose={handleClosePanel} 
+        />
+      </div>      
   );
 }
 

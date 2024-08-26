@@ -1,6 +1,5 @@
 import React from'react';
 import { Route, Routes } from 'react-router-dom';
-import AdminHome from './adminHome';
 import StatisticHome from '../statistic/statisticHome';
 import Privacy from '../changeInfoAsManager/privacy';
 import LoginSecurity from '../changeInfoAsManager/loginSecurity';
@@ -9,6 +8,7 @@ import NoticeManagement from './notice/noticeManagement';
 import CommentManagement from './commentManagement';
 import QuestionManagement from './QnA/questionManagement';
 import CollapsibleTable from './reportManagement';
+import AdminHome from './adminHome';
 
 const AdminRoutes = () => {
     return (

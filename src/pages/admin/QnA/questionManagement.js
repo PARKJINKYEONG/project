@@ -3,15 +3,17 @@ import styles from '../../../styles/questionManagement.module.css';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import QuestionView from './questionView.js';
 import axios from 'axios';
+import useRequest from '../../../hooks/useRequest.js';
 
 
 const QuestionManagement  = () => {
+  const { get } = useRequest();
   const [questions, setQuestion] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   const fetchQuestions = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/questions');
+      const response = await get('http://localhost:8080/ask/all');
       setQuestion(response.data);
     } catch (error) {
       console.error('문의사항을 불러오는 중 오류가 발생했습니다.', error);

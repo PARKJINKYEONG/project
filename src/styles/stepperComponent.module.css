@@ -1,0 +1,41 @@
+.stepperContainer {
+    margin-top: 20px !important; 
+    width: 50% !important;
+}
+  
+.stepButtonContainer {
+    margin-bottom: 30px !important;
+}
+
+.stepNumber {
+    font-weight: bold !important;
+    font-size: 1rem !important;
+}
+
+.stepLabel {
+    font-size: 0.70rem !important;
+    text-align: center !important;
+}
+
+.customActiveButton, .customOutlinedButton {
+    display: flex !important;
+    flex-direction: column !important; 
+    text-align: center !important;
+    color: black !important;
+    background-color: #98E4FF !important;
+    padding: 5px 5px !important;
+}
+
+.customOutlinedButton {
+    color: rgb(169, 169, 169) !important;
+    background-color: transparent !important; 
+}
+
+.customActiveButton:hover {
+    background-color: #82c9e8 !important; /* 마우스 오버 시 배경색을 살짝 어둡게 */
+    color: #fff !important; /* 텍스트 색상을 흰색으로 유지 */
+}
+
+.nextButtonContainer {
+    margin-top: 60px !important;
+}
