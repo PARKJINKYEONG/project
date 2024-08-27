@@ -8,17 +8,36 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts/userContext';
 import useRequest from '../../hooks/useRequest';
+import { KAKAO } from '../../config/constraint';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const REST_API_KEY = KAKAO.API_KEY;
+  const REDIRECT_URI = KAKAO.REDIRECT_URI;
   const navigate = useNavigate();
+  const location = useLocation();
   const { setAccessToken, setEmail, setIsAdmin } = useContext(UserContext);
   const {post} = useRequest();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const access = searchParams.get('access');
+    const isAdmin = searchParams.get('isAdmin');
+    const email = searchParams.get('email');
+
+    if (access) setAccessToken(access);
+    if (isAdmin) setIsAdmin(isAdmin === 'true');
+    if (email) setEmail(email);
+    
+    if (access && isAdmin && email) {
+      navigate('/mypage');
+    }
+  }, [location, setAccessToken, setIsAdmin]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -42,6 +61,10 @@ export default function SignIn() {
     alert('아이디 혹은 비밀번호가 다릅니다');
   }
   };
+
+  const handleKakao = () => {
+    window.location.href =`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+};
 
   return <>
     <ThemeProvider theme={defaultTheme}>
@@ -150,6 +173,7 @@ export default function SignIn() {
                     padding: 0,
                     minWidth: 'auto',
                   }}
+                  onClick={handleKakao}
                 />
               </Grid>
               <Grid item>

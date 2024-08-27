@@ -7,7 +7,7 @@ import axios from "axios";
 
 export function RouteMap(){
     const REST_API_KEY = '9560d5a7af8ffc6f882d0b10ae12f25e';
-    const REDIRECT_URI = 'http://localhost:3000/testroute';
+    const REDIRECT_URI = 'http://localhost:8080/kakao';
     const {get, post, put, del} = useRequest();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -46,14 +46,8 @@ export function RouteMap(){
         console.error('POST 요청 중 오류 발생:', error);
       }
     };
-    const handleKakao = async () => {
-      try{
-        const data = await axios.get(`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`);
-        console.log(data);
-
-      } catch(err){
-        console.error('카카오 테스트중 오류 발생', err);
-      }
+    const handleKakao = () => {
+        window.location.href =`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
     };
 
     return <>
