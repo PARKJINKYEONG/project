@@ -12,13 +12,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts/userContext';
 import useRequest from '../../hooks/useRequest';
-import { KAKAO } from '../../config/constraint';
+import { GOOGLE, KAKAO } from '../../config/constraint';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const REST_API_KEY = KAKAO.API_KEY;
-  const REDIRECT_URI = KAKAO.REDIRECT_URI;
+  const KAKAO_REST_API_KEY = KAKAO.API_KEY;
+  const KAKAO_REDIRECT_URI = KAKAO.REDIRECT_URI;
+  const GOOGLE_CLIENT_ID = GOOGLE.CLIENT_ID;
+  const GOOGLE_REDIRECT_URI = GOOGLE.REDIRECT_URI;
   const navigate = useNavigate();
   const location = useLocation();
   const { setAccessToken, setEmail, setIsAdmin } = useContext(UserContext);
@@ -63,7 +65,11 @@ export default function SignIn() {
   };
 
   const handleKakao = () => {
-    window.location.href =`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+    window.location.href =`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}`;
+};
+
+const handleGoogle = () => {
+  window.location.href =`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&scope=email`;
 };
 
   return <>
@@ -191,6 +197,7 @@ export default function SignIn() {
                     padding: 0,
                     minWidth: 'auto',
                   }}
+                  onClick={handleGoogle}
                 />
               </Grid>
             </Grid>
