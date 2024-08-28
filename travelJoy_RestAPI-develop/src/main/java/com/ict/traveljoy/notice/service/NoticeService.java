@@ -2,8 +2,11 @@ package com.ict.traveljoy.notice.service;
 
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.stream.Collectors;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +22,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(NoticeService.class);
+
 	private final ViewCountService viewCountService;
 	private final NoticeViewService noticeViewService;
 	private final UserRepository userRepository;
@@ -30,11 +35,13 @@ public class NoticeService {
 	
 	@Transactional
 	public NoticeDTO createNotice(String useremail, NoticeDTO noticeDTO) {
-		
+		logger.info("Creating notice for user: {}", useremail);
+
 		Notice notice = noticeDTO.toEntity();
 		
 		// user 정하기
-		Users user = userRepository.findByEmail(useremail).get();
+		Users user = userRepository.findByEmail(useremail)
+				.orElseThrow(() -> new RuntimeException("User not found with email: " + useremail));
 		notice.setUser(user);
 		Notice afterSave = noticeRepository.save(notice);
 		
