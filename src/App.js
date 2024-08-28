@@ -29,6 +29,7 @@ import CreateUserQnA from "./pages/clientService/createUserQnA";
 import AnnouncementView from "./pages/clientService/announcementView";
 import { UserContext } from "./contexts/userContext";
 import AreaRoutes from "./pages/area/areaRoutes";
+import ChatManagement from "./pages/admin/chatManagement/chatManagement";
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
             </Route>
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<RouteMap/>} />
+            <Route path="/chatmangement" element={<ChatManagement/>} />
         </Routes>
         </UserContext.Provider>
     </>

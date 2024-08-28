@@ -1,0 +1,243 @@
+:root {
+    --sidebar-width-open: 15%;
+    --sidebar-width-closed: 50px;
+    --transition-duration: 0.3s;
+}
+  
+.adminContainer {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+  
+.sidebar {
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+    transition: width var(--transition-duration) ease;
+}
+  
+.sidebarOpen {
+    width: var(--sidebar-width-open);
+}
+  
+.sidebarClosed {
+    width: var(--sidebar-width-closed);
+}
+  
+.sidebarHeader {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+    justify-content: flex-end;
+}
+
+.sidebarHeaderClosed {
+    position: fixed;
+    width: 50px; /* 버튼 크기에 맞춰서 폭 조정 */
+    height: 77px; /* 버튼 크기에 맞춰서 높이 조정 */
+    background-color: #69b2f8;
+    border-radius: 10px 0 0 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+
+    display: flex; /* Flexbox를 사용하여 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+.collapseButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+  
+.menuItem {
+    padding: 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+  
+.subMenu {
+    list-style: none;
+    padding-left: 16px;
+}
+  
+.subMenuItem {
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    background-color: #f1f3f5;
+}
+  
+.mainContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* 수직으로 쌓이도록 설정 */
+}
+
+.mainContentHeader {
+    height: 77px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    flex-shrink: 0; /* 높이 고정 */
+}
+
+.mainContentHeader h3 {
+    margin: 0;
+}
+
+.chatContainer {
+    display: flex; /* 가로로 나란히 배치 */
+    flex-grow: 1; /* 전체 화면에서 남은 공간 차지 */
+}
+
+.chatList {
+    width: 24%;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
+    flex-shrink: 0; /* 고정 너비로 설정 */
+}
+
+.chatItem {
+    display: flex;
+    align-items: center;
+    padding: 10px 0 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+  
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #69b2f8;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+  
+.username {
+    font-size: 16px;
+    color: #333;
+}
+  
+.chatInputBox {
+    flex-grow: 1;
+    margin: 16px;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    height: 90%;
+    border:1px solid #ddd;
+}
+
+.chatWindow{
+    height: 85%;
+    padding: 20px 10px;
+    overflow-y: visible;
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    justify-content: flex-start;
+}
+.message {
+    max-width: 70%;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+  
+.receivedMessage {
+    min-width: 30%;
+    min-height: 40px;
+    background-color: #e9f8e8;
+    align-self: flex-start;
+}
+  
+.sentMessage {
+    min-width: 30%;
+    min-height: 40px;
+    background-color: #e6f3fb;
+    align-self: flex-end;
+}
+  
+.messageInputContainer {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    padding: 5px; /* 가로로 패딩 5px 추가 */
+    border-top: 1px solid #ddd;
+    height: 15%;
+}
+
+.messageInput {
+    flex-grow: 1;
+    padding: 8px;
+    margin:5px 0 5px 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    overflow-y: visible;
+    height: 80%;
+    resize: none;
+}
+
+.sendButton {
+    width: 70px;
+    height: 80%;
+    background-color: #69b2f8;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.floatingButton {
+    position: absolute;
+    top: 87px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #69b2f8;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floatingContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(0);
+}
+
+.floatingContent {
+    padding: 20px;
+    /* 플로팅 컨테이너 내부 내용 스타일링 */
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
