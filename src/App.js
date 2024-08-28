@@ -31,6 +31,7 @@ import { UserContext } from "./contexts/userContext";
 import AreaRoutes from "./pages/area/areaRoutes";
 import ChatManagement from "./pages/admin/chatManagement/chatManagement";
 import AdminHome2 from "./pages/admin/AdminHome/adminHome2";
+import AdminRoutes2 from "./pages/admin/AdminHome/adminRoutes";
 
 
 function App() {
@@ -77,7 +78,7 @@ function App() {
             </Route>
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<RouteMap/>} />
-            <Route path="/admin2" element={<AdminHome2/>} />
+            <Route path="/admin2/*" element={<AdminRoutes2/>} />
         </Routes>
         </UserContext.Provider>
     </>

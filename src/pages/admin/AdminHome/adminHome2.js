@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../../../styles/admin/adminHome.module.css';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import SideMenuBar from './sideMenuBar';
 import AdminHeader from './adminHeader';
 import ChatManagement from '../chatManagement/chatManagement';
@@ -28,7 +28,7 @@ const AdminHome2 = () => {
 
                 <div className={styles.mainContent}>
                 <AdminHeader title={selectedSubMenu} />
-                <ChatManagement/>
+                <Outlet/>
                 {/* <Routes>
                     <Route path="chatting" component={ChatManagement} /> */}
                     {/* <Route path="/anotherRoute" component={AnotherComponent} /> */}
