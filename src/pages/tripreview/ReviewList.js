@@ -7,6 +7,7 @@ import '../../styles/TripReview.css';
 import ScrollToTopButton from '../../components/scrollToTopButton';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
+import axios from 'axios';
 
 
 const exampleReviews = [

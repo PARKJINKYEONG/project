@@ -77,7 +77,7 @@ function App() {
             </Route>
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<RouteMap/>} />
-            <Route path="/admin2" element={<AdminHome2/>} />
+            <Route path="/admin2/*" element={<AdminHome2/>} />
         </Routes>
         </UserContext.Provider>
     </>

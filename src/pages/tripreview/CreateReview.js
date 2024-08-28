@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Rating from '@mui/material/Rating';
+import axios from 'axios';
 
 const CreateTripReview = () => {
   const [formData, setFormData] = useState({
@@ -29,6 +30,7 @@ const CreateTripReview = () => {
     rating: false
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -71,12 +73,35 @@ const CreateTripReview = () => {
     return !Object.values(newErrors).includes(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log('Form Data Submitted:', formData);
-      navigate('/ReviewList');
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('author', formData.author);
+      formDataToSend.append('startDate', formData.startDate.toISOString());
+      formDataToSend.append('endDate', formData.endDate.toISOString());
+      formDataToSend.append('package', formData.package);
+      formDataToSend.append('itinerary', formData.itinerary);
+      formDataToSend.append('content', formData.content);
+      formDataToSend.append('rating', formData.rating);
+
+      Array.from(formData.images).forEach((file, index) => {
+        formDataToSend.append('images', file);
+      });
+
+      try {
+        await axios.post('http://localhost:8080/api/reviewList/createReview', formDataToSend, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        navigate('/ReviewList');
+      } catch (error) {
+        setErrorMessage('리뷰 작성 중 오류가 발생했습니다.');
+        console.error('Error submitting review:', error);
+      }
     } else {
       console.log('Form validation failed');
     }
@@ -90,6 +115,11 @@ const CreateTripReview = () => {
             후기 작성하기
           </Typography>
         </div>
+        {errorMessage && (
+          <Alert severity="error" style={{ marginBottom: '20px' }}>
+            {errorMessage}
+          </Alert>
+        )}
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

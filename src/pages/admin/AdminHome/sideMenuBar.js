@@ -16,9 +16,9 @@ const menuItems = [
         title: '게시글 관리',
         num: 2,
         subMenu: [
-            { sub: '공지사항 관리', to: '' },
-            { sub: '후기 관리', to: '' },
-            { sub: '댓글 관리', to: '' },
+            { sub: '공지사항 관리', to: '/admin2/notice' },
+            { sub: '후기 관리', to: '/admin2/review' },
+            { sub: '댓글 관리', to: '/admin2/comments' },
         ],
     },
     {
@@ -52,7 +52,6 @@ const SideMenuBar = ({ isSidebarOpen, toggleSidebar, onSubMenuSelect }) => {
             [index]: !prev[index],
         }));
     };
-
 
     return (
         <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}`}>

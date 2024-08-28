@@ -6,9 +6,7 @@ import EditNotice from './editNotice';
 import axios from 'axios';
 import useRequest from '../../../hooks/useRequest';
 
-
 const NoticeManagement  = () => {
-
   const [notices, setNotices] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +34,6 @@ const NoticeManagement  = () => {
   const handleAddClick = () => {
     setIsCreating(true);
   };
-
 
   return (
     <div className={styles.container}>
@@ -85,8 +82,6 @@ const NoticeManagement  = () => {
       )}
     </div>
   );
-
-
 };
 
 export default NoticeManagement;

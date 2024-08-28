@@ -4,6 +4,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import SideMenuBar from './sideMenuBar';
 import AdminHeader from './adminHeader';
 import ChatManagement from '../chatManagement/chatManagement';
+import NoticeManagement from '../notice/noticeManagement';
 
 const AdminHome2 = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -17,8 +18,7 @@ const AdminHome2 = () => {
         setSelectedSubMenu(title);
     };
 
-    return <>
-        
+    return <>       
             <div className={`${styles.adminContainer} nanumsqr-korfont`}>
                 <SideMenuBar 
                     isSidebarOpen={isSidebarOpen} 
@@ -27,12 +27,11 @@ const AdminHome2 = () => {
                 />
 
                 <div className={styles.mainContent}>
-                <AdminHeader title={selectedSubMenu} />
-                <ChatManagement/>
-                {/* <Routes>
-                    <Route path="chatting" component={ChatManagement} /> */}
-                    {/* <Route path="/anotherRoute" component={AnotherComponent} /> */}
-                {/* </Routes> */}
+                    <AdminHeader title={selectedSubMenu} />
+                    <Routes>
+                        <Route path="notice" element={<NoticeManagement />} />
+                        <Route path="chatting" element={<ChatManagement />} /> 
+                    </Routes>            
                 </div>
             </div>
         
