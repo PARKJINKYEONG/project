@@ -1,10 +1,42 @@
+/* 여기부터 */
+:root {
+    --sidebar-width-open: 15%;
+    --sidebar-width-closed: 50px;
+    --transition-duration: 0.3s;
+}
+  
+.adminContainer {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+  
+.mainContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* 수직으로 쌓이도록 설정 */
+}
+
+.mainContentHeader {
+    height: 77px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 요소들을 양 끝으로 배치 */
+    padding: 0 16px;
+}
+
+.mainContentHeader h3 {
+    margin: 0;
+}
+
 .floatingButton {
     position: absolute;
     top: 87px;
     right: 10px;
-    width: 50px;
-    height: 50px;
-    background-color: #69b2f8;
+    width: 40px;
+    height: 40px;
+    background-color: #9ecffd;
     border: none;
     border-radius: 50%;
     color: white;
@@ -15,6 +47,7 @@
     align-items: center;
     justify-content: center;
     margin-left: auto; /* 나머지 공간을 차지하여 오른쪽으로 밀림 */
+    margin-right: 16px; /* logoButton과의 간격 조정 */
 }
 
 .logoButton {
@@ -30,7 +63,6 @@
 
 .chatList {
     width: 27%;
-    max-width: 400px;
     border-right: 1px solid #ddd;
     background-color: #fff;
     flex-shrink: 0; /* 고정 너비로 설정 */
@@ -39,7 +71,7 @@
 .chatItem {
     display: flex;
     align-items: center;
-    padding: 8px 0 8px 20px;
+    padding: 10px 0 10px 20px;
     border-bottom: 1px solid #ddd;
 }
   
