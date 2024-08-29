@@ -6,6 +6,7 @@ import SignUpStepEnd from "./signUpStepEnd";
 import { Box, Button, Grid } from "@mui/material";
 import SignUpStepper from "./signUpStepper";
 import useRequest from '../../hooks/useRequest';
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const steps = ['필수 정보 입력', '이메일 인증', '선택 정보 입력'];
@@ -20,7 +21,7 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [emailValid, setEmailValid] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-
+  const navigate = useNavigate();
   const { post } = useRequest();
 
   const handleNext = async () => {
@@ -52,6 +53,7 @@ export default function SignUp() {
       };
       await post('/register', registrationData, {skipAuth:true});
       alert('회원가입이 완료되었습니다.');
+      navigate('/user/signin');
     } catch (error) {
       console.error('회원가입 요청 중 오류 발생:', error);
       alert('회원가입에 실패했습니다. 다시 시도해 주세요.');

@@ -7,7 +7,7 @@ import { UserContext } from '../contexts/userContext';
 import SignOutButton from './member/signout';
 
 export default function Header2() {
-    const { accessToken } = useContext(UserContext);
+    const { accessToken, email } = useContext(UserContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState(null); // 활성화된 주메뉴 상태
     // 주메뉴 또는 부메뉴에 마우스가 올려졌을 때 메뉴 열림
@@ -73,7 +73,7 @@ export default function Header2() {
                         </button>
                         <div className="collapse navbar-collapse" id="mynavbar">
                             <ul className="navbar-nav ms-auto">
-                                {!!!accessToken ? (
+                                {!!accessToken ? (
                                     <>
                                         <li className="nav-item">
                                             <NavLink className={`nav-link ${style.iconStyle}`} to="/">

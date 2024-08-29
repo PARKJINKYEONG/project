@@ -6,6 +6,7 @@ import AddressSearch from "../../components/addressSearch";
 
 export default function SignUpStep3({ setUserInfo }) {
   const [name, setName] = useState('');
+  const [nickname, setNickname] = useState('');
   const [phone, setPhone] = useState({ part1: '', part2: '', part3: '' });
   const [address, setAddress] = useState('');
   const [zonecode, setZonecode] = useState('');
@@ -20,6 +21,7 @@ export default function SignUpStep3({ setUserInfo }) {
   const handleSaveInfo = () => {
     setUserInfo({
       name,
+      nickname,
       phone: `${phone.part1}-${phone.part2}-${phone.part3}`,
       address,
       zonecode,
@@ -33,6 +35,10 @@ export default function SignUpStep3({ setUserInfo }) {
         <Grid item xs={12}>
           <InputLabel shrink>이름</InputLabel>
           <InputField value={name} onChange={(e) => setName(e.target.value)} />
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel shrink>닉네임</InputLabel>
+          <InputField value={nickname} onChange={(e) => setNickname(e.target.value)} />
         </Grid>
         <Grid item xs={12}>
           <InputLabel shrink>전화번호</InputLabel>

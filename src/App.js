@@ -40,11 +40,11 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') || "");
 
   useEffect(() => {
-    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('accessToken', accessToken !== null ? accessToken : '');
   }, [accessToken]);
 
   useEffect(() => {
-    localStorage.setItem('email', email);
+    localStorage.setItem('email', email !== null ? email : '');
   }, [email]);
 
   useEffect(() => {
