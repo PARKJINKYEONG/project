@@ -61,9 +61,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 - npm install @mdi/react @mdi/js
 - npm install react-icons --save
 - npm install npm install @mui/x-date-pickers
+- npm install @mui/material @emotion/react @emotion/styled
 - npm install @mui/x-date-pickers-pro
 - npm install dayjs
 - npm install react-beautiful-dnd
 - npm insatll @mui/lab
 - npm install @fullcalendar/core @fullcalendar/daygrid
-- npm install @chatscope/chat-ui-kit-react @chatscope/chat-ui-kit-styles
