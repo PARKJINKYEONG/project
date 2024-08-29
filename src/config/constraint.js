@@ -8,5 +8,9 @@ export const KAKAO={
 export const GOOGLE={
     CLIENT_ID:'264315121794-fi1bj4b64gofmbd2mbcdth8vuun34ov3.apps.googleusercontent.com',
     REDIRECT_URI:'http://localhost:8080/google',
+};
 
+export const NAVER={
+    CLIENT_ID:'NUQJgNUjlNqcpMb4x5sH',
+    REDIRECT_URI:'http://localhost:8080/naver',
 };
