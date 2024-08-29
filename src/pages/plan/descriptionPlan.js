@@ -1,35 +1,62 @@
-//피그마에 보면 있는 일정생성 앞부분에 단계별 설명넣을거
-import React, { useState } from 'react';
+import React from 'react';
 import styles from '../../styles/descriptionPlan.module.css';
-import { DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { DateRangePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Box, TextField } from '@mui/material';
 
-export default function DescriptionPlan(){
+const destinations = [
+  {
+    id: 1,
+    name: 'OSAKA',
+    country: '일본 오사카',
+    imageUrl: 'https://example.com/osaka.jpg',
+    isNew: true
+  },
+  {
+    id: 2,
+    name: 'TOKYO',
+    country: '일본 도쿄',
+    imageUrl: 'https://example.com/tokyo.jpg',
+    isNew: true
+  },
+  {
+    id: 3,
+    name: 'FUKUOKA',
+    country: '일본 후쿠오카',
+    imageUrl: 'https://example.com/fukuoka.jpg',
+    isNew: true
+  },
+  {
+    id: 4,
+    name: 'JEJU',
+    country: '대한민국 제주',
+    imageUrl: 'https://example.com/jeju.jpg',
+    isNew: true
+  },
+];
 
-  return<>
-      <div className={styles.plan2}>
-        <span>여행 일정</span>
-        <div className={styles.when}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoItem component="DateRangePicker">
-              <DateRangePicker />
-            </DemoItem>
-        </LocalizationProvider>
-        </div>
-        <div>
-        <span>몇명이서 가실지 정하셨나요?</span>
-          
-        </div>
-
-        <div className="plan2 spend"><span>사용 가능한 예산을 알려주세요</span>
-        <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} noValidate autoComplete="off">
-        <TextField label="예산" id="outlined-size-small" size="small" type="number"/>
-        </Box>
-           
-        </div>
+export default function DescriptionPlan() {
+  return (
+    <div className={styles.container}>
+      <h2>어디로 여행을 떠나시나요?</h2>
+      <input type="text" placeholder="국가명이나 도시명으로 검색해보세요." className={styles.searchInput} />
+      
+      <div className={styles.tabs}>
+        <button className={styles.tab}>전체</button>
+        <button className={styles.tab}>국내</button>
+        <button className={styles.tab}>해외</button>
       </div>
-    </>
-};
 
+      <div className={styles.cardContainer}>
+        {destinations.map(dest => (
+          <div key={dest.id} className={styles.card}>
+            <img src={dest.imageUrl} alt={dest.name} className={styles.cardImage} />
+            {dest.isNew && <span className={styles.newLabel}>NEW</span>}
+            <div className={styles.cardContent}>
+              <h3>{dest.name}</h3>
+              <p>{dest.country}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+    </div>
+  );
+}

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import DescriptionPlan from './descriptionPlan';
-import ProgressPlan1 from './progressPlan1';
 import ProgressPlan2 from './progressPlan2';
 import ProgressPlan3 from './progressPlan3';
 import ProgressPlan4 from './progressPlan4';
@@ -16,14 +15,12 @@ function ContentComponent({ activeStep, handlePlaceClick  }) {
       case 0:
         return <DescriptionPlan />;
       case 1:
-        return <ProgressPlan1 handlePlaceClick={handlePlaceClick}/>;
-      case 2:
         return <ProgressPlan2 handlePlaceClick={handlePlaceClick}/>;
-      case 3:
+      case 2:
         return <ProgressPlan3 handlePlaceClick={handlePlaceClick}/>;
-      case 4:
+      case 3:
         return <ProgressPlan4 />;
-      case 5:
+      case 4:
         return <ProgressPlan5 />;
       default:
         return <DescriptionPlan />;
@@ -31,7 +28,7 @@ function ContentComponent({ activeStep, handlePlaceClick  }) {
   };
 
   return <>
-    <Box sx={{ marginLeft: '13px' }}>
+    <Box sx={{ marginLeft: '13px',marginTop:'15px' }}>
       {renderStepComponent()}
         
     </Box>

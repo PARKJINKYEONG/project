@@ -4,10 +4,9 @@ import styles from '../../styles/stepperComponent.module.css';
 
 function StepperComponent({ activeStep, handleButtonClick, handleBack, handleReset, handleStep }) {
   const steps = [
-    { label: '날짜 확인' },
-    { label: '장소 선택' },
-    { label: '숙소 설정' },
+    { label: '장소 및 날짜 선택' },
     { label: '관광지' },
+    { label: '숙소 선택' },
     { label: 'AI 추천' },
     { label: '전체 일정' }
   ];

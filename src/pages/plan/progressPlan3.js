@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/progressPlan1.module.css';
+import styles from '../../styles/progressPlan3.module.css';
 
 export default function ProgressPlan3({ handlePlaceClick }) {
   const [activeTab, setActiveTab] = useState('locationSelect');
@@ -7,7 +7,7 @@ export default function ProgressPlan3({ handlePlaceClick }) {
   return (
     <div>
       <div>
-        <h6>기본 관광지 정보</h6>
+        <h6>선택 여행 장소</h6>
         <div className={styles.tabs}>
           <button
             className={`${styles.tabButton} ${activeTab === 'locationSelect' ? styles.active : ''}`}
@@ -19,7 +19,7 @@ export default function ProgressPlan3({ handlePlaceClick }) {
             className={`${styles.tabButton} ${activeTab === 'newLocation' ? styles.active : ''}`}
             onClick={() => setActiveTab('newLocation')}
           >
-            신규 관광지 등록
+            신규 숙소 등록
           </button>
         </div>
 
@@ -28,11 +28,11 @@ export default function ProgressPlan3({ handlePlaceClick }) {
             <div className={styles.inputContainer}>
               <input
                 type="text"
-                placeholder="장소명을 입력하세요"
+                placeholder="숙소명을 입력하세요"
                 className={styles.customInput}
               />
               <div className={styles.buttonGroup}>
-                <button className={`${styles.button} ${styles.recommendButton}`}>추천 장소</button>
+                <button className={`${styles.button} ${styles.recommendButton}`}>추천 숙소</button>
               </div>
               <ul className={styles.placeList}>
                   <li className={styles.placeItem} onClick={() => handlePlaceClick()}>
@@ -48,8 +48,11 @@ export default function ProgressPlan3({ handlePlaceClick }) {
           )}
           {activeTab === 'newLocation' && (
             <div>
-              <p>신규 장소 등록 폼을 여기에 추가하세요.</p>
-              {/* 신규 장소 등록 관련 내용 추가 */}
+              <input
+                type="text"
+                placeholder="장소명을 입력하세요"
+                className={styles.customInput}
+              />
             </div>
           )}
         </div>

@@ -81,9 +81,11 @@ function CreatePlan() {
         </div>
 
         {/* 우측 지도 */}
+        {activeStep >= 1 && (
         <div className={styles.mapContainer}>
           <MapComponent />{/* 지도 컴포넌트를 여기에 렌더링 */}
         </div>
+        )}
 
         <SlidingPanel 
         isOpen={isPanelOpen} 
