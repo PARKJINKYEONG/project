@@ -1,88 +1,139 @@
 import React, { useState } from 'react';
-import { Button, TextField } from '@mui/material';
-import styles from '../../styles/changeInfo.module.css';
-import { useNavigate } from 'react-router-dom';
-import InputField from '../../components/inputField';
-import AddressSearch from '../../components/addressSearch';
-import PhoneInput from '../../components/phoneInput';
+import styles from '../../styles/testchangeInfo.module.css';
+import SortButton from '../../components/sort_Table';
+
+
 
 export default function Privacy() {
-  const [address, setAddress] = useState('');
-  const [zonecode, setZonecode] = useState('');
-  const [extraAddress, setExtraAddress] = useState('');
-  const [userId, setUserId] = useState(''); 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState({ part1: '', part2: '', part3: '' });
 
-  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const searchId = (id) => {
-    // 검색 로직 추가
+  const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1);
+    };
+
+
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const userDataPerPage = 20;
+  const indexOfLastPost = currentPage * userDataPerPage;
+  const indexOfFirstPost = indexOfLastPost - userDataPerPage;
+
+ 
+  const handleLock = (id) => {
+    // Handle lock action
+    console.log('계정 잠금 clicked for id:', id);
   };
 
-  const handleExtraAddressChange = (e) => {
-    setExtraAddress(e.target.value);
+  const handleUnlock = (id) => {
+    // Handle unlock action
+    console.log('잠금 해제 clicked for id:', id);
   };
 
-  const handleEditComplete = () => {
-    if (!userId) {
-      alert('수정할 아이디를 입력하세요.');
-      return;
-    }
+  // Example data
+  const [userData, setUserData] = useState([
+    { id: 91, key: 106, username: 'kakaoUser5d735c32-1274-407d', nickname: '여나', status: 2, phone: '2464071732', role: 'ROLE_USER', kakaoId: '2464071732' },
+    { id: 92, key: 107, username: 'kakaoUser38a6d336-c87a-4624', nickname: '권영', status: 2, phone: '2464166940', role: 'ROLE_USER', kakaoId: '2464166940' },
+    { id: 93, key: 108, username: 'rlatnakd', nickname: '김수망', status: 1, phone: '***', role: 'ROLE_USER', kakaoId: '***' },
+    { id: 94, key: 109, username: 'kakaoUser8732c2aa-96b8-4c00', nickname: '정동훈', status: 2, phone: '2464276794', role: 'ROLE_USER', kakaoId: '2464276794' },
+    { id: 95, key: 110, username: 'kakaoUser5d735c32-1274-407d', nickname: '여나', status: 2, phone: '2464071732', role: 'ROLE_USER', kakaoId: '2464071732' },
+    { id: 96, key: 111, username: 'kakaoUser38a6d336-c87a-4624', nickname: '권영', status: 2, phone: '2464166940', role: 'ROLE_USER', kakaoId: '2464166940' },
+    { id: 97, key: 112, username: 'rlatnakd', nickname: '김수망', status: 1, phone: '***', role: 'ROLE_USER', kakaoId: '***' },
+    { id: 98, key: 113, username: 'kakaoUser8732c2aa-96b8-4c00', nickname: '정동훈', status: 2, phone: '2464276794', role: 'ROLE_USER', kakaoId: '2464276794' },
+    { id: 99, key: 114, username: 'kakaoUser5d735c32-1274-407d', nickname: '여나', status: 2, phone: '2464071732', role: 'ROLE_USER', kakaoId: '2464071732' },
+    { id: 100, key: 115, username: 'kakaoUser38a6d336-c87a-4624', nickname: '권영', status: 2, phone: '2464166940', role: 'ROLE_USER', kakaoId: '2464166940' },
+    { id: 101, key: 116, username: 'rlatnakd', nickname: '김수망', status: 1, phone: '***', role: 'ROLE_USER', kakaoId: '***' },
+    { id: 102, key: 117, username: 'kakaoUser8732c2aa-96b8-4c00', nickname: '정동훈', status: 2, phone: '2464276794', role: 'ROLE_USER', kakaoId: '2464276794' },
+    
+  ]);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (email && !emailRegex.test(email)) {
-    alert('이메일 형식이 틀렸습니다.');
-    return;
-    }
+  //정렬용
+  const handleSort = (sortedData) => {
+    setUserData(sortedData)
+  
 
-    if (!name && !email && !phone.part1 && !phone.part2 && !phone.part3 &&
-        !address && !extraAddress && !zonecode) {
-      alert('수정한 데이터가 없습니다');
-      return;
-    }
-
-    alert(`${userId}님의 정보가 수정되었습니다`);
-   
   };
-
-  const handleAddressSelect = (data) => {
-    setAddress(data.fullAddress);
-    setZonecode(data.zonecode);
-    setExtraAddress(data.extraAddress);
-  };
+  
+  //검색용
+  const filteredUserData = userData.filter(user => 
+    user.id.toString().includes(searchTerm) || 
+    user.key.toString().includes(searchTerm) ||
+    user.kakaoId.toString().includes(searchTerm) ||
+    user.phone.toString().includes(searchTerm) ||
+    user.status.toString().includes(searchTerm) ||
+    user.username.includes(searchTerm) ||
+    user.nickname.includes(searchTerm) ||
+    user.role.includes(searchTerm) 
+  );
+const currentUserData = filteredUserData.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
-    <div className={`container ${styles.container}`}>
-      <div className={styles.privacyContainer}>
-        <h2>개인정보 수정</h2>
-
-        <InputField 
-          label="수정할 아이디" 
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          buttonLabel="검색"
-          onButtonClick={() => searchId(userId)} 
-        />
-
-        <div className={styles.privacyContent}>
-          <InputField label="실명" value={name} onChange={(e) => setName(e.target.value)} />
-          <InputField label="이메일 주소" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <PhoneInput phone={phone} setPhone={setPhone} />
-          <InputField label="주소" value={address} readOnly />
-          <AddressSearch onAddressSelect={handleAddressSelect} />
-          <InputField label="우편번호" value={zonecode} readOnly />
-          {extraAddress && (
-            <InputField label="추가 주소" value={extraAddress} onChange={handleExtraAddressChange} />
-          )}
-        </div>
-
-        <div className={styles.editCompleteContainer}>
-          <Button variant="contained" color="primary" onClick={handleEditComplete}>입력완료</Button>
-        </div>
+    <div className={styles.App}>
+      <h4>유저 정보</h4>
+      <div className={styles.search_bar} >
+        <input type="text" value={searchTerm} onChange={handleSearchChange} 
+            placeholder="검색어를 입력하세요" 
+            className="search-input"/>
+      </div>
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>순번<SortButton data={userData} onSort={handleSort} /></th>
+              <th>Id key<SortButton data={userData} onSort={handleSort} /></th>
+              <th>아이디<SortButton data={userData} onSort={handleSort} /></th>
+              <th>닉네임<SortButton data={userData} onSort={handleSort} /></th>
+              <th>상태<SortButton data={userData} onSort={handleSort} /></th>
+              <th>휴대폰번호<SortButton data={userData} onSort={handleSort} /></th>
+              <th>권한<SortButton data={userData} onSort={handleSort} /></th>
+              <th>카카오ID<SortButton data={userData} onSort={handleSort} /></th>
+              <th>계정 잠금</th>
+              <th>잠금 해제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentUserData.length > 0 ? (
+            currentUserData.map(user => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.key}</td>
+                <td>{user.username}</td>
+                <td>{user.nickname}</td>
+                <td>{user.status}</td>
+                <td>{user.phone}</td>
+                <td>{user.role}</td>
+                <td>{user.kakaoId}</td>
+                <td>
+                  <button
+                    className={styles.button}
+                    onClick={() => handleLock(user.id)}
+                  >
+                    계정 잠금
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className={styles.button}
+                    onClick={() => handleUnlock(user.id)}
+                  >
+                    잠금 해제
+                  </button>
+                </td>
+              </tr>
+            ))
+            ) : (
+            <tr>
+              <td colSpan="5">등록된 회원이 없습니다</td>
+            </tr>
+            )
+            }
+          </tbody>
+        </table>
       </div>
     </div>
+    
   );
 }

@@ -73,7 +73,7 @@ export default function Header2() {
                         </button>
                         <div className="collapse navbar-collapse" id="mynavbar">
                             <ul className="navbar-nav ms-auto">
-                                {accessToken ? (
+                                {!!!accessToken ? (
                                     <>
                                         <li className="nav-item">
                                             <NavLink className={`nav-link ${style.iconStyle}`} to="/">

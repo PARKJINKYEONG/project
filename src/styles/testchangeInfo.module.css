@@ -1,0 +1,53 @@
+.App {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.tableContainer {
+  max-height: 530px; /* Set the maximum height of the table */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ccc; /* Optional: Add border to the table container */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table thead th {
+  position: sticky; /* 헤더를 고정 */
+  top: 0; /* 테이블 상단에 고정 */
+  z-index: 1;
+  background-color: #f2f2f2; /* 헤더 배경색 (원하는 색상으로 변경 가능) */
+  border: 3px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  height: 100%;
+}
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+
+.button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.search_bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
