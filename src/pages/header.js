@@ -36,9 +36,6 @@ export default function Header() {
     const handleQnAMenuOpen = () => setShowQnAMenu(true);
     const handleQnAMenuClose = () => setShowQnAMenu(false);
 
-    const handleMyPageMenuOpen = () => setShowMyPageMenu(true);
-    const handleMyPageMenuClose = () => setShowMyPageMenu(false);
-
     return (
         <AppBar position="fixed" color="primary" sx={{ height: '56px', zIndex: 1300 }}>
             <Toolbar sx={{ minHeight: '56px', paddingLeft: '16px', paddingRight: '16px' }}>

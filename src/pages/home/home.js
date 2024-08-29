@@ -33,12 +33,11 @@ export default function Home(){
     // const handleClose = () => setOpen(false);
 
     return <>        
-        <ProductHero /> {/* 대표이미지, 조금 더 크게+ 이미지 변하는 효과 */}
-        {/* 간격 좀 넣어주세용 */}
-        <ProductSmokingHero /> {/* 헬프, 조금만 작아지면 좋겠어요 */}
-        {/* 간격 좀 넣어주세용 */}
-        <ProductCategories /> {/* 사이트 소개, 좀 작아지면 좋겠어요 */}
-        <ProductValues /> {/* 인기여행지, 좀 작아지면 좋겠어요, 내용이 두줄정도되면 좋을것같아요 */}
+        <ProductHero />
+        <ProductSmokingHero />
+        <ProductCategories />
+        <ProductValues />
 
+        <ChatBot />
     </>
 }
