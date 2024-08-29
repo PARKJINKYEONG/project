@@ -1,0 +1,184 @@
+/* Hero 섹션 스타일 */
+.heroSection {
+    text-align: center;
+    margin: 13vh 0;
+}
+
+.heroImageContainer {
+    position: relative;
+}
+
+.heroImage {
+    width: 100%;
+    height: 55vh;
+    object-fit: cover;
+}
+
+.heroText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    text-shadow: 0px 0px 5px black; /* 텍스트 그림자 강화 */
+    width: 80%;
+}
+
+.heroText h2 {
+    color: rgb(255, 255, 255); /* 글자 색상을 흰색으로 변경 */
+    font-size: 2.5rem; /* 텍스트 크기를 적당히 키움 */
+    margin-bottom: 30px; /* 버튼과 텍스트 사이 간격 조정 */
+}
+
+.planButton {
+    border: 1px solid rgb(84, 194, 103);
+    border-radius: 0;
+    padding: 1rem 2rem;
+    background-color: rgba(255, 255, 255, 0.5); /* 버튼의 투명도를 50%로 변경 */
+    cursor: pointer;
+    font-size: 1.2rem; /* 버튼 글자 크기 감소 */
+    color: rgb(0, 0, 0);
+    margin-top: 40px; /* 버튼과 텍스트 사이 간격을 늘림 */
+}
+
+.planButtonText {
+    font-size: 1.5rem; /* 텍스트 크기를 줄임 */
+    font-weight: bold;
+}
+/* 검색 및 네비게이션 섹션 스타일 */
+.searchNavSection {
+    text-align: center;
+    margin-top: 80px;
+    padding: 20px 0;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+
+.navMenu {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.navItem {
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    font-size: 1em;
+    color: black;
+}
+
+.active {
+    border-bottom: 2px solid black;
+}
+
+.searchBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.searchInput {
+    width: 40%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.searchButton, .voiceButton {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+.searchButton img, .voiceButton img {
+    width: 20px;
+    height: 20px;
+}
+
+/* 이미지 슬라이더 섹션 스타일 */
+.imageSliderSection {
+    margin-top: 50px;
+    padding: 0 20px;
+}
+
+.imageSlider {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+}
+
+.imageSlider::-webkit-scrollbar {
+    display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
+}
+
+.imageCard {
+    flex: 0 0 calc(25% - 20px);
+    scroll-snap-align: start;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.imageCard:hover {
+    transform: translateY(-5px);
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+}
+
+.cardTitle {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.cardImageContainer {
+    height: 200px;
+    width: 200px;
+    margin-bottom: 16px;
+}
+
+.cardImage {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+
+/* 뉴스 섹션 스타일 */
+.newsSection {
+    margin-top: 80px;
+    padding: 20px 0;
+    background-color: #f8f8f8;
+    text-align: left;
+}
+
+.newsContainer {
+    padding: 20px;
+    background-color: #eaeaea;
+    border-radius: 5px;
+}
+
+.newsItem {
+    margin-bottom: 10px;
+}
