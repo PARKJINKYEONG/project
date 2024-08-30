@@ -214,7 +214,7 @@ const ChatBot = () => {
             <input type="text" ref={chatInput} onKeyDown={handleKeyPress}
               placeholder="입력해주세요"
             />
-            <button onClick={handleSend} className="send-button"><img src='/images/send.svg'/></button>
+            <button onClick={handleSend} className="send-button"><img src='/images/icons/send.svg'/></button>
           </div>
         </div>
       )}
