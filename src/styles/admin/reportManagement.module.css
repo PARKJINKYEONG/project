@@ -1,0 +1,31 @@
+.tableContainer {
+  max-height: 600px; /* Set the maximum height of the table */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ccc; /* Optional: Add border to the table container */
+
+}
+
+
+.headers {
+  position: sticky; /* 헤더를 고정 */
+  top: 0; /* 테이블 상단에 고정 */
+  background-color: #f2f2f2; /* 헤더 배경색 (원하는 색상으로 변경 가능) */
+  padding: 2px;
+  margin: 0;
+  text-align: center;
+  height: 100%;
+  z-index: 1;
+}
+
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.successButton {
+  background-color: green;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+

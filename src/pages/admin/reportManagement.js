@@ -15,6 +15,9 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
+import styles from '../../styles/admin/reportManagement.module.css';
+import { useState } from 'react';
+import { Button, Modal } from '@mui/material';
 // import '../../styles/reportManagement.js';
 
 function createData(name, name1, value2, value3, value4, value5) {
@@ -38,13 +41,36 @@ function createData(name, name1, value2, value3, value4, value5) {
 }
 
 function Row(props) {
-  const { row } = props;
+  const { row, onDelete } = props;
   const [open, setOpen] = React.useState(false);
-  const [status, setStatus] = React.useState(row.name);
+  const [status, setStatus] = React.useState("대기");
 
   const handleStatusChange = event => {
     setStatus(event.target.value);
   };
+
+  const [modalMessage, setModalMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [buttonStates, setButtonStates] = useState({});
+
+   // 모달을 닫는 핸들러
+   const handleButtonClick = () => {
+    // 모달에 "완료되었습니다" 메시지를 설정하고 표시
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  //행 삭제
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(row.name); // onDelete를 호출하여 행 삭제
+    }
+  };
+  
+
 
   const StyledSelect = styled(Select)(({ theme }) => ({
     minWidth: 50,
@@ -73,7 +99,7 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset'} }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
           <IconButton
             aria-label="expand row"
@@ -84,19 +110,30 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-          <StyledSelect className="styled-select"
+          <StyledSelect
             value={status}
-            onChange={handleStatusChange}>
-            <StyledMenuItem className="styled-menu-item" value="접수">접수</StyledMenuItem>
-            <StyledMenuItem className="styled-menu-item" value="보류">보류</StyledMenuItem>
-            <StyledMenuItem className="styled-menu-item" value="진행중">진행중</StyledMenuItem>
+            onChange={handleStatusChange}
+          >
+            <StyledMenuItem value="대기">대기</StyledMenuItem>
+            <StyledMenuItem value="접수">접수</StyledMenuItem>
+            <StyledMenuItem value="진행중">진행</StyledMenuItem>
+            <StyledMenuItem value="완료">완료</StyledMenuItem>
           </StyledSelect>
         </TableCell>
         <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.name1}</TableCell>
         <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.value2}</TableCell>
         <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.value3}</TableCell>
         <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.value4}</TableCell>
-        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.value5}</TableCell>
+        <TableCell align="center" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
+          <button style={{ marginLeft: "15px" }} onClick={handleButtonClick}>완료</button>
+          <button style={{ marginLeft: "15px" }} onClick={handleDelete}>🗑️</button>
+        </TableCell>
+        <Modal open={showModal} onClose={handleClose}>
+          <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+            <h3>신고 처리가 완료되었습니다</h3>
+            <Button align="center" onClick={handleClose}>닫기</Button>
+          </Box>
+        </Modal>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7} sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
@@ -135,34 +172,51 @@ function Row(props) {
   );
 }
 
-const rows = [
-  createData('접수', 'okkim99', 'lee22', '2024-04-05', '게시판'),
-  createData('보류', 'kkk55', 'kim89', '2024-08-06', '댓글'),
-  createData('진행중', 'kimmerry10', 'wonderful', '2024-08-06', '댓글'),
-  createData('접수', 'lee8585', 'noly55', '2024-08-07', '댓글'),
-  createData('진행중', 'kkk55', 'kim89', '2024-08-06', '댓글'),
-];
-
+// Main Component
 export default function CollapsibleTable() {
+  const [rows, setRows] = useState([
+    createData('1', 'okkim99', 'lee22', '2024-04-05', '게시판'),
+    createData('2', 'yjs6940', 'kim89', '2024-08-06', '댓글'),
+    createData('3', 'kimmerry10', 'wonderful', '2024-08-06', '댓글'),
+    createData('4', 'lee8585', 'noly55', '2024-08-07', '댓글'),
+    createData('5', 'kkk55', 'kim89', '2024-08-11', '댓글'),
+    createData('6', 'okkim99', 'lee22', '2024-04-05', '게시판'),
+    createData('7', 'ddotoo', 'kim89', '2024-11-06', '댓글'),
+    createData('8', 'sipgool', 'wonderful', '2024-08-06', '댓글'),
+    createData('9', 'Nangman', 'noly55', '2024-08-09', '댓글'),
+    createData('10', 'kkk55', 'kim89', '2024-05-06', '댓글'),
+    createData('11', 'Joekiller', 'lee22', '2024-04-05', '게시판'),
+    createData('12', 'Yoontaek', 'kim89', '2024-08-06', '댓글'),
+    createData('13', 'kimmerry10', 'wonderful', '2024-08-06', '댓글'),
+    createData('14', 'REDGUY', 'noly55', '2024-08-07', '댓글'),
+    createData('15', 'kkk55', 'kim89', '2024-08-06', '댓글'),
+  ]);
+
+  // 행 삭제 핸들러
+  const handleDeleteRow = (rowName) => {
+    setRows((prevRows) => prevRows.filter((row) => row.name !== rowName));
+  };
+
   return (
-    <div style={{ margin: "50px" }} >
+    <div style={{ margin: "50px" }}>
       <h3>신고 목록</h3>
       <Box sx={{ mt: 5 }}>
-        <TableContainer component={Paper} sx={{ width: '650px', border: '1px solid rgba(224, 224, 224, 1)' }}>
+        <TableContainer className={styles.tableContainer} component={Paper} sx={{ width: "100%", border: '1px solid rgba(224, 224, 224, 1)' }}>
           <Table aria-label="collapsible table" sx={{ borderCollapse: 'collapse', width: '100%' }}>
-            <TableHead>
+            <TableHead className={styles.headers}>
               <TableRow>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} />
-                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} align="left">접수상태</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} align="center">상태</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} align="center">신고ID</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} align="center">신고자ID</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} align="center">신고일시</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} align="center">신고유형</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }} align="center">비고</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <Row key={row.name} row={row} />
+                <Row key={row.name} row={row} onDelete={handleDeleteRow} />
               ))}
             </TableBody>
           </Table>

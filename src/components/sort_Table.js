@@ -1,48 +1,52 @@
 import React, { useState } from 'react';
 
-const SortIcon = () => {
-  return (<img style={{
-    backgroundImage: 'url(/images/sort.png)',
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    width: '20px',
-    height: '20px'}} alt=""/>)
-};
-
 // SortButton 컴포넌트: 클릭 시 오름차순/내림차순 정렬을 변경하는 역할을 합니다.
-const SortButton = ({ data, onSort }) => {
-  const [sortOrder, setSortOrder] = useState(null); // 정렬 상태
+const SortButton = ({ column, sortConfig, onSort }) => {
+  const { key, direction } = sortConfig;
 
   const handleSort = () => {
-    let newSortOrder;
+    let newDirection;
 
-    // 정렬 방향 결정
-    if (sortOrder === 'asc') {
-      newSortOrder = 'desc';
+    if (key === column) {
+      newDirection = direction === 'asc' ? 'desc' : 'asc';
     } else {
-      newSortOrder = 'asc';
+      newDirection = 'asc';
     }
 
-    // 정렬된 데이터를 부모 컴포넌트에 전달
-    const sortedData = [...data].sort((a, b) => {
-      if (newSortOrder === 'asc') {
-        return a.age - b.age; // 숫자 오름차순
-      } else {
-        return b.age - a.age; // 숫자 내림차순
-      }
-    });
-
-    setSortOrder(newSortOrder);
-    onSort(sortedData); // 부모 컴포넌트에 정렬된 데이터 전달
+    onSort({ key: column, direction: newDirection });
   };
 
   return (
     <button onClick={handleSort}>
-      <SortIcon/>
-      {sortOrder === 'asc' && '▲'}
-      {sortOrder === 'desc' && '▼'}
+      {key === column && direction === 'asc' && '▲'}
+      {key === column && direction === 'desc' && '▼'}
+      {key !== column && '≡'}
     </button>
   );
 };
+
+// Table 컴포넌트: 테이블과 정렬 기능을 포함합니다.
+const Table = ({ data }) => {
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+
+  const handleSort = (sortConfig) => {
+    setSortConfig(sortConfig);
+  };
+
+  const sortedData = React.useMemo(() => {
+    if (sortConfig.key) {
+      return [...data].sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return data;
+  }, [data, sortConfig]);
+}
 
 export default SortButton;
