@@ -1,24 +1,84 @@
 import React, { useState } from 'react';
-import { Paper, Button, Typography } from '@mui/material';
-import TableSection from '../../components/tableSection';
-import TextField_ from '../../components/textField';
+import { Paper, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MuiModal from '../../components/muiModal';
-import ScrollToTopButton from '../../components/scrollToTopButton';  // ScrollToTopButton 컴포넌트 추가
+import TextField_ from '../../components/textField';
 
-const initialReports = [
-  { id: 1, reportedUser: 'jay5693', reason: '욕설', date: '2024-08-01', handleReport: 'O', handleReportdate: '2024-08-03', judgement: '1주정지' },
-  { id: 2, reportedUser: 'yjs', reason: '스팸광고', date: '2024-08-02', handleReport: 'X' },
-  { id: 3, reportedUser: 'sjd', reason: '계정도용', date: '2024-08-03', handleReport: 'O', handleReportdate: '2024-08-05', judgement: '영구정지' },
-];
+// TableSection 컴포넌트 정의
+function TableSection({ title, columns, rows, handleDelete, dataFormatter, cellStyles }) {
+  return (
+    <div>
+      <Typography variant="h6" gutterBottom>{title}</Typography>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.field}
+                  align={column.align || 'left'}
+                  style={{
+                    backgroundColor: cellStyles?.header?.backgroundColor,
+                    color: cellStyles?.header?.color,
+                    fontWeight: cellStyles?.header?.fontWeight,
+                  }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+              <TableCell
+                align="center"  // 삭제 셀을 중앙에 위치시키기 위해 align을 center로 설정
+                style={{
+                  backgroundColor: cellStyles?.header?.backgroundColor,
+                  color: cellStyles?.header?.color,
+                  fontWeight: cellStyles?.header?.fontWeight,
+                }}
+              >
+                삭제
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow key={row.id}>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.field}
+                    align={column.align || 'left'}
+                    onClick={column.onClick ? () => column.onClick(row) : undefined}
+                    style={cellStyles?.body?.[column.field] || cellStyles?.body?.default}
+                  >
+                    {dataFormatter ? dataFormatter(row, column.field) : row[column.field]}
+                  </TableCell>
+                ))}
+                <TableCell align="center" style={{ color: 'gray' }}>
+                  <Button onClick={() => handleDelete(row.id)} color="secondary" style={{ color: 'gray' }}>
+                    삭제
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+}
 
-const initialInquiries = [
-  { id: 1, inquiry: '로그인 문제', inquiryContent: '로그인할 수 없습니다.', answer: '비밀번호를 재설정해 보세요.', date: '2024-08-01', handleInquiry: 'O', handleInquiryDate: '2024-08-02' },
-  { id: 2, inquiry: '비밀번호 재설정', inquiryContent: '비밀번호를 잊어버렸습니다.', answer: '비밀번호 재설정 링크를 보내드렸습니다.', date: '2024-08-02', handleInquiry: 'X' },
-  { id: 3, inquiry: '계정 삭제 요청', inquiryContent: '계정을 삭제하고 싶습니다.', answer: '계정 삭제 요청이 처리되었습니다.', date: '2024-08-03', handleInquiry: 'O', handleInquiryDate: '2024-08-05' },
-];
-
+// ReportAndInquiryList 컴포넌트 정의
 export default function ReportAndInquiryList() {
+  const initialReports = [
+    { id: 1, reportedUser: 'jay5693', reason: '욕설', date: '2024-08-01', handleReport: 'O', handleReportdate: '2024-08-03', judgement: '1주정지' },
+    { id: 2, reportedUser: 'yjs', reason: '스팸광고', date: '2024-08-02', handleReport: 'X' },
+    { id: 3, reportedUser: 'sjd', reason: '계정도용', date: '2024-08-03', handleReport: 'O', handleReportdate: '2024-08-05', judgement: '영구정지' },
+  ];
+
+  const initialInquiries = [
+    { id: 1, inquiry: '로그인 문제', inquiryContent: '로그인할 수 없습니다.', answer: '비밀번호를 재설정해 보세요.', date: '2024-08-01', handleInquiry: 'O', handleInquiryDate: '2024-08-02' },
+    { id: 2, inquiry: '비밀번호 재설정', inquiryContent: '비밀번호를 잊어버렸습니다.', answer: '비밀번호 재설정 링크를 보내드렸습니다.', date: '2024-08-02', handleInquiry: 'X' },
+    { id: 3, inquiry: '계정 삭제 요청', inquiryContent: '계정을 삭제하고 싶습니다.', answer: '계정 삭제 요청이 처리되었습니다.', date: '2024-08-03', handleInquiry: 'O', handleInquiryDate: '2024-08-05' },
+  ];
+
   const [reports, setReports] = useState(initialReports);
   const [inquiries, setInquiries] = useState(initialInquiries);
   const [open, setOpen] = useState(false);
@@ -36,7 +96,7 @@ export default function ReportAndInquiryList() {
 
   const handleCloseModal = () => {
     setOpen(false);
-    setSelectedInquiry(null); // 모달 닫을 때 선택된 문의 초기화
+    setSelectedInquiry(null); 
   };
 
   const handleConfirmDelete = () => {
@@ -62,8 +122,19 @@ export default function ReportAndInquiryList() {
     });
   };
 
+  const cellStyles = {
+    header: {
+      backgroundColor: '#f5f5f5', // 연한 회색 배경
+      color: 'gray', // 텍스트 색상을 회색으로 설정
+      fontWeight: 'bold', // 텍스트를 굵게 설정
+    },
+    body: {
+      delete: { color: 'gray' }, // 삭제 셀 텍스트를 회색으로 설정
+    },
+  };
+
   return (
-    <Paper elevation={3} style={{ padding: '20px', margin: '50px 20px 20px 20px' }}>
+    <Paper elevation={3} style={{ padding: '20px' }}>
       <TableSection
         title="신고 목록"
         columns={[
@@ -83,6 +154,7 @@ export default function ReportAndInquiryList() {
           }
           return row[field];
         }}
+        cellStyles={cellStyles} // 헤더 및 삭제 스타일 적용
       />
 
       <div style={{ marginTop: '40px' }}></div>
@@ -109,6 +181,7 @@ export default function ReportAndInquiryList() {
           }
           return row[field];
         }}
+        cellStyles={cellStyles} // 헤더 및 삭제 스타일 적용
       />
 
       <MuiModal
@@ -129,19 +202,19 @@ export default function ReportAndInquiryList() {
         actions={
           selectedInquiry ? (
             <>
-              <Button onClick={handleReinquiry} variant="contained" color="primary" sx={{ marginRight: 1, width:'100px'}}>
+              <Button onClick={handleReinquiry} variant="contained" color="primary" sx={{ marginRight: 1, width: '100px' }}>
                 재문의
               </Button>
-              <Button onClick={handleCloseModal} variant="contained" color="error" sx={{ marginLeft: 2, width:'100px' }}>
+              <Button onClick={handleCloseModal} variant="contained" color="error" sx={{ marginLeft: 2, width: '100px' }}>
                 닫기
               </Button>
             </>
           ) : (
             <>
-              <Button onClick={handleConfirmDelete} variant="contained" color="error" sx={{ marginRight: 1, width:'100px'}}>
+              <Button onClick={handleConfirmDelete} variant="contained" color="error" sx={{ marginRight: 1, width: '100px' }}>
                 예
               </Button>
-              <Button onClick={handleCloseModal} variant="contained" color="primary" sx={{ marginLeft: 2, width:'100px'}}>
+              <Button onClick={handleCloseModal} variant="contained" color="primary" sx={{ marginLeft: 2, width: '100px' }}>
                 아니오
               </Button>
             </>
