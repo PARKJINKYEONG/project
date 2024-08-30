@@ -6,6 +6,7 @@ import useRequest from '../../hooks/useRequest';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getYear, getMonth } from 'date-fns';
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 
 export default function ProfilePage() {
   const { email } = useContext(UserContext);
@@ -24,7 +25,9 @@ export default function ProfilePage() {
         const data = await get('/getprofile');
         setName(data.data.name || '');
         setIntroduce(data.data.introduce || '');
-        setGender(data.data.gender);
+        setGender(data.data.gender === true ? '남자' : 
+          data.data.gender === false ? '여자' : 
+          '비공개');
         setBirthDate(data.data.birthDate ? new Date(data.data.birthDate) : new Date());
         if (data.data.profileImageUrl) {
           setProfileImage(data.data.profileImageUrl);
@@ -48,7 +51,7 @@ export default function ProfilePage() {
 
   const handleGenderChange = (e) => {
     const value = e.target.value;
-    setGender(value === '남자' ? true : value === '여자' ? false : null);
+    setGender(value);
   };
 
   const handleBirthDateChange = (date) => {
@@ -73,7 +76,7 @@ export default function ProfilePage() {
         const profileData = {
           name,
           introduce,
-          gender,
+          gender: gender === '남자' ? true : gender === '여자' ? false : null,
           birthDate: birthDate ? birthDate.toISOString().split('T')[0] : null,
           profileImage,
         };
@@ -128,19 +131,17 @@ export default function ProfilePage() {
         <div className={style.formGroup}>
           <label htmlFor="gender">성별:</label>
           {isEditing ? (
-            <div>
-              <label>
-                <input type="radio" value="남자" checked={gender === true} onChange={handleGenderChange} /> 남자
-              </label>
-              <label>
-                <input type="radio" value="여자" checked={gender === false} onChange={handleGenderChange} /> 여자
-              </label>
-              <label>
-                <input type="radio" value="비공개" checked={gender === null} onChange={handleGenderChange} /> 비공개
-              </label>
-            </div>
+            <RadioGroup defaultValue={gender}
+            name="gender"
+            row
+            value={gender}
+            onChange={handleGenderChange}>
+                <FormControlLabel control={<Radio />} value="남자" label="남자"/> 
+                <FormControlLabel control={<Radio />} value="여자" label="여자"/> 
+                 
+                </RadioGroup>
           ) : (
-            <input type="text" id="gender" value={gender === true ? '남자' : gender === false ? '여자' : '비공개'} readOnly />
+            <input type="text" id="gender" value={gender} readOnly />
           )}
         </div>
         <div className={style.formGroup}>
