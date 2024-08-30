@@ -23,7 +23,7 @@ function ContentComponent({ activeStep, handlePlaceClick  }) {
       case 4:
         return <ProgressPlan5 />;
       default:
-        return <DescriptionPlan />;
+        return <ProgressPlan5 />;
     }
   };
 

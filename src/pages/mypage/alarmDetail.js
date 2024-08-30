@@ -20,6 +20,7 @@ const AlarmDetail= () => {
     const handleMouseLeave = (e) => {
         e.currentTarget.style.backgroundColor = '#e3f2fd'; //커서가 벗어났을 때 원래 배경색으로 복귀
     };
+    
     return<>
         <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
             <div style={{ width: '100%', border: '1px solid #ddd', borderRadius: '8px', padding: '20px', backgroundColor: 'white' }}>

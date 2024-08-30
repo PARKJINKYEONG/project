@@ -382,9 +382,9 @@ const ReviewList = () => {
                       )}
                     </div>
                     <div className="review-actions">
-                      <Button onClick={() => handleExpandToggle(review.id)}>
-                        {expandedReviewIds.has(review.id) ? '접기' : '더 보기'}
-                      </Button>
+                    <Link to={`/ReviewListView`} onClick={() => console.log("상세보기 클릭됨")}>
+                        <Button>상세보기</Button>
+                      </Link>
                       <Link to={`/EditReview/${review.id}`}>
                         <Button>편집</Button>
                       </Link>

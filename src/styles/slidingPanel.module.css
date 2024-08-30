@@ -9,7 +9,7 @@
     background-color: white;
     border-left: 0.5px solid rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease; /* 애니메이션을 위한 트랜지션 */
-    z-index: 1000;
+    z-index: 1;
   }
   
   .hidden {
@@ -18,11 +18,11 @@
   
   .closeButton {
     position: absolute;
-    top: -1px;
-    right: -1px;
+    top: -9px;
+    right: 1px;
     color: black; /* 글자 색을 흰색으로 설정 */
     background-color: white;
-    font-size: 15px; /* 글자 크기 조정 */
+    font-size: 20px; /* 글자 크기 조정 */
     width: 10px; /* 버튼 크기 조정 */
     height: 10px; /* 버튼 크기 조정 */
     outline: none;

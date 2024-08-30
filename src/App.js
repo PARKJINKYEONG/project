@@ -33,6 +33,7 @@ import AreaRoutes from "./pages/area/areaRoutes";
 import QnaView from "./pages/clientService/qnaView";
 import QuestionView from "./pages/admin/QnA/questionView";
 import AdminRoutes2 from "./pages/admin/AdminHome/adminRoutes";
+import ReviewListView from "./pages/tripreview/ReviewListView";
 
 
 
@@ -74,6 +75,7 @@ function App() {
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/mypage/*" element={<MyPageRoutes />} />
                 <Route path="/ReviewList" element={<ReviewList />}/>
+                <Route path="/ReviewListView" element={<ReviewListView />}/>
                 <Route path="/CreateReview" element={<CreateReview />}/>
                 <Route path="/EditReview/:id" element={<EditReview />} />
                 <Route path="/board/*" element={<BoardRoutes />} />

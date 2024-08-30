@@ -56,7 +56,7 @@ export default function ProgressPlan2({ handlePlaceClick }) {
               <input
                 type="text"
                 placeholder="장소명을 입력하세요"
-                className={styles.customInput}
+                className={styles.customInput2}
               />
             </div>            
           )}
