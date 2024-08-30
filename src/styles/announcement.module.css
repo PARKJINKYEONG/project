@@ -1,64 +1,66 @@
-.announcement-container {
-    width: 100%;
-    text-align: center;
-  }
-  
-  .announcement-image {
-    width: 100%;
-    height: auto;
-  }
-  
-  .announcement-tabs {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  .tab-button {
-    padding: 10px 20px;
-    margin: 0 5px;
-    background-color: white;
-    border: 1px solid #ccc;
-    cursor: pointer;
-  }
-  
-  .tab-button:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .search-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin-right: 5px;
-  }
-  
-  .search-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .search-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .announcement-content {
-    margin-top: 20px;
-  }
-  
-  .announcement-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .announcement-table th, .announcement-table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  .announcement-table th {
-    background-color: #f0f0f0;
-  }
-  
+.qnaContainer {
+  padding: 20px;
+}
+
+.paddingContainer {
+  padding: 20px;
+}
+
+.headerStyle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.headerMenuStyle {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.tabStyle {
+  display: inline-block;
+  margin-right: 15px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.marginContainer {
+  margin: 20px 0;
+}
+
+.tableStyle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 90px;
+}
+
+.thStyle {
+  border-bottom: 2px solid black;
+  text-align: left;
+  padding: 8px;
+}
+
+.containerStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.searchBoxStyle {
+  width: 60%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.buttonStyle {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+}

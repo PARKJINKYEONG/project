@@ -29,9 +29,14 @@ import CreateUserQnA from "./pages/clientService/createUserQnA";
 import AnnouncementView from "./pages/clientService/announcementView";
 import { UserContext } from "./contexts/userContext";
 import AreaRoutes from "./pages/area/areaRoutes";
+
+import QnaView from "./pages/clientService/qnaView";
+import QuestionView from "./pages/admin/QnA/questionView";
+
 import ChatManagement from "./pages/admin/chatManagement/chatManagement";
 import AdminHome2 from "./pages/admin/AdminHome/adminHome2";
 import AdminRoutes2 from "./pages/admin/AdminHome/adminRoutes";
+
 
 
 function App() {
@@ -63,10 +68,12 @@ function App() {
                 <Route path="/changeInfo/*" element={<ChangeInfoRoutes/>} />
                 <Route path="/bookmark/*" element={<BookmarkRoutes/>} />
                 <Route path="/userQna" element={<QnA/>}></Route>
+                <Route path="/createUserQnA" element={<CreateUserQnA/>}></Route>
+                <Route path="/qnaView" element={<QnaView/>}></Route>
                 <Route path="/userFaq" element={<FaQ/>}></Route>
                 <Route path="/eCrm" element={<Ecrm/>}></Route>
                 <Route path="/announcement" element={<Announcement/>}></Route>
-                <Route path="/announcement/:id" element={<AnnouncementView/>}/>
+                <Route path="/announcementView" element={<AnnouncementView/>}/>
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/mypage/*" element={<MyPageRoutes />} />
                 <Route path="/ReviewList" element={<ReviewList />}/>

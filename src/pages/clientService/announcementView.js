@@ -1,73 +1,56 @@
-import React, { useState } from 'react';
+import React from 'react';
+import styles from '../../styles/announcementView.module.css';
+import { Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-import QnAstyle from '../../styles/userQna.module.css';
+const AnnouncementView = () => {
+  const navigate = useNavigate();
+  return (
+    <>
+    <Box 
+                  sx={{ 
+                      textAlign: 'center', 
+                      mb: 2, 
+                      p: 2, 
+                      backgroundImage: 'url(/images/QnA.webp)', 
+                      backgroundSize: 'cover', 
+                      backgroundPosition: 'center 50%', 
+                      height: 200
+                  }}
+              >
+            </Box>
+    <div className={styles.container}>
 
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-
-
-
-function AnnouncementView() {
-
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
-    const handleFAQClick = () => {
-        navigate('/userFaq'); // FAQ 페이지로 이동
-    };
-    const handleeCrmClick = () => {
-        navigate('/eCrm'); // eCrm 페이지로 이동
-    }
-    const {state} = useLocation();
-
-    const tdStyle = {
-        // 여기에 td 스타일을 정의하세요.
-        borderBottom: "1px solid #ddd",
-        padding: "8px",
-        textAlign: "left",
-        cursur:'pointer'
-      };
-
-  return <>
-    <div className="qna-container">
-                <div className={`text-center ${QnAstyle.headerImage}`}>
-                    <img src="/images/Mask_group.png" alt="Header" className="header-image" />
-                </div>
-                <div className="menu" style={{ display: 'flex', alignItems: 'center' }}>
-                    <div>
-                        <input type="text" placeholder="검색"style={{ width: '800px', height:'45px' }} />
-                        <button>검색</button>
-                    </div>
-                </div>
-                <div style={{ margin: '20px 0' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>   
-                    <h2>공지사항 </h2>
-                </div> 
-                <table className="table">
-                    <tbody>
-                        <tr>
-                            <td colSpan="4"></td>
-                        </tr>
-                        <tr>
-                            <td className="title">제목</td>
-                            <td>{state.title}</td>
-                            <td className="date col-2">{state.createdAt}</td>  
-                        </tr>
-                        <tr>
-                            <td>글쓴이</td>
-                            <td colSpan="2">{state.author}</td>                        
-                        </tr>
-                        <tr>
-                            <td className="text-center" colSpan="5">
-                                {state.content}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-                <NavLink to="/announcement">
-                        <button style={{ width: '80px', height:'40px', fontSize: '20px' }} >목록</button>
-                </NavLink>
-            </div>
-  </>
+      <div className={styles.content}>
+        <h2 className={styles.title}>공지사항</h2>
+        <table className={styles.table}>
+          <tbody>
+            <tr>
+              <td className={styles.value}>제목</td>
+              <td className={styles.value}>공지사항입니다</td>
+              <td className={styles.value}>조회수</td>
+            </tr>
+            <tr>
+              <td className={styles.value}>질문자</td>
+              <td className={styles.value}>석석이</td>
+            </tr>
+            <tr>
+              <td className={styles.value}>등록일</td>
+              <td className={styles.value}>2024-08-11</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className={styles.noticeContent}>
+          <p>공지사항입니다</p>
+          <p>한번씩 읽어주세요</p>
+          <p>감사합니다</p>
+          <p>많은 관심 부탁드립니다.</p>
+        </div>
+      </div>
+      <button className={styles.buttonStyle} onClick={() => navigate('/announcement')}>목록</button>
+    </div>
+    </>
+  );
 };
 
 export default AnnouncementView;
