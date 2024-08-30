@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -6,13 +6,14 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styles from '../../styles/userQna.module.css'; // 스타일 파일 임포트
 import { FAQ_CONTENT } from './faqContent';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
+import axios from 'axios';
 
 const FaQ = () => {
     const [expanded, setExpanded] = useState(false);
     const [searchTerm, setSearchTerm] = useState(''); // 검색어를 위한 상태 추가
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const [faqs,setFAQ] = useState([]);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -26,70 +27,90 @@ const FaQ = () => {
         return summary.includes(term) || details.includes(term);
     });
 
-    const handleNoticeClick = () => {
-        navigate('/announcement'); // 공지사항 페이지로 이동
-    };
-    const handleQNAClick = () => {
-        navigate('/userQna'); // QnA 페이지로 이동
-    };
-    const handleFaqClick = () => {
-        navigate('/userFaq'); // FAQ 페이지로 이동
-    };
+    const fetchFAQ = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/api/ask/category/FAQ');
+          console.log('faq',response.data);
+          setFAQ(response.data);
+        } catch (error) {
+          console.error('문의사항을 불러오는 중 오류가 발생했습니다.', error);
+        }
+      };
+
+      useEffect(() => {
+        fetchFAQ();
+      }, []);
 
     return (
         <>
-            <div className={styles.qnaContainer}>
             <Box 
-                  sx={{ 
-                      textAlign: 'center', 
-                      mb: 2, 
-                      p: 2, 
-                      backgroundImage: 'url(/images/QnA.webp)', 
-                      backgroundSize: 'cover', 
-                      backgroundPosition: 'center 50%', 
-                      height: 200
-                  }}
-              >
-            </Box>
+                sx={{ 
+                    textAlign: 'center', 
+                    mb: 2, 
+                    p: 2, 
+                    backgroundImage: 'url(/images/hot-air-balloon.jpg)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center 50%', 
+                    height: 250,
+                    marginTop:10
+                }}
+            />
+            <div className={styles.qnaContainer}>
                 <div className={styles.paddingContainer}>
                     <div className={styles.headerStyle}>FAQ</div>
                     <div className={styles.headerMenuStyle}>
-                        <span className={styles.tabStyle} onClick={handleNoticeClick}>NOTICE</span>
-                        <span className={styles.tabStyle} onClick={handleQNAClick}>| Q&A</span>
-                        <span className={styles.tabStyle}>| FAQ</span>
+                    <Link className={styles.tabStyle} to={'/announcement'}>NOTICE</Link>
+                    <Link className={styles.tabStyle} to={"/userQna"}>| Q&A </Link>
+                    <Link className={styles.tabStyle} to={"/userFaq"}>| FAQ</Link>
                     </div>
                 </div>
-
-                <div className={styles.accordionSection}>
-                    <div>
-                        {(filteredFaqContent && filteredFaqContent.length > 0) ? (
-                            filteredFaqContent.map((key) => (
-                                <Accordion
-                                    key={key}
-                                    expanded={expanded === key}
-                                    onChange={handleChange(key)}
-                                >
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls={`${key}bh-content`}
-                                        id={`${key}bh-header`}
-                                    >
-                                        <Typography sx={{ width: '50%', flexShrink: 0, color: 'blue' }}>
-                                            {FAQ_CONTENT[key].summary}
-                                        </Typography>
+                <table className={styles.tableStyle}>
+                    <thead className='text-center'>
+                        <tr className={styles.thStyle}>
+                            <th className='col-12'>자주 묻는 질문</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        
+                        {faqs.length > 0 ? (
+                            faqs.map((faq, index) => (
+                                <tr key={faq.id}>
+                                    <td className="col-9 text-center">
+                                    <Accordion key={index} expanded={expanded === index} onChange={handleChange(index)} >
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${index}bh-content`} id={`${index}bh-header`} >
+                                            <Typography sx={{ width: '50%', flexShrink: 0, color: 'blue' }}>
+                                            {faq.questionTitle}
+                                            </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <Typography>
-                                            {FAQ_CONTENT[key].details}
-                                        </Typography>
-                                    </AccordionDetails>
-                                </Accordion>
+                                            <Typography>
+                                            {faq.questionContent}
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    </td>
+                                </tr>
                             ))
                         ) : (
-                            <Typography>검색 결과가 없습니다.</Typography>
+                            <tr>
+                        <td className='col-12'>
+                        <Accordion expanded={expanded === 1} onChange={handleChange(1)} >
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`1bh-content`} id={`1bh-header`} >
+                                <Typography sx={{ width: '50%', flexShrink: 0 }}>
+                                자주 묻는 질문을 준비중입니다.
+                                </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                                <Typography>
+                                    안녕하세요, 저희는 Travel Joy 팀입니다. 저희 사이트 잘부탁드려요.
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
+                        </td>
+                        </tr>
                         )}
-                    </div>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </>
     );

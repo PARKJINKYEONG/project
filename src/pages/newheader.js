@@ -62,7 +62,7 @@ const NewHeader = () => {
               </NavLink>
             </div>
             <div className="nav-item">
-            <NavLink  className={`nav-link`} onClick={toggleDropdown}
+            <NavLink to={'/alarmDetail'} className={`nav-link`} onClick={toggleDropdown}
             style={({ isActive }) => isActive ? activeStyle : null} >
                 <Badge badgeContent={alarmCount} color="error">
                 <img src="/images/bell.svg" style={{ width: '20px', height: '20px' }} alt="alarm" />
@@ -89,10 +89,13 @@ const NewHeader = () => {
             <NavLink className={`${styles.submenuLink}`} to="/ReviewList">여행 후기</NavLink>
           </div>
           <div className={`${styles.menuItem}`}>
-            <NavLink className={`${styles.submenuLink}`} to="/place/global">국외 여행</NavLink>
+            <NavLink className={`${styles.submenuLink}`} to="/place/global">해외 여행</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/place/local">국내 여행</NavLink>
-            <NavLink className={`${styles.submenuLink}`} to="/place/lodgment">숙박 시설</NavLink>
+            <NavLink className={`${styles.submenuLink}`} to="/place/flightSearch">항공 정보</NavLink>
+            <NavLink className={`${styles.submenuLink}`} to="/place/weatherSearch">날씨 정보</NavLink>
+            <NavLink className={`${styles.submenuLink}`} to="/place/hotelSearch">숙박 정보</NavLink>
           </div>
+          
           <div className={`${styles.menuItem}`}>
             <NavLink className={`${styles.submenuLink}`} to="/announcement">공지사항</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/userQna">Q&A</NavLink>

@@ -32,9 +32,6 @@ import AreaRoutes from "./pages/area/areaRoutes";
 
 import QnaView from "./pages/clientService/qnaView";
 import QuestionView from "./pages/admin/QnA/questionView";
-
-import ChatManagement from "./pages/admin/chatManagement/chatManagement";
-import AdminHome2 from "./pages/admin/AdminHome/adminHome2";
 import AdminRoutes2 from "./pages/admin/AdminHome/adminRoutes";
 
 

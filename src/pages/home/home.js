@@ -53,9 +53,9 @@ export default function Home() {
         {/* Hero Section */}
         <section className={styles.heroSection}>
           <div className={styles.heroImageContainer}>
-            <img src="/images/home/qo.jpg" alt="Desert Landscape" className={styles.heroImage} />
+            <img src="/images/home/paradise.jpg" alt="Desert Landscape" className={styles.heroImage} />
             <div className={styles.heroText}>
-              <h2>여행을 준비하는 당신을 위한 맞춤 AI 여행 플래너</h2>
+              <h2><p>여행을 준비하는 당신을 위한</p> <p>맞춤 AI 여행 플래너</p></h2>
               <Link to="/createPlan">
                 <button className={styles.planButton}>
                   <div className={styles.planButtonText}>

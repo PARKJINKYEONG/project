@@ -23,7 +23,7 @@ const QuestionManagement  = () => {
 
 
   useEffect(() => {
-    fetchQuestions(); // 컴포넌트가 마운트될 때 문의사항을 불러옵니다.
+    fetchQuestions();
   }, []);
 
   const handleQuestionClick = (question) => {

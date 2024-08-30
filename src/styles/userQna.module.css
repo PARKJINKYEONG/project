@@ -1,5 +1,5 @@
 .qnaContainer {
-  padding: px;
+  padding: 20px; /* 컨테이너 내부에 여백을 추가하여 레이아웃 정리 */
 }
 
 .headerStyle {
@@ -10,24 +10,28 @@
 
 .headerMenuStyle {
   font-size: 16px;
-  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
 .tabStyle {
   display: inline-block;
   margin-right: 15px;
   cursor: pointer;
-
+  text-decoration: none;
+  color: #000;
 }
 
 .tableStyle {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 90px;
+  height: 80%;
+  margin-top: 30px;
+  border-collapse: separate; /* 셀 사이에 간격을 주기 위해 설정 */
+  border-spacing: 0 10px; /* 행 간의 간격을 10px로 설정 */
 }
 
 .thStyle {
-  border-bottom: 2px solid black;
+  border-bottom: 1px solid #ccc;
   text-align: left;
   padding: 8px;
 }
@@ -44,7 +48,6 @@
   padding: 8px;
   box-sizing: border-box;
   margin-top: 210px; /* 검색창과 버튼을 더 아래로 내리기 위해 여백 추가 */
-  /*text-align: center;  중앙 정렬 */
 }
 
 .buttonStyle {
@@ -58,4 +61,8 @@
   border-radius: 5px;
   margin-left: 10px;
   margin-top: 210px; /* 버튼 위에 여백 추가 */
+}
+
+.noData {
+  padding: 20px; /* "새로 등록된 문의 사항이 없습니다." 텍스트에 여백을 추가합니다 */
 }

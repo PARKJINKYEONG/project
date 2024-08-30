@@ -1,8 +1,9 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from '../../styles/userQna.module.css';
 import { Box } from '@mui/material';
 import UserComponent from './userComponent';
+import axios from 'axios';
 
 const rows = [
   { no: 4, category: '석석이', title: '공지사항입니다', date: '2020-11-12' },
@@ -13,72 +14,82 @@ const rows = [
 
 function Announcement() {
   const navigate = useNavigate();
+  const [notices, setNotices] = useState([]);
 
-  const handleFAQClick = () => {
-    navigate('/userFaq');
+  const effect = async () => {
+    try {
+        const notice = await axios.get('http://localhost:8080/api/notice/all');
+        console.log(notice);
+        setNotices(notice.data);  // 질문 목록을 상태에 저장
+    } catch (error) {
+        console.error('질문 목록을 불러오는 중 오류가 발생했습니다.', error);
+    }
   };
-
-  const handleQNAClick = () => {
-    navigate('/userQna');
-  };
-
-  const handleFaqClick = () => {
-    navigate('/userFaq');
-  };
-
-  // useEffect = async () =>{
-  //   try {
-  //       const qna=await axios.get(`http://localhost:8080/category/${question_category}`);
-  //       console.log(qna);
-
-  //       setQuestions(qna);  // 답변 저장 후 목록으로 돌아갑니다.
-  //     } catch (error) {
-  //       console.error('답변을 저장하는 중 오류가 발생했습니다.', error);
-  //     }
-
-  // };
+useEffect(() => {
+  effect();
+}, []);
 
   return (
     <>
-      <div className={styles.qnaContainer}>
-        <Box 
-          sx={{ 
-            textAlign: 'center', 
-            mb: 2, 
-            p: 2, 
-            backgroundImage: 'url(/images/QnA.webp)', 
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center 50%', 
-            height: 200
-          }}
-        >
-        </Box>
-        <div className={styles.paddingContainer}>
-          <div className={styles.headerStyle}>공지사항</div>
-          <div className={styles.headerMenuStyle}>
-            <span className={styles.tabStyle}>NOTICE</span>
-            <span className={styles.tabStyle} onClick={handleQNAClick}>| Q&A</span>
-            <span className={styles.tabStyle} onClick={handleFAQClick}>| FAQ</span>
-          </div>
-          <div className={styles.marginContainer}>
-            <table className={styles.tableStyle}>
-              <thead>
-                <tr>
-                  <th className={styles.thStyle}>No</th>
-                  <th className={styles.thStyle}>작성자</th>
-                  <th className={styles.thStyle}>제목</th>
-                  <th className={styles.thStyle}>작성시간</th>
-                </tr>
-              </thead>
-              <tbody> 
-                {rows.map(row => (
-                  <UserComponent row={row} onClick={() => navigate('/announcementView')} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <Box 
+                sx={{ 
+                    textAlign: 'center', 
+                    mb: 2, 
+                    p: 2, 
+                    backgroundImage: 'url(/images/hot-air-balloon.jpg)', 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center 50%', 
+                    height: 250,
+                    marginTop:10
+                }}
+            />
+            <div className={styles.qnaContainer}>
+                <div className={styles.headerStyle}>Notice</div>
+                <div className={styles.headerMenuStyle}>
+                    <Link className={styles.tabStyle} to={'/announcement'}>NOTICE</Link>
+                    <Link className={styles.tabStyle} to={"/userQna"}>| Q&A </Link>
+                    <Link className={styles.tabStyle} to={"/userFaq"}>| FAQ</Link>
+                </div>
+                <table className={styles.tableStyle}>
+                    <thead className='text-center'>
+                        <tr className={styles.thStyle}>
+                            <th className='col-1'>번호</th>
+                            <th className='col-4 '>제목</th>
+                            <th className='col-2'>공지 일자</th>
+                            <th className='col-2'>작성자</th>
+                            <th className='col-2'>조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        {notices.length > 0 ? (
+                            notices.map((notice, index) => (
+                                <tr key={notice.id}>
+                                    <td className="col-1 text-center">{index + 1}</td>
+                                    <td className="col-4 text-center">{notice.title}</td>
+                                    <td className="col-2 text-center">{notice.noticeDate.slice(0, 10)}</td>
+                                    <td className="col-2 text-center">{notice.writer}</td>
+                                    <td className="col-1 text-center">{notice.viewCount}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="10" className={`text-center ${styles.noData}`}>
+                                    등록된 공지 사항이 없습니다.
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+                
+                <div className={styles.containerStyle}>
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        className={styles.searchBoxStyle}
+                    />
+                    <button className={styles.buttonStyle}>검색</button>
+                </div>
+            </div>
     </>
   );
 }

@@ -17,7 +17,7 @@ export default function Template(){
 
         {/* <Header2 /> */}
         <NewHeader/>
-        <div className={`container godo-korfont ${isCreatePlanPage ? 'hide-footer' : ''}`}>
+        <div className={`container nanumsqr-korfont ${isCreatePlanPage ? 'hide-footer' : ''}`}>
             <Outlet />
         </div>
         {!isCreatePlanPage && <Footer />}
