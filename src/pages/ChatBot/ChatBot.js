@@ -71,16 +71,51 @@ const ChatBot = () => {
   //mqtt
 
 
-
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('chatbot');
+  const chatInput = useRef('');
   
   // 각 탭에 대한 메시지 별도 관리
   const [chatbotMessages, setChatbotMessages] = useState([]);
   const [supportMessages, setSupportMessages] = useState([]);
+  const [botResponses, setBotResponses] = useState([]);
 
-  //수경
-  const chatInput = useRef('');
+  //chatbot
+  async function sendQueryToOPENAI(newMessage) {
+    // try {
+    //   const response = await axios.post('http://localhost:8000/chat', {
+    //     messages: [{ role: 'user', content: newMessage }],
+    //   });
+      
+    //   const data = response.data;
+    //   setBotResponses(prevBotResponses => [
+    //     ...prevBotResponses,
+    //     ...data.choices.map(choice => choice.message.content)
+    //   ]);
+    const apiKey = 'key';
+    try {
+      const apiResponse = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: newMessage }],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      // 응답 데이터를 반환합니다.
+      return apiResponse.data.choices[0].message.content;
+  
+    } catch (error) {
+      console.error('Error sending message:', error.response ? error.response.data : error.message);
+      throw error;
+    }
+  }
 
   // 메시지 컨테이너 참조, 자동 스크롤을 위해
   const messagesEndRef = useRef(null);
@@ -101,28 +136,28 @@ const ChatBot = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (chatInput.current.value.trim()) {
       const newMessage = { type: 'user', text: chatInput.current.value };
-      
+  
       if (activeTab === 'chatbot') {
-        const newMessages = [...chatbotMessages, newMessage];
-        setChatbotMessages(newMessages);
-
-
-        // AI대답
-        setTimeout(() => {
-          setChatbotMessages([...newMessages, { type: 'ai', text: '안녕하세요' }]);
-        }, 500);
-
+        try {
+          const botResponse = await sendQueryToOPENAI(newMessage.text); // OpenAI API 응답 대기
+          const newMessages = [...chatbotMessages, newMessage, { type: 'bot', text: botResponse }];
+          setChatbotMessages(newMessages);
+        } catch (error) {
+          console.error('Error in chatbot:', error);
+        }
       } else if (activeTab === 'support') {
         const newMessages = [...supportMessages, newMessage];
-        setSupportMessages(newMessages);//채팅방에 채팅메세지 추가
-
-        publishMessage();//mqtt pub
-
+        setSupportMessages(newMessages); // 채팅방에 채팅 메세지 추가
+  
+        publishMessage(); // MQTT pub
+  
         handleSupportMessage(newMessages);
       }
+  
+      chatInput.current.value = ''; // 메시지 전송 후 입력 필드 초기화
     }
   };
 

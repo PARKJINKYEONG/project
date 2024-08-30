@@ -4,7 +4,7 @@ import { FaYoutube, FaTwitter, FaLinkedin } from 'react-icons/fa';
 
 export default function Footer() {
     return (
-        <footer className="footer">
+        <footer className="footer nanumsqr-korfont" >
             <div className="footer-container">
                 {/* Company Info Section */}
                 <div className="footer-logo">

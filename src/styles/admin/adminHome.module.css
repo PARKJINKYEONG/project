@@ -14,7 +14,8 @@
 .mainContent {
     flex-grow: 1;
     display: flex;
-    flex-direction: column; /* 수직으로 쌓이도록 설정 */
+    flex-direction: column;
+    height: 100%;
 }
 
 .mainContentHeader {
@@ -22,8 +23,16 @@
     border-bottom: 1px solid #ddd;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 요소들을 양 끝으로 배치 */
+    justify-content: space-between;
     padding: 0 16px;
+}
+
+.outletContainer {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible; 
+    height: 80%;
 }
 
 .mainContentHeader h3 {
@@ -78,7 +87,7 @@
 .avatar {
     width: 40px;
     height: 40px;
-    background-color: #9ecffd;
+    background-color: #c5e3ff;
     border-radius: 50%;
     margin-right: 8px;
 }

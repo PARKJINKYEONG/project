@@ -3,7 +3,6 @@ import styles from '../../../styles/admin/adminHome.module.css';
 import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import SideMenuBar from './sideMenuBar';
 import AdminHeader from './adminHeader';
-import ChatManagement from '../chatManagement/chatManagement';
 
 const AdminHome2 = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -28,11 +27,9 @@ const AdminHome2 = () => {
 
                 <div className={styles.mainContent}>
                 <AdminHeader title={selectedSubMenu} />
-                <Outlet/>
-                {/* <Routes>
-                    <Route path="chatting" component={ChatManagement} /> */}
-                    {/* <Route path="/anotherRoute" component={AnotherComponent} /> */}
-                {/* </Routes> */}
+                <div className={styles.outletContainer}>
+                    <Outlet />  
+                </div>
                 </div>
             </div>
         

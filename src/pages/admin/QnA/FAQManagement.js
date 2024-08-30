@@ -6,24 +6,24 @@ import useRequest from '../../../hooks/useRequest.js';
 import QuestionTable from './questionTable.js';
 
 
-const QuestionManagement  = () => {
+const FAQManagement  = () => {
   const { get } = useRequest();
-  const [questions, setQuestion] = useState([]);
+  const [faqs,setFAQ] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
-  const fetchQuestions = async () => {
+
+  const fetchFAQ = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/ask/all');
-      console.log(response.data);
-      setQuestion(response.data);
+      const response = await axios.get('http://localhost:8080/api/ask/category/FAQ');
+      console.log('faq',response.data);
+      setFAQ(response.data);
     } catch (error) {
       console.error('문의사항을 불러오는 중 오류가 발생했습니다.', error);
     }
   };
 
-
   useEffect(() => {
-    fetchQuestions(); // 컴포넌트가 마운트될 때 문의사항을 불러옵니다.
+    fetchFAQ();
   }, []);
 
   const handleQuestionClick = (question) => {
@@ -36,11 +36,11 @@ const QuestionManagement  = () => {
         <QuestionView question={selectedQuestion} setIsEditing={setSelectedQuestion} />
       ) : (  
           <>      
-          <QuestionTable props={'문의사항'} questions={questions} onQuestionClick={handleQuestionClick}/>
+          <QuestionTable props={'자주 묻는 질문'} questions={faqs} onQuestionClick={handleQuestionClick}/>
           </>
       )}  
     </div>
     </>;
 };
 
-export default QuestionManagement ;
+export default FAQManagement ;

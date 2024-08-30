@@ -1,0 +1,99 @@
+.inquiryContainer {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
+    display: flex; /* Flexbox를 적용 */
+    flex-direction: column; /* 자식 요소를 세로로 쌓이게 설정 */
+    height: 85%;
+}
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .searchContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  
+  .searchInputWrapper {
+    position: relative;
+    width: 200px; /* 원하는 크기에 맞게 조정 */
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 8px 40px 8px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+    .searchInput:focus{
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+  .searchButton {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  
+  
+  .filterContainer {
+    margin-bottom: 10px;
+  }
+  
+  .filterButton {
+    padding: 8px 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .inquiryTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .inquiryTable th, .inquiryTable td {
+    border-bottom: 1px solid #c0c0c0;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .inquiryTable th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .noData {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+  }
+
+  
+.clickableCell {
+    cursor: pointer;
+    color: black;
+    text-align: left; 
+}
+
+.clickableCell:hover {
+    background-color: #f3f3f3;
+}

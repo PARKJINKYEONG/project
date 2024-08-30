@@ -5,6 +5,7 @@ import QuestionManagement from "../QnA/questionManagement"
 import NoticeManagement from "../notice/noticeManagement"
 import CollapsibleTable from "../reportManagement"
 import StatisticHome from "../../statistic/statisticHome"
+import FAQManagement from "../QnA/FAQManagement"
 
 <ChatManagement/>
 
@@ -24,7 +25,7 @@ export default function AdminRoutes2(){
                 <Route path="/comments"/>
 
                 <Route path="/questions" element={<QuestionManagement/>}/>
-                <Route path="/faq"/>
+                <Route path="/faq" element={<FAQManagement/>} />
                 <Route path="/chatting" element={<ChatManagement/>}/>
 
                 <Route path="/contents"/>

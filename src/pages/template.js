@@ -1,10 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./header";
 import Footer from "./footer";
-import SideController from "./home/sideController";
-import styles from "../styles/SideController.module.css";
 import '../styles/common.css'
 import Header2 from "./header2";
+
+import NewHeader from "./newheader";
+
 
 //레이아웃용 컴포넌트
 export default function Template(){
@@ -13,7 +14,9 @@ export default function Template(){
 
     return <>
         {/* <Header /> */}
-        <Header2/>
+
+        {/* <Header2 /> */}
+        <NewHeader/>
         <div className={`container godo-korfont ${isCreatePlanPage ? 'hide-footer' : ''}`}>
             <Outlet />
         </div>
