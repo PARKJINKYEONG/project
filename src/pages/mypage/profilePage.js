@@ -6,7 +6,7 @@ import useRequest from '../../hooks/useRequest';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getYear, getMonth } from 'date-fns';
-import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup, Button} from '@mui/material';
 
 export default function ProfilePage() {
   const { email } = useContext(UserContext);
@@ -14,6 +14,7 @@ export default function ProfilePage() {
   const [introduce, setIntroduce] = useState('');
   const [gender, setGender] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); // 이미지 파일 선택을 위한 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [birthDate, setBirthDate] = useState(new Date());
@@ -22,24 +23,21 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const data = await get('/getprofile');
-        setName(data.data.name || '');
-        setIntroduce(data.data.introduce || '');
-        setGender(data.data.gender === true ? '남자' : 
-          data.data.gender === false ? '여자' : 
-          '비공개');
-        setBirthDate(data.data.birthDate ? new Date(data.data.birthDate) : new Date());
-        if (data.data.profileImageUrl) {
-          setProfileImage(data.data.profileImageUrl);
+        const response = await get('/getprofile');
+        setName(response.data.name || '');
+        setIntroduce(response.data.introduce || '');
+        setGender(response.data.gender === true ? '남자' : '여자');
+        setBirthDate(response.data.birthDate ? new Date(response.data.birthDate) : new Date());
+        if (response.data.profileImageUrl) {
+          setProfileImage(response.data.profileImageUrl);
         }
-        console.log(data);
       } catch (error) {
         console.error('프로필 데이터를 가져오는 중 오류가 발생했습니다.', error);
       }
     };
 
     fetchProfileData();
-  }, []);
+  }, [email]);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -50,8 +48,7 @@ export default function ProfilePage() {
   };
 
   const handleGenderChange = (e) => {
-    const value = e.target.value;
-    setGender(value);
+    setGender(e.target.value);
   };
 
   const handleBirthDateChange = (date) => {
@@ -59,7 +56,9 @@ export default function ProfilePage() {
   };
 
   const handleImageChange = (e) => {
+    e.preventDefault(); // 폼 제출 방지
     const file = e.target.files[0];
+    setSelectedImage(file);  // 선택한 이미지를 상태로 저장
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -69,26 +68,35 @@ export default function ProfilePage() {
     }
   };
 
+  const handleEditClick = (e) => {
+    e.preventDefault();  // 폼 제출 방지
+    setIsEditing(true);  // "프로필 수정" 버튼 클릭 시 수정 모드로 변경
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isEditing) {
-      try {
-        const profileData = {
-          name,
-          introduce,
-          gender: gender === '남자' ? true : gender === '여자' ? false : null,
-          birthDate: birthDate ? birthDate.toISOString().split('T')[0] : null,
-          profileImage,
-        };
-        await put('/updateprofile', profileData);
-        alert('프로필이 수정되었습니다!');
-        setIsEditing(false);
-      } catch (error) {
-        console.error('프로필 업데이트 중 오류가 발생했습니다.', error);
-        alert('프로필 업데이트에 실패했습니다.');
-      }
-    } else {
-      setIsEditing(true);
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('introduce', introduce);
+    formData.append('gender', gender === '남자' ? true : gender === '여자' ? false : null);
+    formData.append('birthDate', birthDate ? birthDate.toISOString().split('T')[0] : null);
+    
+    if (selectedImage) {
+      formData.append('file', selectedImage); // 이미지를 FormData에 추가
+    }
+
+    try {
+      await put('/updateprofile', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      alert('프로필이 수정되었습니다!');
+      setIsEditing(false);  // 수정 완료 후 다시 보기 모드로 변경
+    } catch (error) {
+      console.error('프로필 업데이트 중 오류가 발생했습니다.', error);
+      alert('프로필 업데이트에 실패했습니다.');
     }
   };
 
@@ -98,8 +106,8 @@ export default function ProfilePage() {
 
   const years = Array.from({ length: getYear(new Date()) - 1990 + 1 }, (_, i) => 1990 + i);
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "1월", "2월", "3월", "4월", "5월", "6월",
+    "7월", "8월", "9월", "10월", "11월", "12월"
   ];
 
   return (
@@ -109,10 +117,20 @@ export default function ProfilePage() {
         <div className={style.formGroup}>
           <label htmlFor="profileImage">프로필 사진:</label>
           <div className={style.fileInputWrapper}>
-            <input type="file" id="profileImage" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} disabled={!isEditing} />
-            <label className={style.customButton} htmlFor="profileImage">
-              파일 선택
-            </label>
+            {isEditing && (
+              <>
+                <input
+                  type="file"
+                  id="profileImage"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  style={{ display: 'none' }}
+                />
+                <label className={style.customButton} htmlFor="profileImage">
+                  파일 선택
+                </label>
+              </>
+            )}
           </div>
           {profileImage && (
             <div className={style.imagePreview}>
@@ -131,15 +149,15 @@ export default function ProfilePage() {
         <div className={style.formGroup}>
           <label htmlFor="gender">성별:</label>
           {isEditing ? (
-            <RadioGroup defaultValue={gender}
-            name="gender"
-            row
-            value={gender}
-            onChange={handleGenderChange}>
-                <FormControlLabel control={<Radio />} value="남자" label="남자"/> 
-                <FormControlLabel control={<Radio />} value="여자" label="여자"/> 
-                 
-                </RadioGroup>
+            <RadioGroup
+              name="gender"
+              row
+              value={gender}
+              onChange={handleGenderChange}
+            >
+              <FormControlLabel control={<Radio />} value="남자" label="남자" />
+              <FormControlLabel control={<Radio />} value="여자" label="여자" />
+            </RadioGroup>
           ) : (
             <input type="text" id="gender" value={gender} readOnly />
           )}
@@ -215,9 +233,16 @@ export default function ProfilePage() {
           <label htmlFor="introduce">자기소개:</label>
           <textarea id="introduce" value={introduce} onChange={handleIntroduceChange} readOnly={!isEditing} />
         </div>
-        <button type="submit" className={style.updateButton}>
-          {isEditing ? '프로필 업데이트' : '프로필 수정'}
-        </button>
+        
+        {isEditing ? (
+          <Button type="submit" className={style.updateButton} variant="contained" color="primary">
+            프로필 업데이트
+          </Button>
+        ) : (
+          <Button type="button" className={style.updateButton} variant="contained" color="primary" onClick={handleEditClick}>
+            프로필 수정
+          </Button>
+        )}
       </form>
 
       <MuiModal
