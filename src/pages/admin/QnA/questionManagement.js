@@ -14,7 +14,7 @@ const QuestionManagement  = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/ask/all');
-      console.log(response.data);
+      //console.log(response.data);
       setQuestion(response.data);
     } catch (error) {
       console.error('문의사항을 불러오는 중 오류가 발생했습니다.', error);

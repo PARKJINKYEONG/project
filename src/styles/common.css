@@ -40,6 +40,11 @@
     font-weight: 400;
     font-style: normal;
   }
+
+body {
+    font-family: 'Roboto Condensed','NanumSquare' ;
+}
+
 #bg-color{
     background-color: white;
 }

@@ -1,29 +1,60 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/admin/question/questionTable.module.css';
+import axios from 'axios';
 
 const QuestionTable = ({ props, questions, onQuestionClick }) => {
+
+  const [categories, setCategories] = useState([]);
+
+  const fetchQuestionCategory = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/ask/category');
+      console.log(response.data);
+      const categories = response.data.filter(item => item.questionCategoryName !== 'FAQ')
+      setCategories(categories);
+    } catch (error) {
+      console.error('문의사항을 불러오는 중 오류가 발생했습니다.', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestionCategory();
+  }, []);
+
   return (
     <div className={styles.inquiryContainer}>
       <h2 className={styles.title}>{props}</h2>
       <div className={styles.searchContainer}>
-      <div className={styles.searchInputWrapper}>
-    <input 
-      type="text" 
-      placeholder="검색어를 입력하세요" 
-      className={styles.searchInput} 
-    />
-    <button className={styles.searchButton}>
-      <img src="/images/icons/search.svg" alt="검색" />
-    </button>
-  </div>
+        <div className={styles.searchInputContainer}>
+          <div className={styles.searchInputWrapper}>
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요"
+              className={styles.searchInput}
+            />
+            <button className={styles.searchButton}>
+              <img src="/images/icons/search.svg" alt="검색" />
+            </button>
+          </div>
+        </div>
+        <div className={styles.filterContainer}>
+          <select className={styles.filterButton}>
+            <option value="all" defaultValue="all">전체</option>
+            {categories.length > 0 ? (
+              categories.map((category, index) => (
+                <option key={index} value={category.questionCategoryId}>{category.questionCategoryName}</option>
+              ))
+            ) : (
+              <>
+                <option value="사용법">사용법</option>
+                <option value="신고">신고</option>
+              </>
+            )}
+          </select>
+        </div>
       </div>
-      <div className={styles.filterContainer}>
-        <select className={styles.filterButton}>
-            <option value="all" selected>전체</option>
-            <option value="사용법">사용법</option>
-            <option value="신고">신고</option>
-        </select>
-      </div>
+
+
       <table className={styles.inquiryTable}>
         <thead>
           <tr>
@@ -36,13 +67,13 @@ const QuestionTable = ({ props, questions, onQuestionClick }) => {
           </tr>
         </thead>
         <tbody>
-        {questions.length > 0 ? (
+          {questions.length > 0 ? (
             questions.map((question, index) => (
               <tr key={question.id} onClick={() => onQuestionClick(question)} className={styles.clickableCell}>
                 <td className="col-1 text-center">{index + 1}</td>
                 <td className="col-1 text-center">{question.questionCategory.questionCategoryName}</td>
                 <td className="col-3 text-center">{question.questionTitle}</td>
-                <td className="col-2 text-center">{question.questionDate.slice(0,10)}</td>
+                <td className="col-2 text-center">{question.questionDate.slice(0, 10)}</td>
                 <td className="col-2 text-center">{question.user.name}</td>
                 <td className="col-1 text-center">{question.isHasAnswer ? 'Yes' : 'No'}</td>
               </tr>

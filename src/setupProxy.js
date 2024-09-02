@@ -9,4 +9,12 @@ module.exports =function(app){
             changeOrigin: true
         })
     );
+
+    app.use(
+        '/ai',
+        createProxyMiddleware({
+          target: 'http://localhost:8000',
+          changeOrigin: true
+        })
+      );
 };

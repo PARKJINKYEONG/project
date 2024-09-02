@@ -76,11 +76,8 @@ const SideMenuBar = ({ isSidebarOpen, toggleSidebar, onSubMenuSelect }) => {
                             <div className={`${styles.subMenu} ${openMenus[index] ? styles.subMenuOpen : ''}`} >
                                 {item.subMenu.map((subItem, subIndex) => (
                                     <Link to={'/admin2/'+subItem.to} className={styles.subMenuItemLink}>
-                                    <div key={subIndex} className={styles.subMenuItem} onClick={() => onSubMenuSelect(subItem.sub)} >
-                                        - 
-                                            {subItem.sub}
-                                        
-                                    </div>
+                                    <div key={subIndex} className={styles.subMenuItem} onClick={() => onSubMenuSelect(item.title)} >
+                                        - {subItem.sub} </div>
                                     </Link>
                                 ))}
                             </div>

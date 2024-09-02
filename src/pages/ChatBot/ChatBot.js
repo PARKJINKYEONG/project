@@ -78,38 +78,38 @@ const ChatBot = () => {
   // 각 탭에 대한 메시지 별도 관리
   const [chatbotMessages, setChatbotMessages] = useState([]);
   const [supportMessages, setSupportMessages] = useState([]);
-  const [botResponses, setBotResponses] = useState([]);
 
   //chatbot
   async function sendQueryToOPENAI(newMessage) {
-    // try {
-    //   const response = await axios.post('http://localhost:8000/chat', {
-    //     messages: [{ role: 'user', content: newMessage }],
-    //   });
-      
-    //   const data = response.data;
-    //   setBotResponses(prevBotResponses => [
-    //     ...prevBotResponses,
-    //     ...data.choices.map(choice => choice.message.content)
-    //   ]);
-    const apiKey = 'key';
     try {
-      const apiResponse = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: newMessage }],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+
+      const response = await axios.post('http://localhost:8000/ai/chatbot', {
+        name: "user",
+        description: newMessage,
+      });
+
+      console.log("어디서 찍히는거람",response.data);
+      return response.data.content;
+
+    //[react에서 바로 보내기]
+    // const apiKey = 'key';
+    // try {
+    //   const apiResponse = await axios.post(
+    //     'https://api.openai.com/v1/chat/completions',
+    //     {
+    //       model: 'gpt-3.5-turbo',
+    //       messages: [{ role: 'user', content: newMessage }],
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${apiKey}`,
+    //         'Content-Type': 'application/json',
+    //       },
+    //     }
+    //   );
   
-      // 응답 데이터를 반환합니다.
-      return apiResponse.data.choices[0].message.content;
+    //   // 응답 데이터를 반환합니다.
+    //   return apiResponse.data.choices[0].message.content;
   
     } catch (error) {
       console.error('Error sending message:', error.response ? error.response.data : error.message);
@@ -142,9 +142,13 @@ const ChatBot = () => {
   
       if (activeTab === 'chatbot') {
         try {
+          let updateMessages = [...chatbotMessages, newMessage];
+          setChatbotMessages(updateMessages);
           const botResponse = await sendQueryToOPENAI(newMessage.text); // OpenAI API 응답 대기
-          const newMessages = [...chatbotMessages, newMessage, { type: 'bot', text: botResponse }];
-          setChatbotMessages(newMessages);
+          console.log("어디서 찍힌거야",botResponse);
+
+          updateMessages = [...chatbotMessages, { type: 'bot', text: botResponse }];
+          setChatbotMessages(updateMessages);
         } catch (error) {
           console.error('Error in chatbot:', error);
         }
@@ -165,7 +169,7 @@ const ChatBot = () => {
     // 예시: 상담원 응답 시뮬레이션
     setTimeout(() => {
       setSupportMessages([...newMessages, { type: 'support', text: '상담원이 곧 답변을 드릴 것입니다.' }]);
-    }, 2000);
+    }, 10000);
   };
 
   const handleKeyPress = (e) => { //엔터누른경우

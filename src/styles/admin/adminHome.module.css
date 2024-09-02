@@ -39,25 +39,6 @@
     margin: 0;
 }
 
-.floatingButton {
-    position: absolute;
-    top: 87px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    background-color: #9ecffd;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto; /* 나머지 공간을 차지하여 오른쪽으로 밀림 */
-    margin-right: 16px; /* logoButton과의 간격 조정 */
-}
 
 .logoButton {
     display: flex;

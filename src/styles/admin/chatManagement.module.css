@@ -52,6 +52,7 @@
 }
   
 .username {
+    padding-left: 5px;
     font-size: 16px;
     color: #333;
 }
@@ -67,7 +68,7 @@
 }
 
 .chatWindow{
-    height: 83%;
+    height: 80%;
     padding: 20px 10px;
     overflow-y: visible;
     display: flex;
@@ -97,10 +98,11 @@
   
 .messageInputContainer {
     display: flex;
+    background-color: white;
     align-items: center; /* 세로 중앙 정렬 */
     padding: 5px; /* 가로로 패딩 5px 추가 */
     border-top: 1px solid #ddd;
-    height: 15%;
+    height: 20%;
 }
 
 .messageInput {
@@ -124,5 +126,23 @@
     cursor: pointer;
 }
 
-
+.floatingButton {
+    position: absolute;
+    top: 87px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #69b2f8;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto; /* 나머지 공간을 차지하여 오른쪽으로 밀림 */
+    margin-right: 16px; /* logoButton과의 간격 조정 */
+}
 
