@@ -1,16 +1,21 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
-const CreateNotice = ({ setIsCreating, fetchNotices  }) => {
+const CreateNotice = ({ setIsCreating, fetchNotices, navigate }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [writer, setWriter] = useState(''); // 작성자 상태 추가
 
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/notices', { title, content });
-      fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
-      setIsCreating(false); // 공지사항 생성 화면에서 나옵니다.
+      await axios.post('http://localhost:8080/api/notice', { title, content, writer }, { // 작성자 추가
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      await fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
+      navigate('/notice-management'); // 목록 페이지로 이동합니다.
     } catch (error) {
       console.error('공지사항을 생성하는 중 오류가 발생했습니다.', error);
     }
@@ -19,7 +24,7 @@ const CreateNotice = ({ setIsCreating, fetchNotices  }) => {
   return (
     <div>
       <h2>공지 사항 추가</h2>
-      <form>
+      <form onSubmit={handleCreate}>
         <div>
           <input
             type="text"
@@ -27,27 +32,54 @@ const CreateNotice = ({ setIsCreating, fetchNotices  }) => {
             name="title"
             value={title}
             placeholder="제목을 입력하세요"
+            onChange={(e) => setTitle(e.target.value)}
             required
             style={{ width: '600px', marginBottom: '10px' }}
           />
         </div>
         <div>
-          <label htmlFor="content">내용:</label><br/>
+          <label htmlFor="writer">작성자:</label><br />
+          <input
+            type="text"
+            id="writer"
+            name="writer"
+            value={writer}
+            placeholder="작성자를 입력하세요"
+            onChange={(e) => setWriter(e.target.value)}
+            required
+            style={{ width: '600px', marginBottom: '10px' }}
+          />
+        </div>
+        <div>
+          <label htmlFor="content">내용:</label><br />
           <textarea
             id="content"
             name="content"
+            value={content}
             placeholder="내용을 입력하세요"
+            onChange={(e) => setContent(e.target.value)}
             rows="5"
             required
-            style={{ width: '600px', marginBottom: '10px',height: '400px' }}
+            style={{ width: '600px', marginBottom: '10px', height: '400px' }}
           ></textarea>
         </div>
-      <div>
-      <button onClick={handleCreate} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px', marginRight: '5px'}} variant="contained">생성</button>
-      <button onClick={() => setIsCreating(false)} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}} variant="contained">취소</button>
-      </div>
+        <div>
+          <button 
+            type="submit" 
+            style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff', backgroundColor: '#3f51b5', width: '70px', marginRight: '5px' }} 
+          >
+            생성
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setIsCreating(false)} 
+            style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff', backgroundColor: '#f44336', width: '70px' }}
+          >
+            취소
+          </button>
+        </div>
       </form>
-    </div>  
+    </div>
   );
 };
 
