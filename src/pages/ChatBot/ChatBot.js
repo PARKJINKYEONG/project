@@ -87,8 +87,6 @@ const ChatBot = () => {
         name: "user",
         description: newMessage,
       });
-
-      console.log("어디서 찍히는거람",response.data);
       return response.data.content;
 
     //[react에서 바로 보내기]
@@ -138,21 +136,24 @@ const ChatBot = () => {
 
   const handleSend = async () => {
     if (chatInput.current.value.trim()) {
-      const newMessage = { type: 'user', text: chatInput.current.value };
-  
+      const input =  chatInput.current.value;
+      const newMessage = { type: 'user', text: input };
+      chatInput.current.value='';
       if (activeTab === 'chatbot') {
+        
+        let updateMessages = [...chatbotMessages, newMessage];
+        console.log("newMessage존재",updateMessages);
+        setChatbotMessages((prev) => [...prev, newMessage]);
         try {
-          let updateMessages = [...chatbotMessages, newMessage];
-          setChatbotMessages(updateMessages);
           const botResponse = await sendQueryToOPENAI(newMessage.text); // OpenAI API 응답 대기
-          console.log("어디서 찍힌거야",botResponse);
+          setChatbotMessages((prev) => [ ...prev, { type: 'bot', text: botResponse }, ]);
 
-          updateMessages = [...chatbotMessages, { type: 'bot', text: botResponse }];
-          setChatbotMessages(updateMessages);
         } catch (error) {
           console.error('Error in chatbot:', error);
+          chatInput.current.value=input;
         }
       } else if (activeTab === 'support') {
+
         const newMessages = [...supportMessages, newMessage];
         setSupportMessages(newMessages); // 채팅방에 채팅 메세지 추가
   
@@ -160,8 +161,6 @@ const ChatBot = () => {
   
         handleSupportMessage(newMessages);
       }
-  
-      chatInput.current.value = ''; // 메시지 전송 후 입력 필드 초기화
     }
   };
 
