@@ -22,7 +22,7 @@ const ScrollToTopButton = () => {
         e.preventDefault();
         scrollToTop();
       }}>
-        ↑
+      ▲
       </button>
     )
   );

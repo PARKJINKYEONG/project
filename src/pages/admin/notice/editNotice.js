@@ -7,7 +7,7 @@ const EditNotice = ({ notice,setIsEditing, fetchNotices }) => {
 
     const handleSave = async () => {
       try {
-        await axios.put(`http://localhost:8080/api/notices/${notice.id}`, { title, content });
+        await axios.put(`http://localhost:8080/api/notice/${notice.id}`, { title, content });
         fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
         setIsEditing(false); // 수정 화면에서 나옵니다.
       } catch (error) {
@@ -17,11 +17,12 @@ const EditNotice = ({ notice,setIsEditing, fetchNotices }) => {
   
     const handleDelete = async () => {
       try {
-        await axios.delete(`http://localhost:8080/api/notices/${notice.id}`);
+        await axios.delete(`http://localhost:8080/api/notice/${notice.id}`);
         fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
         setIsEditing(false); // 수정 화면에서 나옵니다.
       } catch (error) {
         console.error('공지사항을 삭제하는 중 오류가 발생했습니다.', error);
+        alert('공지사항 삭제 권한이 없습니다.');
       }
     };
     return (
