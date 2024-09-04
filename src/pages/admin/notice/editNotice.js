@@ -1,56 +1,82 @@
-import axios from "axios";
-import React, { useState } from "react";
+import axios from 'axios';
+import React, { useState } from 'react';
+import styles from '../../../styles/admin/notice/editNotice.module.css'; // 새로운 스타일 모듈
 
-const EditNotice = ({ notice,setIsEditing, fetchNotices }) => {
-    const [title, setTitle] = useState(notice.title);
-    const [content, setContent] = useState(notice.content);
+const EditNotice = ({ notice, setIsEditing, fetchNotices }) => {
+  const [title, setTitle] = useState(notice.title);
+  const [content, setContent] = useState(notice.content);
 
-    const handleSave = async () => {
-      try {
-        await axios.put(`http://localhost:8080/api/notice/${notice.id}`, { title, content });
-        fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
-        setIsEditing(false); // 수정 화면에서 나옵니다.
-      } catch (error) {
-        console.error('공지사항을 수정하는 중 오류가 발생했습니다.', error);
-      }
-    };
-  
-    const handleDelete = async () => {
-      try {
-        await axios.delete(`http://localhost:8080/api/notice/${notice.id}`);
-        fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
-        setIsEditing(false); // 수정 화면에서 나옵니다.
-      } catch (error) {
-        console.error('공지사항을 삭제하는 중 오류가 발생했습니다.', error);
-        alert('공지사항 삭제 권한이 없습니다.');
-      }
-    };
-    return (
-        <div>
-          <h2>공지 수정</h2>
-          <form>
-            <div>
-              <label>제목</label>
-              <input type="text"
+  const handleSave = async () => {
+    try {
+      await axios.put(`http://localhost:8080/api/notice/${notice.id}`, { title, content });
+      await fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
+      setIsEditing(false); // 수정 화면에서 나옵니다.
+    } catch (error) {
+      console.error('공지사항을 수정하는 중 오류가 발생했습니다.', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/notice/${notice.id}`);
+      await fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
+      setIsEditing(false); // 수정 화면에서 나옵니다.
+    } catch (error) {
+      console.error('공지사항을 삭제하는 중 오류가 발생했습니다.', error);
+      alert('공지사항 삭제 권한이 없습니다.');
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <h2 className={styles.title}>공지사항 수정</h2>
+      <div className={styles.formContainer}>
+        <form>
+          <div className={styles.formGroup}>
+            <label>제목</label>
+            <input
+              type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              style={{ width: '600px', marginBottom: '10px' }}/>
-            </div>
-            <div>
-              <label>내용:</label>
-              <textarea value={content}
+              className={styles.input}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label>내용:</label>
+            <textarea
+              value={content}
               onChange={(e) => setContent(e.target.value)}
               rows="5"
-              style={{ width: '600px', marginBottom: '10px',height: '400px' }}></textarea>
-            </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-            <button type="button" onClick={handleSave} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}} >수정</button>
-            <button type="button" onClick={handleDelete} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70spx'}}>삭제</button>
-            <button type="button" onClick={() => setIsEditing(false)} style={{ fontSize: '0.875rem', borderRadius: '4px', color: '#fff',width: '70px'}}>뒤로</button>
-            </div>
-          </form>
-        </div>
-      );
+              className={styles.textarea}
+            ></textarea>
+          </div>
+          <div className={styles.buttonContainer}>
+            <button
+              type="button"
+              onClick={handleSave}
+              className={styles.saveButton}
+            >
+              수정
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className={styles.deleteButton}
+            >
+              삭제
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsEditing(false)}
+              className={styles.backButton}
+            >
+              뒤로
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default EditNotice;

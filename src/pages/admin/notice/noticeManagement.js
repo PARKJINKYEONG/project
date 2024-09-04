@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../../styles/noticeManagement.module.css';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import styles from '../../../styles/admin/notice/noticeManagement.module.css';
+import axios from 'axios';
+import NoticeTable from './noticeTable';
 import CreateNotice from './createNotice';
 import EditNotice from './editNotice';
-import axios from 'axios';
-import useRequest from '../../../hooks/useRequest';
 
 const NoticeManagement = () => {
   const [notices, setNotices] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentNotice, setCurrentNotice] = useState(null);
-  const { get } = useRequest(); 
   const navigate = useNavigate(); // navigate 훅을 사용하여 페이지 전환
 
   const fetchNotices = async () => {
@@ -40,43 +38,7 @@ const NoticeManagement = () => {
   return (
     <div className={styles.container}>
       {!isCreating && !isEditing ? (
-        <>
-          <h2>공지사항</h2>
-          <TableContainer TableContainer sx={{ width: '100%' }} className={styles.tableContainer}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell className={styles.idColumn}>번호</TableCell>
-                  <TableCell className={styles.titleColumn}>공지 제목</TableCell>
-                  <TableCell className={styles.dateColumn}>공지 일</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {notices.length > 0 ? (
-                  notices.map((notice) => (
-                    <TableRow
-                      key={notice.id}
-                      onClick={() => handleNoticeClick(notice)}
-                      className={`${styles.tableRow} ${styles.clickableRow}`}
-                      hover
-                    >
-                      <TableCell>{notice.id}</TableCell>
-                      <TableCell>{notice.title}</TableCell>
-                      <TableCell className={styles.dateColumn}>{new Date(notice.noticeDate).toLocaleDateString()}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={3} align="center">
-                      공지사항이 없습니다
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Button variant="contained" sx={{ marginTop: '10px' }} onClick={handleAddClick}>공지 추가</Button>
-        </>
+        <NoticeTable notices={notices} onNoticeClick={handleNoticeClick} onAddClick={handleAddClick} />
       ) : isCreating ? (
         <CreateNotice setIsCreating={setIsCreating} fetchNotices={fetchNotices} navigate={navigate} />
       ) : (
