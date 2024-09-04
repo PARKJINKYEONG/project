@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from '../../styles/restaurantSearch.module.css';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Button, TextField } from '@mui/material';
-import MuiModal from '../../components/muiModal'; 
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import styles from '../../styles/restaurantSearch.module.css';
 
 const RestaurantSearch = () => {
   const [query, setQuery] = useState('');
@@ -11,6 +13,7 @@ const RestaurantSearch = () => {
   const [radius, setRadius] = useState(2500);
   const [places, setPlaces] = useState([]);
   const [showReviews, setShowReviews] = useState({});
+  const [showHours, setShowHours] = useState({});
   const [nextPageToken, setNextPageToken] = useState(null);
   const [sortOrder, setSortOrder] = useState('rating');
   const [map, setMap] = useState(null);
@@ -146,7 +149,13 @@ const RestaurantSearch = () => {
           return new Promise((resolve) => {
             service.getDetails({ placeId: place.place_id }, (details, status) => {
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-                placesWithDetails.push(details);
+                placesWithDetails.push({
+                  ...details,
+                  formatted_phone_number: details.formatted_phone_number || '정보 없음',
+                  opening_hours: details.opening_hours 
+                    ? details.opening_hours.weekday_text.join(', ') 
+                    : '정보 없음'
+                });
               } else {
                 console.error('PlacesService getDetails 상태:', status);
               }
@@ -191,10 +200,27 @@ const RestaurantSearch = () => {
     }));
   };
 
+  const toggleHours = (placeId) => {
+    setShowHours((prev) => ({
+      ...prev,
+      [placeId]: !prev[placeId],
+    }));
+  };
+
   const handleFavoriteClick = (placeId, placeName) => {
-    setSelectedPlaceName(placeName);
-    setSelectedPlaceId(placeId);
-    setModalOpen(true);
+    if (favoritePlaces[placeId]) {
+      // 이미 즐겨찾기에 추가된 상태라면 제거
+      setFavoritePlaces((prev) => {
+        const newFavorites = { ...prev };
+        delete newFavorites[placeId];
+        return newFavorites;
+      });
+    } else {
+      // 즐겨찾기에 추가되지 않은 상태라면 모달을 엽니다
+      setSelectedPlaceName(placeName);
+      setSelectedPlaceId(placeId);
+      setModalOpen(true);
+    }
   };
 
   const handleModalClose = () => {
@@ -246,12 +272,13 @@ const RestaurantSearch = () => {
               <FavoriteIcon
                 className={styles.favoriteIcon}
                 onClick={() => handleFavoriteClick(place.place_id, place.name)}
-                sx={{ color: 'red' }}
+                sx={{ color: 'red', cursor: 'pointer' }}
               />
             ) : (
               <FavoriteBorderIcon
                 className={styles.favoriteIcon}
                 onClick={() => handleFavoriteClick(place.place_id, place.name)}
+                sx={{ cursor: 'pointer' }}
               />
             )}
             <h2>{place.name}</h2>
@@ -266,11 +293,28 @@ const RestaurantSearch = () => {
             {place.rating && (
               <p>별점: {place.rating}</p>
             )}
-            {place.reviews && (
-              <button onClick={() => toggleReviews(place.place_id)}>
-                {showReviews[place.place_id] ? '리뷰 숨기기' : '리뷰 보기'}
-              </button>
+            {place.formatted_phone_number && (
+              <p>전화번호: {place.formatted_phone_number}</p>
             )}
+            <div style={{ marginBottom: '10px' }}> {/* 여기에 간격을 추가합니다. */}
+              <button onClick={() => toggleHours(place.place_id)}>
+                {showHours[place.place_id] ? '영업시간 숨기기' : '영업시간 보기'}
+              </button>
+            </div>
+            {showHours[place.place_id] && place.opening_hours !== '정보 없음' && (
+              <div className={styles.hoursContainer}>
+                {place.opening_hours.split(', ').map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))}
+              </div>
+            )}
+            <div style={{ marginBottom: '10px' }}> {/* 여기에 간격을 추가합니다. */}
+              {place.reviews && (
+                <button onClick={() => toggleReviews(place.place_id)}>
+                  {showReviews[place.place_id] ? '리뷰 숨기기' : '리뷰 보기'}
+                </button>
+              )}
+            </div>
             {showReviews[place.place_id] && place.reviews && (
               <ul>
                 {place.reviews.map((review, index) => (
@@ -288,12 +332,41 @@ const RestaurantSearch = () => {
           </button>
         )}
       </div>
-      <MuiModal
-        open={modalOpen}
-        onClose={handleModalClose}
-        onSave={handleSaveFavorite}
-        placeName={selectedPlaceName}
-      />
+
+      {/* 모달 코드 */}
+      <Modal open={modalOpen} onClose={handleModalClose}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: '8px',
+        }}
+      >
+        <h2>즐겨찾기 추가</h2>
+        <TextField
+          label="즐겨찾기 제목"
+          value={selectedPlaceName}
+          fullWidth
+          margin="normal"
+        />
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            onClick={handleSaveFavorite}
+            variant="contained"
+            color="primary"
+          >
+            저장
+          </Button>
+        </div>
+      </Box>
+    </Modal>
+
     </div>
   );
 };
