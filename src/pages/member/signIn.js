@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import CloseIcon from '@mui/icons-material/Close';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -9,10 +10,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../contexts/userContext';
 import useRequest from '../../hooks/useRequest';
 import { GOOGLE, KAKAO, NAVER } from '../../config/constraint';
+import { Alert, Collapse, IconButton } from '@mui/material';
 
 const defaultTheme = createTheme();
 
@@ -27,7 +29,7 @@ export default function SignIn() {
   const location = useLocation();
   const { setAccessToken, setEmail, setIsAdmin } = useContext(UserContext);
   const {post} = useRequest();
-
+  const [open, setOpen] = useState(true);
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const access = searchParams.get('access');
@@ -81,6 +83,7 @@ const handleNaver = () => {  // 네이버 로그인 핸들러 추가
   return <>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
+      
         <Box
           sx={{
             marginTop: 8,
@@ -91,6 +94,25 @@ const handleNaver = () => {  // 네이버 로그인 핸들러 추가
             minHeight: '70vh',
           }}
         >
+          <Collapse in={open}>
+        <Alert
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          Click the close icon to see the Collapse transition in action!
+        </Alert>
+      </Collapse>
           <Typography component="h1" variant="h5">
             로그인
           </Typography>

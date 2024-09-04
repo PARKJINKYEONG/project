@@ -21,7 +21,6 @@ import QnA from "./pages/clientService/userQna";
 import Ecrm from "./pages/clientService/eCrm";
 import AdminRoutes from "./pages/admin/adminRoutes";
 
-import { RouteMap } from "./pages/routeMap";
 import BoardRoutes from "./pages/board/boardRoutes";
 import FaQ from "./pages/clientService/userFaq";
 
@@ -31,9 +30,9 @@ import { UserContext } from "./contexts/userContext";
 import AreaRoutes from "./pages/area/areaRoutes";
 
 import QnaView from "./pages/clientService/qnaView";
-import QuestionView from "./pages/admin/QnA/questionView";
 import AdminRoutes2 from "./pages/admin/AdminHome/adminRoutes";
 import ReviewListView from "./pages/tripreview/ReviewListView";
+import { TestPage } from "./pages/testpage";
 
 
 
@@ -83,7 +82,7 @@ function App() {
                 
             </Route>
             <Route path="/admin/*" element={<AdminRoutes />} />
-            <Route path="/testroute" element={<RouteMap/>} />
+            <Route path="/testroute" element={<TestPage/>} />
             <Route path="/admin2/*" element={<AdminRoutes2/>} />
         </Routes>
         </UserContext.Provider>
