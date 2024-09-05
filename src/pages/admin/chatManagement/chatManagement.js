@@ -5,6 +5,8 @@ import axios from 'axios';
 import ChatWindow from './chatWindow';
 import useRequest from '../../../hooks/useRequest';
 import { UserContext } from '../../../contexts/userContext';
+import mqtt from 'mqtt';
+import { format } from 'date-fns';
 
 const initialState = { isOpen: false };
 
@@ -22,23 +24,23 @@ const sideMemoReducer = (state, action) => {
 };
 
 const ChatManagement = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
     const [isSideMemoOpen, dispatch] = useReducer(sideMemoReducer, initialState);
     const [useritems, setUserItems] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [client, setClient] = useState(null);
+    
+    const [isConnected, setIsConnected] = useState(false);
+    const [newMessageFlags, setNewMessageFlags] = useState({});
+    
     const { get } = useRequest();
 
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
 
     const toggleSideMemoBar = () => {
         dispatch({ type: 'toggle' });
     };
 
     const fetchUsers = async () => {
-        // console.log(email);
         try{
           const response = await get('/api/chat/users');
           console.log(response.data);
@@ -53,6 +55,59 @@ const ChatManagement = () => {
         fetchUsers();
     },[selectedUser]);
 
+    useEffect(() => {
+    
+        // MQTT 브로커에 연결
+        const mqttClient = mqtt.connect('mqtt://localhost:1884');
+        
+        mqttClient.on('connect', () => {
+            console.log('Connected to MQTT broker');
+            setIsConnected(true);
+            mqttClient.subscribe("chat/#"); // chat하위 모든 토픽 구독
+        });
+  
+        mqttClient.on('message', (topic, message) => {
+            console.log('Received topic:',topic,", message:", message.toString());
+            //Received topic: chat/21 , message: Hello
+            // console.log("topic:",topic.slice(5,));
+            updateNewMessageFlag(topic.slice(5,));
+        });
+  
+        mqttClient.on('error', (err) => {
+            console.error('Connection error:', err);
+        });
+  
+        mqttClient.on('close', () => {
+            console.log('Disconnected from MQTT broker');
+            setIsConnected(false);
+        });
+  
+        setClient(mqttClient);
+  
+        // 컴포넌트 언마운트 시 클라이언트 종료
+        return () => {
+            if (mqttClient) {
+                mqttClient.end();
+            }
+        };
+    }, []);
+
+
+    const updateNewMessageFlag = (chatRoomId) => {
+        setNewMessageFlags(prevFlags => ({
+            ...prevFlags,
+            [chatRoomId]: true,  // 새로운 메시지가 도착한 경우 true로 설정
+        }));
+    };
+
+    const handleUserItemClick = (chatRoom) => {
+        setSelectedUser(chatRoom);
+        setNewMessageFlags(prevFlags => ({
+            ...prevFlags,
+            [chatRoom.id]: false,  // 클릭한 유저의 새로운 메시지 플래그 해제
+        }));
+    };
+
     return (
         <div className={styles.chatContainer}>
             <button className={styles.floatingButton} onClick={toggleSideMemoBar}>
@@ -60,11 +115,16 @@ const ChatManagement = () => {
             </button>
             <div className={styles.chatList}>
                 {useritems ? useritems.map((useritem, index) => (
-                    <div className={styles.chatItem} key={index}
-                    onClick={() => setSelectedUser(useritem.chatRoom)} >
-                        <div className={styles.avatar}></div>
-                        <span className={styles.username}>{useritem.user.nickname}</span>
-                    </div>
+                    <div className={`${styles.chatItem} ${newMessageFlags[useritem.chatRoom.id] ? styles.newMessage : ''}`}
+                    key={index} onClick={() => handleUserItemClick(useritem.chatRoom)}>
+                   <div className={styles.avatar}></div>
+                   <span className={styles.username}>{useritem.user.nickname}</span>
+                   {/* <div><small>{format(useritem.chatRoom.lastUpdateDate,'yy/MM/dd HH:mm')}</small></div> */}
+                   <span className={styles.newMessageIcon} style={{ visibility: newMessageFlags[useritem.chatRoom.id] ? 'visible' : 'hidden' }}>
+                       ●
+                   </span>
+                   
+               </div>
                 )) : (
                     <div className={styles.chatItem} >
                         <div className={styles.avatar}>img</div>
@@ -74,7 +134,7 @@ const ChatManagement = () => {
             </div>
 
             <div className={styles.chatInputBox}>
-                <ChatWindow selectedUser={selectedUser} />
+                <ChatWindow selectedUser={selectedUser} mqttClient={client} />
             </div>
 
             {isSideMemoOpen.isOpen && (

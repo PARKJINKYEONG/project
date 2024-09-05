@@ -39,8 +39,10 @@
 .chatItem {
     display: flex;
     align-items: center;
-    padding: 8px 0 8px 20px;
+    justify-content: space-between;  /* 왼쪽과 오른쪽 요소를 분리 */
+    padding: 10px;
     border-bottom: 1px solid #ddd;
+    position: relative; /* 상대 위치 */
 }
   
 .avatar {
@@ -55,6 +57,12 @@
     padding-left: 5px;
     font-size: 16px;
     color: #333;
+}
+
+.newMessageIcon {
+    color: #9ecffd;
+    font-size: 14px;
+    margin-left: auto;
 }
   
 .chatInputBox {

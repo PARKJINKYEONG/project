@@ -1,17 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import "../../styles/chatBot.css"
 import axios from 'axios';
 import mqtt from 'mqtt';
+import { UserContext } from '../../contexts/userContext';
+import { format } from 'date-fns';
+import useRequest from '../../hooks/useRequest';
 
 const ChatBot = () => {
+
+  const { email } = useContext(UserContext);
+  const { get } = useRequest();
 
   //mqtt chatting
 
   const fetchData = async () =>{
     try{
-      const chatroomId = await axios.get('http://localhost:8080/api/chat/topic');
-      setTopic(chatroomId.data);
-      console.log(chatroomId.data);
+      if(!email){
+        const chatroomId = await axios.get('http://localhost:8080/api/chat/topic');
+        setTopic(chatroomId.data);
+      }
+      else{
+        const chatroomId = await get(`/api/chat/topic`);
+        setTopic(chatroomId.data);
+        console.log(chatroomId.data);
+      }
+      
 
     } catch(err) {
       console.log('Error: ',err);
@@ -24,7 +37,7 @@ const ChatBot = () => {
   const [client, setClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [message, setMessage] = useState('');
-  const [topic,setTopic] = useState(()=>fetchData()); // <---------------------- topic 받아오기
+  const [topic,setTopic] = useState(()=>fetchData());
 
   useEffect(() => {
     
@@ -34,6 +47,7 @@ const ChatBot = () => {
       mqttClient.on('connect', () => {
           console.log('Connected to MQTT broker');
           setIsConnected(true);
+          console.log(topic);
           mqttClient.subscribe("chat/"+topic); // 원하는 토픽 구독
       });
 
@@ -61,11 +75,21 @@ const ChatBot = () => {
       };
   }, []);
 
-  function publishMessage(){
+  function publishMessage(input){
+    const now = new Date();
+    const sendDate = format(now,'yyyy-MM-dd HH:mm:ss');
       if (client && isConnected) {
-          client.publish("chat/"+topic, JSON.stringify({
-              sender:'userid',recipient:'수신자?',content:chatInput.current.value
-          }));
+        if(email){
+          client.publish("chat/"+topic, JSON.stringify(
+            { useremail:email,message_send_date:sendDate,content:input}
+            ));
+        }
+        else{
+          client.publish("chat/"+topic, JSON.stringify(
+            { useremail:'userid',message_send_date:sendDate,content:input }
+            ));
+        }
+
       }
   };
   //mqtt
@@ -88,26 +112,6 @@ const ChatBot = () => {
         description: newMessage,
       });
       return response.data.content;
-
-    //[react에서 바로 보내기]
-    // const apiKey = 'key';
-    // try {
-    //   const apiResponse = await axios.post(
-    //     'https://api.openai.com/v1/chat/completions',
-    //     {
-    //       model: 'gpt-3.5-turbo',
-    //       messages: [{ role: 'user', content: newMessage }],
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${apiKey}`,
-    //         'Content-Type': 'application/json',
-    //       },
-    //     }
-    //   );
-  
-    //   // 응답 데이터를 반환합니다.
-    //   return apiResponse.data.choices[0].message.content;
   
     } catch (error) {
       console.error('Error sending message:', error.response ? error.response.data : error.message);
@@ -141,8 +145,6 @@ const ChatBot = () => {
       chatInput.current.value='';
       if (activeTab === 'chatbot') {
         
-        let updateMessages = [...chatbotMessages, newMessage];
-        console.log("newMessage존재",updateMessages);
         setChatbotMessages((prev) => [...prev, newMessage]);
         try {
           const botResponse = await sendQueryToOPENAI(newMessage.text); // OpenAI API 응답 대기
@@ -154,20 +156,19 @@ const ChatBot = () => {
         }
       } else if (activeTab === 'support') {
 
-        const newMessages = [...supportMessages, newMessage];
-        setSupportMessages(newMessages); // 채팅방에 채팅 메세지 추가
+        setSupportMessages((prev) => [...prev, newMessage]); // 채팅방에 채팅 메세지 추가
   
-        publishMessage(); // MQTT pub
+        publishMessage(input); // MQTT pub
   
-        handleSupportMessage(newMessages);
+        //handleSupportMessage();
       }
     }
   };
 
-  const handleSupportMessage = (newMessages) => {
+  const handleSupportMessage = () => {
     // 예시: 상담원 응답 시뮬레이션
     setTimeout(() => {
-      setSupportMessages([...newMessages, { type: 'support', text: '상담원이 곧 답변을 드릴 것입니다.' }]);
+      setSupportMessages((prev) => [...prev, { type: 'support', text: '상담원이 곧 답변을 드릴 것입니다.' }]);
     }, 10000);
   };
 
