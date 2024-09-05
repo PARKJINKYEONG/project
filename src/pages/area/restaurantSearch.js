@@ -6,6 +6,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import styles from '../../styles/restaurantSearch.module.css';
+import axios from 'axios';
+
 
 const RestaurantSearch = () => {
   const [query, setQuery] = useState('');
@@ -126,6 +128,20 @@ const RestaurantSearch = () => {
     });
   };
 
+  const saveRestaurantToDB = (restaurant) => {
+    axios.post('http://localhost:8080/api/places/foods/create', restaurant, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((resp) => {
+        console.log('음식점 저장 성공:', resp.data);
+      })
+      .catch((error) => {
+        console.error('음식점 저장 실패:', error);
+      });
+  };
+
   const performSearch = (mapInstance, query, location = null, radius, pageToken = null) => {
     if (isNaN(radius) || radius <= 0) {
       alert('반경이 유효하지 않습니다.');
@@ -149,13 +165,58 @@ const RestaurantSearch = () => {
           return new Promise((resolve) => {
             service.getDetails({ placeId: place.place_id }, (details, status) => {
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-                placesWithDetails.push({
+
+                // 국가 정보 추가
+                const country = details.address_components.find(component => component.types.includes('country'))?.long_name || '정보 없음';
+
+                // 첫 번째 이미지만 추출
+                const imageUrls = details.photos && details.photos.length > 0 
+                  ? [details.photos[0].getUrl({ maxWidth: 200 })] 
+                  : [];
+
+                // 영업시간 처리
+                const workingTime = details.opening_hours
+                  ? details.opening_hours.weekday_text.join(', ')
+                  : '정보 없음';
+
+                const placeDetails = {
                   ...details,
                   formatted_phone_number: details.formatted_phone_number || '정보 없음',
-                  opening_hours: details.opening_hours 
-                    ? details.opening_hours.weekday_text.join(', ') 
-                    : '정보 없음'
+                  country,
+                  imageUrls,
+                  workingTime,
+                };
+
+                console.log('음식점 세부 정보:', {
+                  name: placeDetails.name,
+                  address: placeDetails.formatted_address,
+                  lat: placeDetails.geometry.location.lat(),
+                  lng: placeDetails.geometry.location.lng(),
+                  tel: placeDetails.formatted_phone_number,
+                  averageReviewRate: details.rating || 0,
+                  region: {
+                    name: country,
+                  },
+                  imageUrls,
+                  workingTime,  // 영업시간 정보
                 });
+
+                saveRestaurantToDB({
+                  foodName: placeDetails.name,
+                  address: placeDetails.formatted_address,
+                  lat: placeDetails.geometry.location.lat(),
+                  lng: placeDetails.geometry.location.lng(),
+                  tel: placeDetails.formatted_phone_number,
+                  averageReviewRate: details.rating || 0,
+                  region: {
+                    name: country,
+                  },
+                  imageUrls,  // 첫 번째 이미지 URL만 저장
+                  workingTime,  // 영업시간 정보 저장
+                });
+
+                placesWithDetails.push(placeDetails);
+
               } else {
                 console.error('PlacesService getDetails 상태:', status);
               }
@@ -165,11 +226,6 @@ const RestaurantSearch = () => {
         });
 
         Promise.all(promises).then(() => {
-          if (sortOrder === 'rating') {
-            placesWithDetails.sort((a, b) => b.rating - a.rating);
-          } else if (sortOrder === 'reviews') {
-            placesWithDetails.sort((a, b) => (b.reviews && b.reviews.length) - (a.reviews && a.reviews.length));
-          }
           setPlaces(placesWithDetails);
           if (pagination && pagination.hasNextPage) {
             setNextPageToken(pagination.nextPageToken);
@@ -209,14 +265,12 @@ const RestaurantSearch = () => {
 
   const handleFavoriteClick = (placeId, placeName) => {
     if (favoritePlaces[placeId]) {
-      // 이미 즐겨찾기에 추가된 상태라면 제거
       setFavoritePlaces((prev) => {
         const newFavorites = { ...prev };
         delete newFavorites[placeId];
         return newFavorites;
       });
     } else {
-      // 즐겨찾기에 추가되지 않은 상태라면 모달을 엽니다
       setSelectedPlaceName(placeName);
       setSelectedPlaceId(placeId);
       setModalOpen(true);
@@ -296,6 +350,10 @@ const RestaurantSearch = () => {
             {place.formatted_phone_number && (
               <p>전화번호: {place.formatted_phone_number}</p>
             )}
+            {place.country && (  // 국가 정보를 표시합니다.
+              <p>국가: {place.country}</p>
+            )}
+
             <div style={{ marginBottom: '10px' }}> {/* 여기에 간격을 추가합니다. */}
               <button onClick={() => toggleHours(place.place_id)}>
                 {showHours[place.place_id] ? '영업시간 숨기기' : '영업시간 보기'}
@@ -335,37 +393,37 @@ const RestaurantSearch = () => {
 
       {/* 모달 코드 */}
       <Modal open={modalOpen} onClose={handleModalClose}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 400,
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: '8px',
-        }}
-      >
-        <h2>즐겨찾기 추가</h2>
-        <TextField
-          label="즐겨찾기 제목"
-          value={selectedPlaceName}
-          fullWidth
-          margin="normal"
-        />
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button
-            onClick={handleSaveFavorite}
-            variant="contained"
-            color="primary"
-          >
-            저장
-          </Button>
-        </div>
-      </Box>
-    </Modal>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: '8px',
+          }}
+        >
+          <h2>즐겨찾기 추가</h2>
+          <TextField
+            label="즐겨찾기 제목"
+            value={selectedPlaceName}
+            fullWidth
+            margin="normal"
+          />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              onClick={handleSaveFavorite}
+              variant="contained"
+              color="primary"
+            >
+              저장
+            </Button>
+          </div>
+        </Box>
+      </Modal>
 
     </div>
   );

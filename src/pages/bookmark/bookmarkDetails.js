@@ -13,8 +13,8 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 41.9028,
+  lng: 12.4964,
 };
 
 export default function BookmarkDetails() {
@@ -34,26 +34,20 @@ export default function BookmarkDetails() {
   useEffect(() => {
     if (!favoriteId) return;
 
-    const fetchMemo = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/api/bookmark/${favoriteId}/memo`,
-          {
-            headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        // Assume the server response contains memo as a string
-        const responseData = response.data;
-        setSavedMemo(responseData.memo || ''); // Use the memo directly if it's a string
-      } catch (error) {
-        console.error('Error fetching memo:', error);
+    axios.get(`http://localhost:8080/api/bookmark/${favoriteId}/memo`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
       }
-    };
+    })
+    .then(response => {
+      const responseData = response.data;
+      setSavedMemo(responseData.memo || ''); 
+    })
+    .catch(error => {
+      console.error('Error fetching memo:', error);
+    });
 
-    fetchMemo();
   }, [favoriteId, accessToken]);
 
   const onLoad = ref => {
@@ -81,6 +75,8 @@ export default function BookmarkDetails() {
   };
 
   const openMemoModal = () => {
+    // Set memo to the saved memo when opening the modal
+    setMemo(savedMemo);
     setMemoModalIsOpen(true);
   };
 
@@ -92,32 +88,30 @@ export default function BookmarkDetails() {
     setMemo(e.target.value);
   };
 
-  const handleSaveMemo = async () => {
+  const handleSaveMemo = () => {
     if (!favoriteId) {
       console.error('Favorite ID is missing');
       return;
     }
 
-    try { 
-      const response = await axios.put(
-        `http://localhost:8080/api/bookmark/${favoriteId}/memo`,
-        { memo },
-        {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
+    axios.put(`http://localhost:8080/api/bookmark/${favoriteId}/memo`, 
+      { memo },
+      {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
         }
-      );
-
-      // Extract memo from response
+      }
+    )
+    .then(response => {
       const responseData = response.data;
-      setSavedMemo(responseData.memo || ''); // Use the memo directly if it's a string
+      setSavedMemo(responseData.memo || ''); 
 
       closeMemoModal();
-    } catch (error) {
+    })
+    .catch(error => {
       console.error('Error saving memo:', error);
-    }
+    });
   };
 
   const handleClearMemo = () => {

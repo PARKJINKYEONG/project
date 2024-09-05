@@ -58,6 +58,7 @@ const BookmarkHome = () => {
     } catch (error) {
       console.error('즐겨찾기 삭제 중 오류 발생!', error);
     }
+
   };
 
   // 날짜별로 그룹화하고, 각 날짜별로 최대 3개의 항목만 반환
@@ -72,12 +73,20 @@ const BookmarkHome = () => {
     return acc;
   }, {});
 
+  // 날짜를 한글로 변환하는 함수
+  const formatDateToKorean = (dateStr) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    const formatter = new Intl.DateTimeFormat('ko-KR', options);
+    return formatter.format(new Date(dateStr));
+
+  };
+
   return (
     <div className={styles.container}>
       <div className="row">
         {Object.entries(groupedItems).map(([date, items]) => (
           <React.Fragment key={date}>
-            <h4>{date}</h4> {/* 날짜를 표시 */}
+            <h4>{formatDateToKorean(date)}</h4> {/* 날짜를 한글로 표시 */}
             {items.map((item) => (
               <div key={item.id} className="col-md-4 mb-4" onClick={() => handleCardClick(item.target, item.id, item.hotelName, item.hotelImageUrls)}>
                 <div className={`card h-100 ${styles.card}`}>

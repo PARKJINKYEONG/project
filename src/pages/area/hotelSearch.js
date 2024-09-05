@@ -366,10 +366,12 @@ function HotelSearch() {
                   borderRadius: '50%',
                   padding: '5px',
                   minWidth: 'auto',
+                  color: isFavorite[hotel.id] ? 'red' : 'red', // 기본 하트 색상을 빨간색으로 설정
                 }}
                 onClick={() => handleFavoriteClick(hotel)}
               >
-                {isFavorite[hotel.id] ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                {isFavorite[hotel.id] ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteBorderIcon style={{ color: 'red' }} />}
+
               </Button>
               <div style={{ marginTop: '10px' }}>
                 <Typography variant="h6" noWrap>{hotel.hotelName}</Typography>
@@ -391,6 +393,7 @@ function HotelSearch() {
               fullWidth
               label="즐겨찾기 제목"
               defaultValue={favoriteHotel.hotelName}
+              InputProps={{ readOnly: true }} // 제목 수정 불가
             />
           }
           actions={
