@@ -37,20 +37,20 @@ import { TestPage } from "./pages/testpage";
 
 
 function App() {
-  const [accessToken,setAccessToken] = useState(localStorage.getItem('accessToken') || "");
-  const [email, setEmail] = useState(localStorage.getItem('email') || "");
-  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') || "");
+  const [accessToken,setAccessToken] = useState(sessionStorage.getItem('accessToken') || "");
+  const [email, setEmail] = useState(sessionStorage.getItem('email') || "");
+  const [isAdmin, setIsAdmin] = useState(sessionStorage.getItem('isAdmin') || "");
 
   useEffect(() => {
-    localStorage.setItem('accessToken', accessToken !== null ? accessToken : '');
+    sessionStorage.setItem('accessToken', accessToken !== null ? accessToken : '');
   }, [accessToken]);
 
   useEffect(() => {
-    localStorage.setItem('email', email !== null ? email : '');
+    sessionStorage.setItem('email', email !== null ? email : '');
   }, [email]);
 
   useEffect(() => {
-    localStorage.setItem('isAdmin', isAdmin);
+    sessionStorage.setItem('isAdmin', isAdmin);
   }, [isAdmin]);
 
     return <>
