@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Modal from '@mui/material/Modal';
@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import styles from '../../styles/restaurantSearch.module.css';
 import axios from 'axios';
-
+import { UserContext } from '../../contexts/userContext';
 
 const RestaurantSearch = () => {
   const [query, setQuery] = useState('');
@@ -22,11 +22,12 @@ const RestaurantSearch = () => {
   const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.978 });
   const mapRef = useRef(null);
   const geocoderRef = useRef(null);
-
+  const { email, accessToken } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPlaceName, setSelectedPlaceName] = useState('');
-  const [selectedPlaceId, setSelectedPlaceId] = useState(null);
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null); 
   const [favoritePlaces, setFavoritePlaces] = useState({});
+  const [savedRestaurantId, setSavedRestaurantId] = useState(null);
 
   useEffect(() => {
     const loadMap = () => {
@@ -99,10 +100,6 @@ const RestaurantSearch = () => {
     setUserLocation(event.target.value);
   };
 
-  const handleRadiusChange = (event) => {
-    setRadius(Number(event.target.value));
-  };
-
   const handleSortChange = (event) => {
     setSortOrder(event.target.value);
   };
@@ -128,6 +125,8 @@ const RestaurantSearch = () => {
     });
   };
 
+  
+
   const saveRestaurantToDB = (restaurant) => {
     axios.post('http://localhost:8080/api/places/foods/create', restaurant, {
       headers: {
@@ -136,6 +135,8 @@ const RestaurantSearch = () => {
     })
       .then((resp) => {
         console.log('음식점 저장 성공:', resp.data);
+        setSavedRestaurantId(resp.data.id);
+        return resp.data.id;
       })
       .catch((error) => {
         console.error('음식점 저장 실패:', error);
@@ -263,16 +264,30 @@ const RestaurantSearch = () => {
     }));
   };
 
-  const handleFavoriteClick = (placeId, placeName) => {
+  const handleFavoriteClick = async (placeId, placeName) => {
+
     if (favoritePlaces[placeId]) {
-      setFavoritePlaces((prev) => {
-        const newFavorites = { ...prev };
-        delete newFavorites[placeId];
-        return newFavorites;
-      });
+      // Remove from favorites
+      try {
+        const response = await axios.delete(`http://localhost:8080/api/bookmark/${favoritePlaces[placeId]}`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
+        if (response.status === 200) {
+          setFavoritePlaces((prev) => {
+            const newFavorites = { ...prev };
+            delete newFavorites[placeId];
+            return newFavorites;
+          });
+        }
+      } catch (error) {
+        console.error('즐겨찾기 삭제 중 오류 발생!', error);
+      }
     } else {
+      // Add to favorites
       setSelectedPlaceName(placeName);
-      setSelectedPlaceId(placeId);
+      setSelectedPlaceId(placeId); 
       setModalOpen(true);
     }
   };
@@ -281,13 +296,41 @@ const RestaurantSearch = () => {
     setModalOpen(false);
   };
 
-  const handleSaveFavorite = () => {
-    setFavoritePlaces((prev) => ({
-      ...prev,
-      [selectedPlaceId]: true,
-    }));
-    setModalOpen(false);
+  const handleSaveFavorite = async () => {
+    if (selectedPlaceId === null || savedRestaurantId===null) {
+      console.error('선택된 장소가 없습니다.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/bookmark', {
+        targetId: savedRestaurantId, 
+        isFood: 1,  
+        email,
+        target: 'food'
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+      
+      
+
+      if (response.status === 201) {
+        setFavoritePlaces((prev) => ({
+          ...prev,
+          [selectedPlaceId]: response.data.id,
+        }));
+        setModalOpen(false);
+      } else {
+        console.error('즐겨찾기 추가 실패', response.status);
+      }
+    } catch (error) {
+      console.error('즐겨찾기 추가 중 오류 발생!', error);
+    }
   };
+  
 
   return (
     <div>

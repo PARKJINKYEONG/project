@@ -61,15 +61,13 @@ const BookmarkHome = () => {
 
   };
 
-  // 날짜별로 그룹화하고, 각 날짜별로 최대 3개의 항목만 반환
+  // 날짜별로 그룹화
   const groupedItems = items.reduce((acc, item) => {
     const dateKey = new Date(item.createDate).toDateString();
     if (!acc[dateKey]) {
       acc[dateKey] = [];
     }
-    if (acc[dateKey].length < 3) {
-      acc[dateKey].push(item);
-    }
+    acc[dateKey].push(item); // 날짜별로 모든 항목을 추가
     return acc;
   }, {});
 

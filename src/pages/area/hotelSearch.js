@@ -203,6 +203,8 @@ function HotelSearch() {
       target: "hotel"
     };
 
+    console.log('targetId:', favoriteData.targetId);
+
     try {
       const response = await post('http://localhost:8080/api/bookmark', favoriteData, {
         headers: {
