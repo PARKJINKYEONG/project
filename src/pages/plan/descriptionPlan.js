@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styles from '../../styles/descriptionPlan.module.css';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Box, TextField } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 const destinations = [
   {
@@ -41,6 +44,7 @@ const destinations = [
 export default function DescriptionPlan() {
   const [open, setOpen] = useState(false);
   const [selectedDest, setSelectedDest] = useState(null);
+  const [dateRange, setDateRange] = useState([null, null]);
 
   const handleClickOpen = (dest) => {
     setSelectedDest(dest);
@@ -53,6 +57,24 @@ export default function DescriptionPlan() {
 
   return (
     <div className={styles.container}>
+      <h2>일정을 생성해 주십시오</h2>
+      <div className={styles.datePickerContainer}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateRangePicker
+            calendars={2}
+            value={dateRange}
+            onChange={(newValue) => setDateRange(newValue)}
+            renderInput={(startProps, endProps) => (
+              <React.Fragment>
+                <TextField {...startProps} />
+                <Box sx={{ mx: 2 }}> to </Box>
+                <TextField {...endProps} />
+              </React.Fragment>
+            )}
+          />
+        </LocalizationProvider>
+      </div>
+      <hr/>
       <h2>어디로 여행을 떠나시나요?</h2>
       <input type="text" placeholder="국가명이나 도시명으로 검색해보세요." className={styles.searchInput} />
       

@@ -5,6 +5,11 @@
     margin: 0 auto;
     text-align: center;
   }
+
+  .datePickerContainer {
+    width: 50%; /* searchInput과 동일한 너비 설정 */
+    margin: 0 auto; /* 중앙 정렬 */
+}
   @media (max-width: 1440px) {
     .container {
         margin-left: 0px; /* 화면이 1440px 이하일 때 중앙으로 */
