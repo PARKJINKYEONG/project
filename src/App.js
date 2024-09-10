@@ -33,6 +33,7 @@ import QnaView from "./pages/clientService/qnaView";
 import AdminRoutes2 from "./pages/admin/AdminHome/adminRoutes";
 import ReviewListView from "./pages/tripreview/ReviewListView";
 import { TestPage } from "./pages/testpage";
+import STT from "./components/stt/tts/STT";
 
 
 
@@ -84,6 +85,7 @@ function App() {
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/testroute" element={<TestPage/>} />
             <Route path="/admin2/*" element={<AdminRoutes2/>} />
+            <Route path="/teststttts" element={<STT/>} />
         </Routes>
         </UserContext.Provider>
     </>

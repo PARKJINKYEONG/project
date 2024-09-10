@@ -5,11 +5,13 @@ import mqtt from 'mqtt';
 import { UserContext } from '../../contexts/userContext';
 import { format } from 'date-fns';
 import useRequest from '../../hooks/useRequest';
+import Loading from "../../components/loading";
 
 const ChatBot = () => {
 
   const { email } = useContext(UserContext);
   const { get } = useRequest();
+  const [loading,setLoading] = useState(false);
 
   //mqtt chatting
 
@@ -146,14 +148,18 @@ const ChatBot = () => {
       if (activeTab === 'chatbot') {
         
         setChatbotMessages((prev) => [...prev, newMessage]);
+        setLoading(true); //로딩이미지
         try {
+          
           const botResponse = await sendQueryToOPENAI(newMessage.text); // OpenAI API 응답 대기
-          setChatbotMessages((prev) => [ ...prev, { type: 'bot', text: botResponse }, ]);
-
+          setChatbotMessages((prev) => [ ...prev, { type: 'ai', text: botResponse }, ]);
+          
         } catch (error) {
           console.error('Error in chatbot:', error);
+          setChatbotMessages((prev) => [ ...prev, { type: 'ai', text: "연결이 불안정하여, 잠시 후 다시 시도해 주시기 바랍니다." }, ]);
           chatInput.current.value=input;
         }
+        setLoading(false);
       } else if (activeTab === 'support') {
 
         setSupportMessages((prev) => [...prev, newMessage]); // 채팅방에 채팅 메세지 추가
@@ -163,13 +169,6 @@ const ChatBot = () => {
         //handleSupportMessage();
       }
     }
-  };
-
-  const handleSupportMessage = () => {
-    // 예시: 상담원 응답 시뮬레이션
-    setTimeout(() => {
-      setSupportMessages((prev) => [...prev, { type: 'support', text: '상담원이 곧 답변을 드릴 것입니다.' }]);
-    }, 10000);
   };
 
   const handleKeyPress = (e) => { //엔터누른경우
@@ -188,7 +187,7 @@ const ChatBot = () => {
   return (
     <div className="chatbot">
       <button className="chatbot-button" onClick={handleToggle}>
-        🤔
+        <img src='/images/chat/joy.png' width='56px' alt='Joy'/>
       </button>
       {isOpen && (
         <div className="chatbot-window">
@@ -197,7 +196,7 @@ const ChatBot = () => {
               className={`tab ${activeTab === 'chatbot' ? 'active' : ''}`} 
               onClick={() => handleTabChange('chatbot')}
             >
-              챗봇
+              조이
             </button>
             <button 
               className={`tab ${activeTab === 'support' ? 'active' : ''}`} 
@@ -213,6 +212,8 @@ const ChatBot = () => {
               </div>
             ))}
             <div ref={messagesEndRef} />
+            {loading && <Loading width={50} height={50}/>} 
+            {/* 로딩이미지 */}
           </div>
           <div className="chatbot-input">
             <input type="text" ref={chatInput} onKeyDown={handleKeyPress}

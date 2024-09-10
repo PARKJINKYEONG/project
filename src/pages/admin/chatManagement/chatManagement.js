@@ -43,7 +43,7 @@ const ChatManagement = () => {
     const fetchUsers = async () => {
         try{
           const response = await get('/api/chat/users');
-          console.log(response.data);
+          //console.log(response.data);
           setUserItems(response.data);
               
         } catch(err) {
@@ -67,9 +67,6 @@ const ChatManagement = () => {
         });
   
         mqttClient.on('message', (topic, message) => {
-            console.log('Received topic:',topic,", message:", message.toString());
-            //Received topic: chat/21 , message: Hello
-            // console.log("topic:",topic.slice(5,));
             updateNewMessageFlag(topic.slice(5,));
         });
   
@@ -94,6 +91,7 @@ const ChatManagement = () => {
 
 
     const updateNewMessageFlag = (chatRoomId) => {
+        console.log('>>updateNewMessageFlag: ',chatRoomId, selectedUser);
         setNewMessageFlags(prevFlags => ({
             ...prevFlags,
             [chatRoomId]: true,  // 새로운 메시지가 도착한 경우 true로 설정
@@ -102,6 +100,7 @@ const ChatManagement = () => {
 
     const handleUserItemClick = (chatRoom) => {
         setSelectedUser(chatRoom);
+        console.log('>>handleUserItemClick: ',chatRoom,selectedUser);
         setNewMessageFlags(prevFlags => ({
             ...prevFlags,
             [chatRoom.id]: false,  // 클릭한 유저의 새로운 메시지 플래그 해제

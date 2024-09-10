@@ -77,10 +77,11 @@
 
 .chatWindow{
     height: 80%;
+    max-height: 70vh;
     padding: 20px 10px;
-    overflow-y: visible;
+    overflow-y: auto;
     display: flex;
-    flex-direction: column; /* 세로로 정렬 */
+    flex-direction: column;
     justify-content: flex-start;
 }
 .message {
