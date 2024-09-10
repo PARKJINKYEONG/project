@@ -1,11 +1,12 @@
-// DailyVisitor.jsx
+// Statistics.jsx
 import axios from 'axios';
+import styles from '../../../styles/dailyVisitor.module.css';
+import VisitGraph from './visitGraph';
 import { useEffect, useState } from 'react';
-import BarChart_ from '../../components/barChart';
+import Graph from './graph';
 
+export default function VisitStatistics() {
 
-
-export default function DailyVisitor() {
     const [dailyVisitors, setDailyVisitors] = useState([]);
     const [todayVisitors, setTodayVisitors] = useState(null);
 
@@ -18,15 +19,19 @@ export default function DailyVisitor() {
             })
             .catch(e => {
                 console.log('방문자 수를 가져오는데 오류가 생겼습니다', e);
-            });
+            })
     }, []);
 
     return (
-        <BarChart_
-            title="주간 방문자 수"
-            visitorCount={`금일 방문자 수: ${todayVisitors}`}
-            data={dailyVisitors}
-            labels={['월', '화', '수', '목', '금', '토', '일']}
-        />
+        <>
+
+            <div className={styles.dashboard}>
+                <VisitGraph title={"일일 방문 현황"}/>
+                <p className={styles.date}>2024.08.28 ~ 2024.08.28</p>
+                <h3 className={styles.graphTitle}>방문 현황 그래프</h3>
+                <Graph />
+            </div>
+        </>
     );
 }
+

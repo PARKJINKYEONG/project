@@ -38,7 +38,13 @@ const menuItems = [
     {
         title: '통계',
         num: 5,
-        subMenu: [{ sub: '방문 현황', to: 'statistics' }],
+        subMenu: [
+            { sub: '일일 방문자 수', to: 'dailyVisitor' },
+            { sub: '월간 방문자 수', to: 'statistics' },
+            { sub: '인기있는 패키지들', to: 'statistics' },
+            { sub: '검색어', to: 'statistics' },
+            { sub: '신고', to: 'statistics' },
+        ],
     },
 ];
 

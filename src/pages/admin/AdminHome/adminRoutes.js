@@ -8,6 +8,7 @@ import StatisticHome from "../../statistic/statisticHome"
 import Privacy from "../../changeInfoAsManager/privacy"
 import FAQManagement from "../QnA/FAQManagement"
 import MemberManagement from "../user/memberManagement"
+import VisitStatistics from "../statistic/visitStatistics"
 
 <ChatManagement/>
 
@@ -32,7 +33,9 @@ export default function AdminRoutes2(){
                 <Route path="/chatting" element={<ChatManagement/>}/>
 
                 <Route path="/contents"/>
-                <Route path="/statistics" element={<StatisticHome/>}/>
+                <Route path="/dailyVisitor" element={<VisitStatistics/>}/>
+                
+
                 
 
             </Route>
