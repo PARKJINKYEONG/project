@@ -1,24 +1,31 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/bookmarkHome.module.css';
-import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';  // IconButton 추가
+import CloseIcon from '@mui/icons-material/Close';  // CloseIcon 추가
 import axios from 'axios';
 import { UserContext } from '../../contexts/userContext';
 
 const BookmarkHome = () => {
   const [items, setItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('hotel');
   const navigate = useNavigate();
   const { accessToken } = useContext(UserContext);
 
-  // 데이터베이스에서 즐겨찾기 가져오기
+  // 드롭다운 선택이 변경될 때마다 즐겨찾기를 가져오는 함수
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/bookmark/all', {
+        const response = await axios.get('http://localhost:8080/api/bookmark/target', {
           headers: {
             'Authorization': `Bearer ${accessToken}`,
           },
+          params: {
+            target: selectedCategory
+          },
         });
+        console.log('API 응답:', response.data);
+        
         const sortedItems = response.data.sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
         setItems(sortedItems);
       } catch (error) {
@@ -27,22 +34,23 @@ const BookmarkHome = () => {
     };
 
     fetchBookmarks();
-  }, [accessToken]);
+  }, [accessToken, selectedCategory]);
+
+  // 드롭다운 선택 핸들러
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
 
   // 카드 클릭 시 상세 페이지로 이동
-  const handleCardClick = (title, id, hotelName, hotelImageUrls) => {
-    if (title === '최근 조회') {
-      navigate('/bookmark/recently-viewed');
-    } else {
-      navigate(`/bookmark/details/${id}`, { 
-        state: { 
-          title, 
-          hotelName, 
-          hotelImageUrls,
-          favoriteId: id 
-        } 
-      });
-    }
+  const handleCardClick = (title, id, name, imageUrls) => {
+    navigate(`/bookmark/details/${id}`, { 
+      state: { 
+        title, 
+        name, 
+        imageUrls,
+        favoriteId: id 
+      } 
+    });
   };
 
   // 즐겨찾기 삭제
@@ -53,52 +61,59 @@ const BookmarkHome = () => {
           'Authorization': `Bearer ${accessToken}`,
         },
       });
-      // 삭제 후 상태 업데이트
-      setItems((prevItems) => prevItems.filter(item => item.id !== id));
+      setItems(prevItems => prevItems.filter(item => item.id !== id));
     } catch (error) {
       console.error('즐겨찾기 삭제 중 오류 발생!', error);
     }
-
   };
 
   // 날짜별로 그룹화
-  const groupedItems = items.reduce((acc, item) => {
+  const groupedItems = useMemo(() => items.reduce((acc, item) => {
     const dateKey = new Date(item.createDate).toDateString();
     if (!acc[dateKey]) {
       acc[dateKey] = [];
     }
-    acc[dateKey].push(item); // 날짜별로 모든 항목을 추가
+    acc[dateKey].push(item);
     return acc;
-  }, {});
+  }, {}), [items]);
 
-  // 날짜를 한글로 변환하는 함수
+  // 날짜를 한글로 변환하는 함수 (요일명을 제외)
   const formatDateToKorean = (dateStr) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }; // 요일 정보 제거
     const formatter = new Intl.DateTimeFormat('ko-KR', options);
     return formatter.format(new Date(dateStr));
-
   };
 
   return (
     <div className={styles.container}>
-      <div className="row">
-        {Object.entries(groupedItems).map(([date, items]) => (
-          <React.Fragment key={date}>
-            <h4>{formatDateToKorean(date)}</h4> {/* 날짜를 한글로 표시 */}
-            {items.map((item) => (
-              <div key={item.id} className="col-md-4 mb-4" onClick={() => handleCardClick(item.target, item.id, item.hotelName, item.hotelImageUrls)}>
-                <div className={`card h-100 ${styles.card}`}>
-                  <div className={`card-body ${styles.cardBody}`}>
-                    <div className={`mb-2 ${styles.images}`}>
-                      {item.hotelImageUrls && item.hotelImageUrls.length > 0 ? (
-                        item.hotelImageUrls.map((image, idx) => (
-                          <img key={idx} src={image} className="img-thumbnail" alt={`Hotel ${idx}`} />
-                        ))
-                      ) : (
-                        <p>No images available</p> // 이미지가 없는 경우 표시
-                      )}
-                    </div>
-                    {item.target !== 'recently-viewed' && (
+      <div className={styles.dropdownContainer}>
+        <label htmlFor="category">카테고리 선택: </label>
+        <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
+          <option value="hotel">호텔</option>
+          <option value="food">맛집</option>
+        </select>
+      </div>
+
+      <div className={styles.bookmarkList}>
+        {items.length === 0 ? (
+          <p>데이터가 없습니다.</p>
+        ) : (
+          Object.entries(groupedItems).map(([date, items]) => (
+            <div key={date} className={styles.dateGroup}>
+              <h4 className={styles.dateTitle}>{formatDateToKorean(date)}</h4>
+              <div className={styles.cardContainer}>
+                {items.map((item) => (
+                  <div key={item.id} className={styles.card} onClick={() => handleCardClick(item.target, item.id, item.hotelName || item.foodName, item.hotelImageUrls || item.foodImageUrls)}>
+                    <div className={styles.cardBody}>
+                      <div className={styles.images}>
+                        {(item.hotelImageUrls && item.hotelImageUrls.length > 0) || (item.foodImageUrls && item.foodImageUrls.length > 0) ? (
+                          (item.hotelImageUrls || item.foodImageUrls).map((image, idx) => (
+                            <img key={idx} src={image} className="img-thumbnail" alt={`Image ${idx}`} />
+                          ))
+                        ) : (
+                          <p>No images available</p>
+                        )}
+                      </div>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -106,23 +121,26 @@ const BookmarkHome = () => {
                         }}
                         className={styles.deleteButton}
                       >
-                        <ClearIcon style={{ fontSize: 20 }} />
+                        <IconButton style={{ padding: 0 }}>
+                          <CloseIcon style={{ fontSize: 20 }} />
+                        </IconButton>
                       </button>
-                    )}
+                    </div>
+                    <div className={styles.cardFooter}>
+                      <h5 className={styles.cardTitle}>
+                        {item.hotelName || item.foodName || item.target}
+                      </h5>
+                      {/* 호텔일 때는 regionName, 맛집일 때는 foodAddress 표시 */}
+                      <p className={styles.cardText}>
+                        {item.isHotel ? (item.regionName || "지역 정보 없음") : (item.foodAddress || "주소 정보 없음")}
+                      </p>
+                    </div>
                   </div>
-                  <div className={`card-footer ${styles.cardFooter}`}>
-                    <h5 className={`card-title ${styles.cardTitle}`}>
-                      {item.hotelName || item.target}
-                    </h5>
-                    <p className={`card-text ${styles.cardText}`}>
-                      {item.regionName || item.createDate}
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </React.Fragment>
-        ))}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

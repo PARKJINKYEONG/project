@@ -1,108 +1,107 @@
 /* 전체 카드 컨테이너 */
 .placesContainer {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap; /* 카드가 여러 줄로 감싸이도록 설정 */
-    gap: 16px; /* 카드 간의 간격 조정 */
-    justify-content: space-between; /* 카드 간의 공간 균등 배치 */
-    padding: 0; /* 패딩을 없애서 카드가 부모 컨테이너의 가장자리까지 채우도록 */
-  }
-  
-  /* 각 카드의 스타일 */
-  .placeCard {
-    position: relative; /* 아이콘을 절대적으로 위치시키기 위해 상대적으로 설정 */
-    flex: 1 1 calc(33.33% - 16px); /* 카드의 너비를 33.33%로 설정하고 간격을 고려 */
-    margin: 0; /* 마진을 제거하여 카드 간의 간격을 gap으로 설정 */
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    background-color: #fff;
-    box-sizing: border-box; /* 박스 사이징을 border-box로 설정하여 padding과 border가 너비에 포함되도록 함 */
-  }
-  
-  /* 카드에 포함된 이미지 스타일 */
-  .placeImage {
-    width: 300px; /* 고정된 너비 */
-    height: 300px; /* 고정된 높이 */
-    object-fit: cover; /* 이미지가 지정된 크기에 맞게 잘리거나 조정되도록 설정 */
-    border-radius: 8px;
-    margin-bottom: 16px; /* 사진과 세부 정보 사이의 간격 */
-  }
-  
-  /* 카드 세부 정보와 리뷰의 컨테이너 스타일 */
-  .placeDetails {
-    display: flex;
-    flex-direction: column; /* 세부 정보와 리뷰를 위아래로 배치 */
-    width: 100%;
-  }
-  
-  .placeDetails img {
-    margin-right: 16px;
-  }
-  
-  .reviewsContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .reviewsList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .reviewItem {
-    border-bottom: 1px solid #ddd;
-    padding: 8px 0;
-  }
-  
-  .reviewItem p {
-    margin: 4px 0;
-  }
-  
-  /* 좋아요 아이콘의 스타일 */
-  .favoriteIcon {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    cursor: pointer;
-    color: #f00; /* 아이콘 색상 (원하는 색으로 조정 가능) */
-  }
-  
-  /* 검색 필드와 버튼을 포함한 컨테이너 */
-  .searchContainer {
-    display: flex;
-    align-items: center; /* 세로 방향으로 가운데 정렬 */
-    margin-bottom: 20px;
-  }
-  
-  /* 각 입력 필드와 셀렉트 박스 스타일 */
-  .searchContainer input,
-  .searchContainer select {
-    height: 40px; /* 버튼과 동일한 높이로 설정 */
-    box-sizing: border-box; /* 패딩과 보더를 포함하여 크기 조절 */
-    margin-right: 10px; /* 각 요소 사이의 간격 설정 */
-  }
-  
-  /* 검색 버튼을 오른쪽 끝에 위치시키기 위한 컨테이너 */
-  .searchButtonContainer {
-    margin-left: auto; /* 왼쪽에 자동 여백을 추가하여 버튼을 오른쪽 끝으로 이동 */
-  }
-  
-  /* 검색 버튼 스타일 */
-  .searchButton {
-    background-color: blue;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 4px;
-    height: 40px; /* 검색 버튼의 높이 */
-  }
-  
-  .searchButton:hover {
-    background-color: darkblue;
-  }
-  
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap; /* 카드가 여러 줄로 감싸이도록 설정 */
+  gap: 16px; /* 카드 간의 간격 조정 */
+  justify-content: space-between; /* 카드 간의 공간 균등 배치 */
+  padding: 0; /* 패딩을 없애서 카드가 부모 컨테이너의 가장자리까지 채우도록 */
+}
+
+/* 각 카드의 스타일 */
+.placeCard {
+  position: relative; /* 아이콘을 절대적으로 위치시키기 위해 상대적으로 설정 */
+  flex: 1 1 calc(25% - 16px); /* 카드의 너비를 25%로 설정하고 간격을 고려 */
+  margin: 0; /* 마진을 제거하여 카드 간의 간격을 gap으로 설정 */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-sizing: border-box; /* 박스 사이징을 border-box로 설정하여 padding과 border가 너비에 포함되도록 함 */
+}
+
+/* 카드에 포함된 이미지 스타일 */
+.placeImage {
+  width: 100%; /* 부모 컨테이너의 너비에 맞게 설정 */
+  height: 200px; /* 고정된 높이 */
+  object-fit: cover; /* 이미지가 지정된 크기에 맞게 잘리거나 조정되도록 설정 */
+  border-radius: 8px;
+  margin-bottom: 16px; /* 사진과 세부 정보 사이의 간격 */
+}
+
+/* 카드 세부 정보와 리뷰의 컨테이너 스타일 */
+.placeDetails {
+  display: flex;
+  flex-direction: column; /* 세부 정보와 리뷰를 위아래로 배치 */
+  width: 100%;
+}
+
+.placeDetails img {
+  margin-right: 16px;
+}
+
+.reviewsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.reviewsList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reviewItem {
+  border-bottom: 1px solid #ddd;
+  padding: 8px 0;
+}
+
+.reviewItem p {
+  margin: 4px 0;
+}
+
+/* 좋아요 아이콘의 스타일 */
+.favoriteIcon {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  cursor: pointer;
+  color: #f00; /* 아이콘 색상 (원하는 색으로 조정 가능) */
+}
+
+/* 검색 필드와 버튼을 포함한 컨테이너 */
+.searchContainer {
+  display: flex;
+  align-items: center; /* 세로 방향으로 가운데 정렬 */
+  margin-bottom: 20px;
+}
+
+/* 각 입력 필드와 셀렉트 박스 스타일 */
+.searchContainer input,
+.searchContainer select {
+  height: 40px; /* 버튼과 동일한 높이로 설정 */
+  box-sizing: border-box; /* 패딩과 보더를 포함하여 크기 조절 */
+  margin-right: 10px; /* 각 요소 사이의 간격 설정 */
+}
+
+/* 검색 버튼을 오른쪽 끝에 위치시키기 위한 컨테이너 */
+.searchButtonContainer {
+  margin-left: auto; /* 왼쪽에 자동 여백을 추가하여 버튼을 오른쪽 끝으로 이동 */
+}
+
+/* 검색 버튼 스타일 */
+.searchButton {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  height: 40px; /* 검색 버튼의 높이 */
+}
+
+.searchButton:hover {
+  background-color: darkblue;
+}

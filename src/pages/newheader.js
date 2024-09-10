@@ -89,11 +89,10 @@ const NewHeader = () => {
             <NavLink className={`${styles.submenuLink}`} to="/ReviewList">여행 후기</NavLink>
           </div>
           <div className={`${styles.menuItem}`}>
-            <NavLink className={`${styles.submenuLink}`} to="/place/global">해외 여행</NavLink>
-            <NavLink className={`${styles.submenuLink}`} to="/place/local">국내 여행</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/place/flightSearch">항공 정보</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/place/weatherSearch">날씨 정보</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/place/hotelSearch">숙박 정보</NavLink>
+            <NavLink className={`${styles.submenuLink}`} to="/place/restaurantSearch">맛집 정보</NavLink>
           </div>
           
           <div className={`${styles.menuItem}`}>

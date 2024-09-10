@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import {
   Paper, Button, TextField, Grid, Typography, CircularProgress,
@@ -30,7 +30,6 @@ function HotelSearch() {
   const [checkinError, setCheckinError] = useState('');
   const [checkoutError, setCheckoutError] = useState('');
   const { email, accessToken } = useContext(UserContext);
-
   const today = new Date();
   const { post, del } = useRequest(); // `del` 메서드를 추가
 
@@ -191,8 +190,8 @@ function HotelSearch() {
   };
 
   const handleSaveFavorite = async () => {
-    if (!email) {
-      console.error('사용자 email이 없습니다.');
+    if(!email){
+      alert('로그인 후 이용하세요');
       return;
     }
 
@@ -233,73 +232,7 @@ function HotelSearch() {
     <Paper elevation={3} style={{ padding: '20px', borderRadius: '10px' }}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          {/* 첫 번째 줄: 지역, 체크인 날짜, 체크아웃 날짜 */}
-          <Grid container item spacing={2} alignItems="center" xs={12}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                label="지역 *"
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-                error={!!regionError}
-                helperText={regionError}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <DatePicker
-                selected={checkin}
-                onChange={(date) => setCheckin(date)}
-                minDate={today}
-                customInput={
-                  <TextField
-                    fullWidth
-                    label="체크인 날짜 *"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton>
-                            <CalendarTodayIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    error={!!checkinError}
-                    helperText={checkinError}
-                    style={{ marginLeft: '0' }}
-                  />
-                }
-                dateFormat="yyyy-MM-dd"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <DatePicker
-                selected={checkout}
-                onChange={(date) => setCheckout(date)}
-                minDate={checkin ? new Date(checkin.getTime() + 86400000) : today}
-                customInput={
-                  <TextField
-                    fullWidth
-                    label="체크아웃 날짜 *"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton>
-                            <CalendarTodayIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    error={!!checkoutError}
-                    helperText={checkoutError}
-                    style={{ marginLeft: '0' }}
-                  />
-                }
-                dateFormat="yyyy-MM-dd"
-              />
-            </Grid>
-          </Grid>
-
-          {/* 두 번째 줄: 성인, 어린이, 정렬 기준, 검색 버튼 */}
+          {/* 첫 번째 줄: 성인, 어린이, 정렬 기준, 검색 버튼 */}
           <Grid container item spacing={2} alignItems="center" xs={12} style={{ marginTop: '10px' }}>
             <Grid item xs={12} sm={3}>
               <TextField
@@ -308,6 +241,8 @@ function HotelSearch() {
                 label="성인"
                 value={adultCount}
                 onChange={handleAdultCountChange}
+                style={{ height: '45px' }} 
+                InputProps={{ style: { height: '45px' } }} 
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -317,6 +252,8 @@ function HotelSearch() {
                 label="어린이"
                 value={childCount}
                 onChange={handleChildCountChange}
+                style={{ height: '45px' }} 
+                InputProps={{ style: { height: '45px' } }} 
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -326,63 +263,130 @@ function HotelSearch() {
                   value={sortOrder}
                   onChange={handleSortChange}
                   label="정렬 기준"
+                  style={{ height: '45px' }} 
                 >
                   <MenuItem value="rating">평점</MenuItem>
                   <MenuItem value="price">가격</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={3} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                style={{ width: '70px' }}
-              >
-                검색
-              </Button>
+           
+          </Grid>
+          {/* 두 번째 줄: 지역, 체크인 날짜, 체크아웃 날짜 */}
+          <Grid container item alignItems="center" xs={12}>
+            <Grid container item xs={12}>
+              <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+                <TextField
+                  label="지역 *"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  error={!!regionError}
+                  helperText={regionError}
+                  style={{ width: '150px', height: '45px' }} 
+                  InputProps={{ style: { height: '45px' } }} 
+                />
+                <DatePicker
+                  selected={checkin}
+                  onChange={(date) => setCheckin(date)}
+                  minDate={today}
+                  customInput={
+                    <TextField
+                      fullWidth
+                      label="체크인 날짜 *"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton>
+                              <CalendarTodayIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                        style: { height: '45px' } 
+                      }}
+                      error={!!checkinError}
+                      helperText={checkinError}
+                    />
+                  }
+                  dateFormat="yyyy-MM-dd"
+                />
+                <DatePicker
+                  selected={checkout}
+                  onChange={(date) => setCheckout(date)}
+                  minDate={checkin ? new Date(checkin.getTime() + 86400000) : today}
+                  customInput={
+                    <TextField
+                      fullWidth
+                      label="체크아웃 날짜 *"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton>
+                              <CalendarTodayIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                        style: { height: '45px' } 
+                      }}
+                      error={!!checkoutError}
+                      helperText={checkoutError}
+                    />
+                  }
+                  dateFormat="yyyy-MM-dd"
+                />
+                 <Grid item xs={12} sm={3} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      style={{ width: '70px', height: '40px'}} // 검색 버튼 높이 조정
+                    >
+                      검색
+                    </Button>
+                  </Grid>
+              </div>
             </Grid>
           </Grid>
         </Grid>
       </form>
       {loading && <CircularProgress style={{ display: 'block', margin: '20px auto' }} />}
       {error && <Typography color="error">{error}</Typography>}
-      <Grid container spacing={2} style={{ marginTop: '20px' }}>
+      <Grid container spacing={2} style={{ marginTop: '120px' }}>
         {results.map((hotel) => (
-          <Grid item xs={12} sm={6} key={hotel.id}>
-            <Paper elevation={3} style={{ position: 'relative', padding: '10px', borderRadius: '10px', height: '100%' }}>
-              {hotel.imageUrls && hotel.imageUrls.length > 0 && (
-                <img
-                  src={hotel.imageUrls[0]}
-                  alt={hotel.hotelName}
-                  style={{ width: '70%', height: '200px', objectFit: 'cover', borderRadius: '10px' }}
-                />
-              )}
-              <Button
-                variant="outlined"
-                color="primary"
-                style={{
-                  position: 'absolute',
-                  top: '10px',
-                  right: '10px',
-                  borderRadius: '50%',
-                  padding: '5px',
-                  minWidth: 'auto',
-                  color: isFavorite[hotel.id] ? 'red' : 'red', // 기본 하트 색상을 빨간색으로 설정
-                }}
-                onClick={() => handleFavoriteClick(hotel)}
-              >
-                {isFavorite[hotel.id] ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteBorderIcon style={{ color: 'red' }} />}
-
-              </Button>
-              <div style={{ marginTop: '10px' }}>
-                <Typography variant="h6" noWrap>{hotel.hotelName}</Typography>
-                <Typography variant="body2" color="textSecondary" noWrap>{hotel.regionName}</Typography>
-                <Typography variant="body1">평점: {hotel.averageReviewRate}</Typography>
-                <Typography variant="body1">가격: {hotel.averagePrice}</Typography>
-              </div>
-            </Paper>
-          </Grid>
+          <Grid item xs={12} sm={4} key={hotel.id}>
+          <Paper elevation={3} style={{ position: 'relative', padding: '10px', borderRadius: '10px', height: '100%' }}>
+            {hotel.imageUrls && hotel.imageUrls.length > 0 && (
+              <img
+                src={hotel.imageUrls[0]}
+                alt={hotel.hotelName}
+                style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '10px' }}
+              />
+            )}
+            <Button
+              variant="outlined"
+              color="primary"
+              style={{
+                position: 'absolute',
+                bottom: '10px',
+                right: '10px',
+                borderRadius: '50%',
+                padding: '5px',
+                minWidth: 'auto',
+                backgroundColor: 'transparent', 
+                border: 'none', 
+                color: isFavorite[hotel.id] ? 'red' : 'red', 
+              }}
+              onClick={() => handleFavoriteClick(hotel)}
+            >
+              {isFavorite[hotel.id] ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteBorderIcon style={{ color: 'red' }} />}
+            </Button>
+            <div style={{ marginTop: '10px' }}>
+              <Typography variant="h6" noWrap>{hotel.hotelName}</Typography>
+              <Typography variant="body2" color="textSecondary" noWrap>{hotel.regionName}</Typography>
+              <Typography variant="body1">평점: {hotel.averageReviewRate}</Typography>
+              <Typography variant="body1">가격: {hotel.averagePrice}~</Typography>
+            </div>
+          </Paper>
+        </Grid>
         ))}
       </Grid>
       {favoriteHotel && (
@@ -395,7 +399,7 @@ function HotelSearch() {
               fullWidth
               label="즐겨찾기 제목"
               defaultValue={favoriteHotel.hotelName}
-              InputProps={{ readOnly: true }} // 제목 수정 불가
+              InputProps={{ readOnly: true }} 
             />
           }
           actions={
@@ -406,7 +410,6 @@ function HotelSearch() {
         />
       )}
     </Paper>
-  );
+  );  
 }
-
 export default HotelSearch;

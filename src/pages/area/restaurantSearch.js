@@ -17,7 +17,7 @@ const RestaurantSearch = () => {
   const [showReviews, setShowReviews] = useState({});
   const [showHours, setShowHours] = useState({});
   const [nextPageToken, setNextPageToken] = useState(null);
-  const [sortOrder, setSortOrder] = useState('rating');
+  const [sortOrder, setSortOrder] = useState('review');
   const [map, setMap] = useState(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.978 });
   const mapRef = useRef(null);
@@ -28,6 +28,10 @@ const RestaurantSearch = () => {
   const [selectedPlaceId, setSelectedPlaceId] = useState(null); 
   const [favoritePlaces, setFavoritePlaces] = useState({});
   const [savedRestaurantId, setSavedRestaurantId] = useState(null);
+  const [placeDetailsMap, setPlaceDetailsMap] = useState({});
+  const [markers, setMarkers] = useState([]); // 마커 상태 추가
+  const [infoWindow, setInfoWindow] = useState(null); // InfoWindow 상태 추가
+  const [modalTrigger, setModalTrigger] = useState(null); // 모달 트리거 상태 추가
 
   useEffect(() => {
     const loadMap = () => {
@@ -92,6 +96,53 @@ const RestaurantSearch = () => {
     }
   }, [sortOrder]);
 
+  useEffect(() => {
+    // 마커를 지도에서 제거
+    if (map) {
+      markers.forEach(marker => marker.setMap(null));
+      setMarkers([]);
+      if (infoWindow) {
+        infoWindow.close(); // 이전 InfoWindow 닫기
+      }
+    }
+
+    // 새로운 마커와 InfoWindow를 추가
+    const newMarkers = places.map(place => {
+      const marker = new window.google.maps.Marker({
+        position: {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        },
+        map: map,
+        title: place.name,
+      });
+
+      marker.addListener('click', () => {
+        setSelectedPlaceName(place.name);
+        setSelectedPlaceId(place.place_id);
+
+        // InfoWindow 생성 및 표시
+        if (infoWindow) {
+          infoWindow.close();
+        }
+        const newInfoWindow = new window.google.maps.InfoWindow({
+          content: `<div><strong>${place.name}</strong></div>`,
+        });
+        newInfoWindow.open(map, marker);
+        setInfoWindow(newInfoWindow);
+
+        // 모달 열기 (하트 클릭으로만 모달 열기)
+        if (modalTrigger === 'heart') {
+          setModalOpen(true);
+        }
+      });
+
+      return marker;
+    });
+
+    setMarkers(newMarkers);
+  }, [places, map, modalTrigger]);
+
   const handleQueryChange = (event) => {
     setQuery(event.target.value);
   };
@@ -125,22 +176,19 @@ const RestaurantSearch = () => {
     });
   };
 
-  
-
-  const saveRestaurantToDB = (restaurant) => {
-    axios.post('http://localhost:8080/api/places/foods/create', restaurant, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resp) => {
-        console.log('음식점 저장 성공:', resp.data);
-        setSavedRestaurantId(resp.data.id);
-        return resp.data.id;
-      })
-      .catch((error) => {
-        console.error('음식점 저장 실패:', error);
+  const saveRestaurantToDB = async (restaurant) => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/places/foods/create', restaurant, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
+      console.log('음식점 저장 성공:', response.data);
+      return response.data.id; // ID를 반환
+    } catch (error) {
+      console.error('음식점 저장 실패:', error);
+      return null; // 실패 시 null 반환
+    }
   };
 
   const performSearch = (mapInstance, query, location = null, radius, pageToken = null) => {
@@ -202,19 +250,11 @@ const RestaurantSearch = () => {
                   workingTime,  // 영업시간 정보
                 });
 
-                saveRestaurantToDB({
-                  foodName: placeDetails.name,
-                  address: placeDetails.formatted_address,
-                  lat: placeDetails.geometry.location.lat(),
-                  lng: placeDetails.geometry.location.lng(),
-                  tel: placeDetails.formatted_phone_number,
-                  averageReviewRate: details.rating || 0,
-                  region: {
-                    name: country,
-                  },
-                  imageUrls,  // 첫 번째 이미지 URL만 저장
-                  workingTime,  // 영업시간 정보 저장
-                });
+                // placeDetailsMap 업데이트
+                setPlaceDetailsMap(prev => ({
+                  ...prev,
+                  [place.place_id]: placeDetails,
+                }));
 
                 placesWithDetails.push(placeDetails);
 
@@ -265,9 +305,13 @@ const RestaurantSearch = () => {
   };
 
   const handleFavoriteClick = async (placeId, placeName) => {
-
+    if (!accessToken) {
+      alert('로그인 후 이용하세요.');
+      return; 
+    }
+    
     if (favoritePlaces[placeId]) {
-      // Remove from favorites
+      // 즐겨찾기 제거
       try {
         const response = await axios.delete(`http://localhost:8080/api/bookmark/${favoritePlaces[placeId]}`, {
           headers: {
@@ -285,19 +329,51 @@ const RestaurantSearch = () => {
         console.error('즐겨찾기 삭제 중 오류 발생!', error);
       }
     } else {
-      // Add to favorites
+      // 즐겨찾기 추가
       setSelectedPlaceName(placeName);
-      setSelectedPlaceId(placeId); 
-      setModalOpen(true);
+      setSelectedPlaceId(placeId);
+      setModalTrigger('heart'); // 모달 트리거를 하트로 설정
+
+      const placeDetails = placeDetailsMap[placeId];
+      if (!placeDetails) {
+        console.error('선택된 장소의 세부 정보가 없습니다.');
+        return;
+      }
+  
+      // 음식점 객체 생성
+      const restaurant = {
+        foodName: placeDetails.name,
+        address: placeDetails.formatted_address,
+        lat: placeDetails.geometry.location.lat(),
+        lng: placeDetails.geometry.location.lng(),
+        tel: placeDetails.formatted_phone_number,
+        averageReviewRate: placeDetails.rating || 0,
+        region: {
+          name: placeDetails.country,
+        },
+        imageUrls: placeDetails.imageUrls,
+        workingTime: placeDetails.workingTime,
+      };
+  
+      // 음식점 저장 및 즐겨찾기 추가
+      const restaurantId = await saveRestaurantToDB(restaurant);
+  
+      if (restaurantId) {
+        setSavedRestaurantId(restaurantId);
+        setModalOpen(true);
+      } else {
+        console.error('음식점 저장 실패로 인해 즐겨찾기 추가를 할 수 없습니다.');
+      }
     }
   };
-
+  
   const handleModalClose = () => {
     setModalOpen(false);
+    setModalTrigger(null); // 모달 트리거 초기화
   };
 
   const handleSaveFavorite = async () => {
-    if (selectedPlaceId === null || savedRestaurantId===null) {
+    if (selectedPlaceId === null || savedRestaurantId === null) {
       console.error('선택된 장소가 없습니다.');
       return;
     }
@@ -314,8 +390,6 @@ const RestaurantSearch = () => {
           'Authorization': `Bearer ${accessToken}`,
         },
       });
-      
-      
 
       if (response.status === 201) {
         setFavoritePlaces((prev) => ({
@@ -331,7 +405,6 @@ const RestaurantSearch = () => {
     }
   };
   
-
   return (
     <div>
       <div className={styles.searchContainer}>
@@ -349,8 +422,8 @@ const RestaurantSearch = () => {
         />
         
         <select value={sortOrder} onChange={handleSortChange}>
+          <option value="reviews">정렬</option>
           <option value="rating">별점 순</option>
-          <option value="reviews">댓글 수 순</option>
         </select>
         <div className={styles.searchButtonContainer}>
           <button onClick={handleSearch} className={styles.searchButton}>
