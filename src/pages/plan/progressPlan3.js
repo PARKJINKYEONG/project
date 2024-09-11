@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/progressPlan3.module.css';
+import styles from '../../styles/plan/createPlan/progressPlan3.module.css';
 
 const ProgressPlan2 = () => {
   const [selectedTab, setSelectedTab] = useState('선택된 숙소');

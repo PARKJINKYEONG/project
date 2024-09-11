@@ -1,0 +1,66 @@
+.customContainer {
+    display: flex;
+    height: 90vh;
+    min-width: 100%;
+    position: absolute;
+    margin-top: 10px;
+    left: 0; /* 강제로 화면 왼쪽부터 시작하도록 */    
+    overflow-x: auto; /* 가로 스크롤을 허용 */
+    overflow-y: hidden;
+}
+
+.planController {
+    padding: 2px;
+    min-width: 100px;
+    width: 5%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid #ccc;
+}
+
+.planContainer {
+    flex: 0.5;
+    height: 100vh;
+    padding-top: 10px;
+    display: flex; /* Flexbox 적용 */
+    justify-content: center;
+    margin: auto;
+    min-width: 400px;
+}
+
+.planFullContainer{
+    width: 90%;
+    margin: auto;
+}
+
+.progress4planContainer{
+    flex: 0.5;
+    height: 100vh;
+    padding-top: 10px;
+    display: flex; /* Flexbox 적용 */
+    justify-content: center;
+    margin: auto;
+    min-width: 800px;
+}
+.hiddenplanContainer{
+    display: none;
+}
+
+.mapContainer {
+    flex: 3;
+    height: 96%;
+    margin-top: 10px;
+    margin-right: 5px;
+    border: solid 1px #ccc;
+    border-radius: 3px;
+}
+
+.resultContainer{
+    flex: 3;
+    margin :10px;
+    height: 96%;
+    border: solid 1px #ececec;
+    border-radius: 3px;
+}

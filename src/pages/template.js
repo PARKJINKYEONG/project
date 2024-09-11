@@ -2,9 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./header";
 import Footer from "./footer";
 import '../styles/common.css'
-import Header2 from "./header2";
 
-import NewHeader from "./newheader";
 
 
 //레이아웃용 컴포넌트
@@ -13,10 +11,7 @@ export default function Template(){
     const isCreatePlanPage = location.pathname === "/createPlan";
 
     return <>
-        {/* <Header /> */}
-
-        {/* <Header2 /> */}
-        <NewHeader/>
+        <Header />
         <div className={`container nanumsqr-korfont ${isCreatePlanPage ? 'hide-footer' : ''}`}>
             <Outlet />
         </div>

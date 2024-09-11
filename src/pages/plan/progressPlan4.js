@@ -1,13 +1,14 @@
 //사실4단계
 
-export default function ProgressPlan4(){
 
-  return<>
+export default function ProgressPlan4() {
 
-<h1>5단계</h1>
-        </>
+  return <>
+    <div><h1>4단계</h1></div>
+    <div>
+    </div>
 
 
-
+  </>
 
 };

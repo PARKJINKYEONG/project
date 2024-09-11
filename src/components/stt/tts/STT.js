@@ -29,13 +29,18 @@ export default function STT() {
             const blob = await fetch(mediaBlobUrl).then(r => r.blob());
             const formData = new FormData();
             formData.append("file", blob, "audio.wav");
-
-            const response = await fetch("http://localhost:8080/api/stt/upload", {
+    
+            const response = await fetch("http://localhost:8080/api/stt/record", {
                 method: "POST",
                 body: formData,
-            },);
-
-            const result = await response.json();
+                headers: {
+                    // 'Content-Type'을 multipart/form-data로 설정하지 않습니다.
+                    // fetch는 자동으로 multipart 데이터를 처리합니다.
+                },
+            });
+    
+            const text = await response.text();
+            const result = JSON.parse(text);
             setResp(result.transcript || "No transcript received");
         } catch (error) {
             console.error('Upload failed:', error);

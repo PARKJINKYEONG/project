@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../../styles/progressPlan2.module.css';
+import styles from '../../styles/plan/createPlan/progressPlan2.module.css';
 import MapComponent from './mapComponent';
 
 const ProgressPlan2 = () => {
