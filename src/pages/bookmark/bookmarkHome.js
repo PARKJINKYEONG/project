@@ -42,16 +42,26 @@ const BookmarkHome = () => {
   };
 
   // 카드 클릭 시 상세 페이지로 이동
-  const handleCardClick = (title, id, name, imageUrls) => {
+  const handleCardClick = (title, id, placeName, imageUrls, lat, lng) => {
+    console.log('title', title);
+    console.log('id', id);
+    console.log('placeName', placeName); // 호텔 또는 맛집 이름
+    console.log('imageUrls', imageUrls); // 호텔 또는 맛집 이미지
+    console.log('lat', lat);
+    console.log('lng', lng);
+  
     navigate(`/bookmark/details/${id}`, { 
       state: { 
         title, 
-        name, 
+        placeName, 
         imageUrls,
-        favoriteId: id 
+        favoriteId: id,
+        lat,
+        lng
       } 
     });
   };
+  
 
   // 즐겨찾기 삭제
   const handleDeleteItem = async (id) => {
@@ -103,7 +113,11 @@ const BookmarkHome = () => {
               <h4 className={styles.dateTitle}>{formatDateToKorean(date)}</h4>
               <div className={styles.cardContainer}>
                 {items.map((item) => (
-                  <div key={item.id} className={styles.card} onClick={() => handleCardClick(item.target, item.id, item.hotelName || item.foodName, item.hotelImageUrls || item.foodImageUrls)}>
+                  <div
+                    key={item.id}
+                    className={styles.card}
+                    onClick={() => handleCardClick(item.target, item.id, item.hotelName || item.foodName, item.hotelImageUrls || item.foodImageUrls, item.lat, item.lng)}
+                  >
                     <div className={styles.cardBody}>
                       <div className={styles.images}>
                         {(item.hotelImageUrls && item.hotelImageUrls.length > 0) || (item.foodImageUrls && item.foodImageUrls.length > 0) ? (
@@ -130,7 +144,6 @@ const BookmarkHome = () => {
                       <h5 className={styles.cardTitle}>
                         {item.hotelName || item.foodName || item.target}
                       </h5>
-                      {/* 호텔일 때는 regionName, 맛집일 때는 foodAddress 표시 */}
                       <p className={styles.cardText}>
                         {item.isHotel ? (item.regionName || "지역 정보 없음") : (item.foodAddress || "주소 정보 없음")}
                       </p>
@@ -143,6 +156,7 @@ const BookmarkHome = () => {
         )}
       </div>
     </div>
+
   );
 };
 

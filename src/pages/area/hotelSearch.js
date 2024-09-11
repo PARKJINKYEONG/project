@@ -11,6 +11,7 @@ import DatePicker from 'react-datepicker';
 import MuiModal from './../../components/muiModal';
 import { UserContext } from '../../contexts/userContext';
 import useRequest from './../../hooks/useRequest';
+import ScrollToTopButton from '../../components/scrollToTopButton';
 
 function HotelSearch() {
   const [region, setRegion] = useState('');
@@ -127,15 +128,20 @@ function HotelSearch() {
     const sortedResults = [...data].sort((a, b) => {
       if (order === 'rating') {
         return (b.averageReviewRate || 0) - (a.averageReviewRate || 0);
-      } else if (order === 'price') {
+      } else if (order === 'priceAsc') {
         const priceA = parsePrice(a.averagePrice);
         const priceB = parsePrice(b.averagePrice);
         return priceA - priceB;
+      } else if (order === 'priceDesc') {
+        const priceA = parsePrice(a.averagePrice);
+        const priceB = parsePrice(b.averagePrice);
+        return priceB - priceA;
       }
       return 0;
     });
     setResults(sortedResults);
   };
+  
 
   const handleSortChange = (event) => {
     const newSortOrder = event.target.value;
@@ -257,18 +263,20 @@ function HotelSearch() {
               />
             </Grid>
             <Grid item xs={12} sm={3}>
-              <FormControl fullWidth>
-                <InputLabel>정렬 기준</InputLabel>
-                <Select
-                  value={sortOrder}
-                  onChange={handleSortChange}
-                  label="정렬 기준"
-                  style={{ height: '45px' }} 
-                >
-                  <MenuItem value="rating">평점</MenuItem>
-                  <MenuItem value="price">가격</MenuItem>
-                </Select>
-              </FormControl>
+            <FormControl fullWidth>
+              <InputLabel>정렬 기준</InputLabel>
+              <Select
+                value={sortOrder}
+                onChange={handleSortChange}
+                label="정렬 기준"
+                style={{ height: '45px' }} 
+              >
+                <MenuItem value="rating">평점</MenuItem>
+                <MenuItem value="priceAsc">가격 낮은 순</MenuItem>
+                <MenuItem value="priceDesc">가격 높은 순</MenuItem>
+              </Select>
+            </FormControl>
+
             </Grid>
            
           </Grid>
@@ -409,6 +417,7 @@ function HotelSearch() {
           }
         />
       )}
+      <ScrollToTopButton/>
     </Paper>
   );  
 }

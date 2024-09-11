@@ -196,7 +196,7 @@ const RestaurantSearch = () => {
       alert('반경이 유효하지 않습니다.');
       return;
     }
-
+  
     const service = new window.google.maps.places.PlacesService(mapInstance);
     const request = {
       query,
@@ -205,29 +205,29 @@ const RestaurantSearch = () => {
       type: ['restaurant'],
       pageToken: pageToken,
     };
-
+  
     service.textSearch(request, (results, status, pagination) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         const placesWithDetails = [];
-
+  
         const promises = results.map((place) => {
           return new Promise((resolve) => {
             service.getDetails({ placeId: place.place_id }, (details, status) => {
               if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-
+  
                 // 국가 정보 추가
                 const country = details.address_components.find(component => component.types.includes('country'))?.long_name || '정보 없음';
-
+  
                 // 첫 번째 이미지만 추출
                 const imageUrls = details.photos && details.photos.length > 0 
                   ? [details.photos[0].getUrl({ maxWidth: 200 })] 
                   : [];
-
+  
                 // 영업시간 처리
-                const workingTime = details.opening_hours
+                const workingTime = details.opening_hours && Array.isArray(details.opening_hours.weekday_text)
                   ? details.opening_hours.weekday_text.join(', ')
                   : '정보 없음';
-
+  
                 const placeDetails = {
                   ...details,
                   formatted_phone_number: details.formatted_phone_number || '정보 없음',
@@ -235,7 +235,7 @@ const RestaurantSearch = () => {
                   imageUrls,
                   workingTime,
                 };
-
+  
                 console.log('음식점 세부 정보:', {
                   name: placeDetails.name,
                   address: placeDetails.formatted_address,
@@ -249,15 +249,15 @@ const RestaurantSearch = () => {
                   imageUrls,
                   workingTime,  // 영업시간 정보
                 });
-
+  
                 // placeDetailsMap 업데이트
                 setPlaceDetailsMap(prev => ({
                   ...prev,
                   [place.place_id]: placeDetails,
                 }));
-
+  
                 placesWithDetails.push(placeDetails);
-
+  
               } else {
                 console.error('PlacesService getDetails 상태:', status);
               }
@@ -265,7 +265,7 @@ const RestaurantSearch = () => {
             });
           });
         });
-
+  
         Promise.all(promises).then(() => {
           setPlaces(placesWithDetails);
           if (pagination && pagination.hasNextPage) {
@@ -274,7 +274,7 @@ const RestaurantSearch = () => {
             setNextPageToken(null);
           }
         });
-
+  
       } else if (status === window.google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
         alert('해당 검색어에 대한 결과가 없습니다. 다른 검색어를 시도해 보세요.');
         setPlaces([]);
@@ -283,7 +283,7 @@ const RestaurantSearch = () => {
       }
     });
   };
-
+  
   const loadMore = () => {
     if (nextPageToken && mapRef.current) {
       performSearch(mapRef.current, query, null, radius, nextPageToken);
@@ -470,18 +470,21 @@ const RestaurantSearch = () => {
               <p>국가: {place.country}</p>
             )}
 
-            <div style={{ marginBottom: '10px' }}> {/* 여기에 간격을 추가합니다. */}
-              <button onClick={() => toggleHours(place.place_id)}>
-                {showHours[place.place_id] ? '영업시간 숨기기' : '영업시간 보기'}
-              </button>
-            </div>
-            {showHours[place.place_id] && place.opening_hours !== '정보 없음' && (
-              <div className={styles.hoursContainer}>
-                {place.opening_hours.split(', ').map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
-              </div>
-            )}
+              {place.opening_hours && place.opening_hours.weekday_text && place.opening_hours.weekday_text.length > 0 && (
+                <div style={{ marginBottom: '10px' }}>
+                  <button onClick={() => toggleHours(place.place_id)}>
+                    {showHours[place.place_id] ? '영업시간 숨기기' : '영업시간 보기'}
+                  </button>
+                </div>
+              )}
+              {showHours[place.place_id] && place.opening_hours && place.opening_hours.weekday_text && place.opening_hours.weekday_text.length > 0 && (
+                <div className={styles.hoursContainer}>
+                  {place.opening_hours.weekday_text.map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))}
+                </div>
+              )}
+
             <div style={{ marginBottom: '10px' }}> {/* 여기에 간격을 추가합니다. */}
               {place.reviews && (
                 <button onClick={() => toggleReviews(place.place_id)}>
