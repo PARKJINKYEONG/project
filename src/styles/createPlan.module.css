@@ -9,24 +9,25 @@
 }
 
 .planController {
-    margin-right: 15px;
     padding: 2px;
     width: 4.5%;
-    height: 85vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-right: 1px solid #ccc;
 }
 
 .planContainer {
     flex: 0.5;
-    height: 80vh;
+    height: 100vh;
     margin-top: 15px;
+    margin-right: 15px;
 }
 
 .mapContainer {
     flex: 3;
-    height: 70vh;
+    height: 100vh;
     margin-top: 15px;
     margin-right: 5px;
 }

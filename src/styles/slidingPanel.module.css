@@ -2,7 +2,7 @@
 
 .panel {
     position: absolute; /* 부모 요소 기준으로 위치를 설정 */
-    left: 450px;
+    left: 500px;
     top: 14px;
     width: 350px;
     height: 99%;

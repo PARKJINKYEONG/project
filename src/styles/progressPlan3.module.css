@@ -1,121 +1,160 @@
-.tabs {
-    display: flex;
-    margin-bottom: 20px;
-  }
-  
-  .tabButton {
-    background: none;
-    border: none;
-    padding: 8px 28px;
-    cursor: pointer;
-    font-size: 1rem;
-    color: #333;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
-  }
+.container {
+  width: 100%;
+  margin-right: 15px;
+}
 
-  .tabButton.active {
-    color: #98E4FF;
-    border-bottom: 2px solid #98E4FF;
-  }
-  
-  .tabButton:hover {
-    color: #333; /* 호버 시 색상 변하지 않도록 설정 */
-    background-color: #98E4FF;
-    border-bottom: 2px solid transparent; /* 호버 시 하단 테두리 색상 유지 */
-  }  
-  
-  .tabContent {
-    margin-top: 16px;
-  }
-  
-  .inputContainer {
-    position: relative;
-    width: 290px;
-    margin-top: 10px;
-  }
-  
-  .customInput {
-    width: 95%;
-    height: 40px;
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 16px;
-    color: #333;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(31, 38, 135, 0.08);
-  }
-  
-  .buttonGroup {
-    display: flex;
-    gap: 8px;
-    margin-top: 16px;
-    font-size: 0.7rem;
-  }
-  
-  .button {
-    padding: 3px 12px;
-    border: 1px solid #ddd;
-    border-radius: 24px;
-    background-color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .button:hover {
-    background-color: #98E4FF; /* 배경색 변화 없음 */
-    color: white; /* 글자 색상 변화 없음 */
-  }
-  
-  .recommendButton {
-    background-color: #98E4FF;
-    color: white;
-    border: none;
-  }
-  
-  .placeList {
-    margin-top: 10px;
-    max-height: 1400px;
-    overflow-y: auto;
-    padding: 0;
-  }
-  
-  .placeItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .addButton {
-    background-color: #98E4FF;
-    color: white;
-    border: none;
-    border-radius: 10%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    justify-content: center; /* 가로 가운데 정렬 */
-    align-items: center; 
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .addButton:hover {
-    background-color: #86D1E4; /* 버튼 호버 시 색상 변경 */
-  }
+/* 제목 스타일 */
+.title {
+  margin-bottom: 20px;
+  font-size: 1 rem;
+  font-weight: bold;
+}
 
-  .customInput2 {
-    width: 85%;
-    height: 40px;
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 16px;
-    color: #333;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(31, 38, 135, 0.08);
-  }
-  
-    
+/* 탭 버튼 스타일 (선택된 관광지 / 관광지 검색 및 추천) */
+.tabButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tabButton {
+  width: 150px;  /* 너비 고정 */
+  padding: 10px 0;  /* 세로로 여백을 줘서 버튼 크기를 맞춤 */
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  border-radius: 30px;  /* 둥근 테두리 */
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.activeTab {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  border-radius: 30px;
+}
+
+.tabButton:hover {
+  background-color: #d4d4d4;
+}
+
+/* 카테고리 버튼 스타일 (축제 / 명소 / 쇼핑 / 유적) */
+.categoryButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.categoryButton {
+  width: 80px;  /* 너비 고정 */
+  padding: 10px 0;  /* 버튼 높이 맞춤 */
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 20px;  /* 둥근 모서리 */
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.activeCategory {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  border-radius: 20px;
+}
+
+.categoryButton:hover {
+  background-color: #d4d4d4;
+}
+
+/* 선택된 관광지 카드 스타일 */
+.selectedTouristSpot {
+  position: relative;
+  display: flex;
+  flex-direction: row;  
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding: 1px 5px;
+  background-color: #fff;
+}
+
+.selectedTouristSpot:hover {
+  transform: translateY(-5px);
+}
+
+.spotImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  margin-right: 15px;
+  margin-top: 6px;
+}
+
+.cardContent {
+  padding: 10px;
+  text-align: left;
+}
+
+.spotTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.spotInfo {
+  margin: 5px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.spotTime {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 추천 관광지 검색 */
+.recommendation {
+  text-align: center;
+}
+
+.searchBox {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.searchButton {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* 지도 컨테이너 */
+.mapContainer {
+  margin-top: 20px;
+  width: 100%;
+  height: 300px;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  background-color: #eee; /* KakaoMap이 로드될 영역 */
+}

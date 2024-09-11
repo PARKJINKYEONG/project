@@ -8,8 +8,7 @@ import SlidingPanel from './slidingPanel';
 
 function CreatePlan() {
   const [activeStep, setActiveStep] = useState(0); // 현재 단계 상태 관리  
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);  
   
   const navigate = useNavigate();
   const location = useLocation();
