@@ -45,6 +45,8 @@ const RestaurantSearch = () => {
     }
   }, [location.search]);
 
+  
+  
   useEffect(() => {
     if (isMapLoaded) {
       handleSearch();  // 맵이 로드된 후에만 실행

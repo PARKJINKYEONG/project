@@ -15,6 +15,7 @@ export default function Home() {
   const navigate = useNavigate();  // useNavigate 훅 추가
 
 
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     switch (tab) {
@@ -113,7 +114,10 @@ export default function Home() {
               value={searchQuery}  // 검색어 상태 추가
               onChange={(e) => setSearchQuery(e.target.value)}  // 검색어 입력 처리
             />
+
+
             <RecordButton onStartRecording={handleStartRecording} onStopRecording={handleStopRecording} />
+
 
             <button className={styles.searchButton} onClick={handleSearch}>  {/* 검색 버튼 클릭 시 handleSearch 호출 */}
               <img src="/images/home/search.png" alt="Search" />
