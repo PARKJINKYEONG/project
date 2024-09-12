@@ -1,10 +1,12 @@
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Card, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tab, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Box, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField, Typography } from '@mui/material';
+import { useState, useCallback } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from 'react-day-picker';
 import styles from '../../styles/commentsSection.module.css';
+import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api';
 
 const comments = [
   {
@@ -13,8 +15,15 @@ const comments = [
     content: '여행 어쩌고 좋다 어쩌고 저쩌고',
     date: '2024.1.3. 13:08',
     likes: 1,
-    imageUrl: '/images/mypage.jpg', // 고양이 이미지 URL
+    imageUrl: '/images/mypage.jpg',
     isReported: false,
+    locations: [
+      { lat: 37.5665, lng: 126.9780, label: '출발' }, // 서울시청
+      { lat: 37.5512, lng: 126.9882, label: '경유' }, // 남산타워
+      { lat: 37.5796, lng: 126.9770, label: '도착' }, // 경복궁
+      { lat: 37.5143, lng: 126.9800, label: '도착' }, // 한강공원
+      { lat: 37.5600, lng: 126.9940, label: '도착' }, // 명동
+    ]
   },
   {
     id: 2,
@@ -22,8 +31,14 @@ const comments = [
     content: '여행 어쩌고 좋다 어쩌고 저쩌고',
     date: '2024.1.3. 16:18',
     likes: 1,
-    imageUrl: '/images/notice.jpg', // 강아지 이미지 URL
+    imageUrl: '/images/notice.jpg',
     isReported: false,
+    locations: [
+      { lat: 37.5665, lng: 126.9780, label: '출발' }, // 서울시청
+      { lat: 37.5512, lng: 126.9882, label: '경유' }, // 남산타워
+      { lat: 37.5796, lng: 126.9770, label: '도착' }, // 경복궁
+      { lat: 37.5600, lng: 126.9940, label: '도착' }, // 명동
+    ]
   },
   {
     id: 3,
@@ -31,7 +46,7 @@ const comments = [
     content: '여행 어쩌고 좋다 어쩌고 저쩌고',
     date: '2024.1.3. 16:53',
     likes: 1,
-    imageUrl: '/images/notice.jpg', // 토끼 이미지 URL
+    imageUrl: '/images/notice.jpg',
     isReported: false,
   },
   {
@@ -40,150 +55,251 @@ const comments = [
     content: '여행 어쩌고 좋다 어쩌고 저쩌고',
     date: '2024.1.3. 16:53',
     likes: 0,
-    imageUrl: '/images/review.jpg', // 앵무새 이미지 URL
+    imageUrl: '/images/review.jpg',
     isReported: false,
   },
 ];
-const ReviewListView = () => { 
-  const [value, setValue] = useState('1');
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [open, setOpen] = useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+const locations = {
+  day1: [
+    { lat: 37.5665, lng: 126.9780, label: '출발' }, // 서울시청
+    { lat: 37.5512, lng: 126.9882, label: '경유' }, // 남산타워
+    { lat: 37.5796, lng: 126.9770, label: '도착' }, // 경복궁
+  ],
+  day2: [
+    { lat: 37.5143, lng: 126.9800, label: '출발' }, // 한강공원
+    { lat: 37.5600, lng: 126.9940, label: '경유' }, // 명동
+    { lat: 37.5110, lng: 127.0980, label: '도착' }, // 코엑스
+  ],
+  day3: [
+    { lat: 37.5585, lng: 126.9719, label: '출발' }, // 서울역
+    { lat: 37.5700, lng: 126.9824, label: '경유' }, // 명동성당
+    { lat: 37.5349, lng: 127.0012, label: '도착' }, // 이태원
+  ]
+};
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+const ReviewListView = () => {
+  const [open, setOpen] = useState(false);
+  const [openRoute, setOpenRoute] = useState(null);
+  const [mapKey, setMapKey] = useState(0);
+  const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.9780 });
+  const [newComment, setNewComment] = useState('');
+  const [commentList, setCommentList] = useState(comments);
 
-    const handleConfirm = () => {
-        // 신고 처리 로직을 여기에 추가
-        console.log('신고가 접수되었습니다.');
-        setOpen(false);
-    };
+  const calculateCenter = (locations) => {
+    if (locations.length === 0) return { lat: 37.5665, lng: 126.9780 };
 
-    return (
-        <Box sx={{ width: '100%', typography: 'body1' }}>
-            <TabContext value={value}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>                    
-                    <Tab label="OO님의 리뷰" />
-                    <IconButton color="red" onClick={handleClickOpen} sx={{ 
-                    left: 960, 
-                }}>
-                        <ReportProblemOutlinedIcon />
-                    </IconButton>
-                    <Dialog open={open} onClose={handleClose} >
-                        <DialogTitle>신고 확인</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                정말로 신고하시겠습니까?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose} >
-                                아니오
-                            </Button>
-                            <Button onClick={handleConfirm}  >
-                                예
-                            </Button>
-                        </DialogActions>
-                    </Dialog>                    
-                </Box>
-                <TabPanel value="1">
-                    <Card sx={{ display: 'flex', marginBottom: 2 }}>
-                        <CardMedia
-                            component="img"
-                            sx={{ width: 400,height: 400 }}
-                            image="https://media.istockphoto.com/id/637816996/photo/stunning-spring-landscape-with-santa-maddalena-village-dolomites-italy-europe.jpg?s=612x612&w=0&k=20&c=otjIkFbRPpR2UDXlwTP-c1IVk4RPRGkuPkZOzKzUJVM=" // 예시 이미지 URL
-                            alt="Jeju Island"
-                        />
-                        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                            <CardContent sx={{ flex: '1 0 auto' }}>
-                                <Typography variant="subtitle1" component="div">
-                                    여행 일정
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.secondary" component="div">
-                                    24.06.10 ~ 24.06.15
-                                </Typography>
-                                <hr />
-                                <Typography variant="subtitle1"  component="div">
-                                    여행 장소
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.secondary" component="div">
-                                    OOO
-                                </Typography>
-                                <hr />
-                                <Typography variant="subtitle1" component="div">
-                                    여행 후기 
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.secondary" component="div">
-                                작년에 산티아고 패키지 여행을 통해 참좋은여행사에 대해 처음 알았고, 경험을 하였습니다. 그때 경험이 괜찮다고 느껴, 올해 여행도 참좋은 여행사로 진행하려 했었고, 결정적으로는 이탈리아 여행을 찾고 있었는데 돌로미티가 포함된 상품이 있어서 였습니다. 베니스 In Out 아시아나 비행기를 이용한 비행편은 아주 좋았어요. 첫번째 여행지 베르나 부터 마지막 베니스까지 알찬 여행이었다고 생각됩니다. 이번 여행은 바다, 산, 예전 고대의 건물들 모두를 볼 수 있었는데, 바다는 소렌토의 절벽이 있는 바다, 카프리 섬의 청록색 바다가 인상깊었습니다. 산으로는 돌로미티였는데, 쉽게 볼 수 없는 광경이었습니다. 위를 보면 바위산이 보이고, 발아래는 넓은 풀 밭이 펼쳐져있습니다. 로마의 바티칸시국과 콜로세움, 발도르차의 사이플러스 나무가 생각나는데, 여행 복귀후에 글래디에이터를 다시 봤는데, 그 현장에 내가 있는 것 같은 생각이 들었고, 과거로 타임머신을 타고 막 다녀왔다는 느낌이 들었습니다. 이번 여행에 수고해 주신 가이드님 및 여행팀분들, 감사합니다^^
-                                </Typography>
-                            </CardContent>
-                        </Box>
-                    </Card>
-                </TabPanel>                
-            </TabContext>
-          <div className={styles.commentsSection}>
-            {comments.map(comment => (
-              <div className={styles.comment} key={comment.id}>
+    const latitudes = locations.map(location => location.lat);
+    const longitudes = locations.map(location => location.lng);
+
+    const centerLat = (Math.max(...latitudes) + Math.min(...latitudes)) / 2;
+    const centerLng = (Math.max(...longitudes) + Math.min(...longitudes)) / 2;
+
+    return { lat: centerLat, lng: centerLng };
+  };
+
+  const handleClickOpen = useCallback((commentId, locations) => {
+    if (openRoute !== commentId) {
+      setMapCenter(calculateCenter(locations));
+      setMapKey((prevKey) => prevKey + 1);  // 지도 리렌더링
+    }
+    setOpenRoute(openRoute === commentId ? null : commentId);
+  }, [openRoute]);
+
+  const handleDialogOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    console.log('신고가 접수되었습니다.');
+    setOpen(false);
+  };
+
+  const handleAddComment = () => {
+    if (newComment.trim() !== '') {
+      setCommentList([
+        ...commentList,
+        {
+          id: commentList.length + 1,
+          username: 'New User',
+          content: newComment,
+          date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+          likes: 0,
+          imageUrl: '/images/default-profile.jpg',
+          isReported: false,
+        }
+      ]);
+      setNewComment('');
+    }
+  };
+
+  const mapOptions = {
+    zoom: 12,
+    center: mapCenter, // 현재 지도 중심
+  };
+
+  const polylineOptions = (day) => ({
+    path: locations[day],
+    strokeColor: day === 'day1' ? '#FF0000' : day === 'day2' ? '#0000FF' : '#00FF00', // 빨간색, 파란색, 초록색
+    strokeOpacity: 1.0,
+    strokeWeight: 2,
+  });
+
+  return (
+    <Box sx={{ width: '100%', typography: 'body1' }}>
+      <Box className={styles.reviewBox}>
+        <Box sx={{ padding: 2, position: 'relative' }}>
+          <Typography variant="h2" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            추억이 가득한 서울 여행
+            <IconButton>
+              <DeleteOutlineIcon />
+            </IconButton>
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.freepik.com%2Ffree-icon%2Fuser-male-shape-in-a-circle--ios-7-interface-symbol_318-39025.jpg&type=sc960_832"
+              alt="Profile"
+              style={{ height: '50px', borderRadius: '50%', marginRight: '10px', marginLeft: '10px' }}
+            />
+            <Box sx={{ display: 'flex' }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '2px', marginLeft: '20px', fontSize: '30px' }}>트레블조이</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', marginLeft: '50px', fontSize: '30px' }}>2024.1.3</Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <CardMedia
+            component="img"
+            sx={{ width: 400, height: 400, marginRight: 3, marginLeft: 3 }}
+            image="https://50plus.or.kr/upload/im/2020/07/b8a92503-f34a-4aff-99dd-546fa06c47cc.jpg"
+            alt="여행 사진"
+          />
+          <Box sx={{ flex: 1, height: 400, display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: 5 }}>
+            <LoadScript googleMapsApiKey="AIzaSyB-COY1Ryjaa2wILZqfl5UoS2WltfYD3Hc" key={mapKey}>
+              <GoogleMap
+                mapContainerStyle={{ width: '100%', height: '100%' }}
+                options={{ ...mapOptions, center: calculateCenter(locations.day1) }}
+              >
+                {locations.day1.map((location, index) => (
+                  <Marker
+                    key={index}
+                    position={location}
+                    label={location.label}
+                  />
+                ))}
+                <Polyline options={polylineOptions('day1')} />
+              </GoogleMap>
+            </LoadScript>
+          </Box>
+        </Box>
+
+        <CardContent sx={{ paddingTop: 1 }}>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', marginLeft: 3, marginTop: 3, marginBottom: 2 }}>여행 후기</Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ marginLeft: 3, marginRight: 3 }}>
+            서울 여행은 정말 잊을 수 없는 경험이었어요. 첫 번째로 방문한 서울시청은 서울의 중심부에 위치해, 도시의 활기와 역사적 배경이 잘 어우러진 곳이었어요. 주변에 위치한 광장에서 시민들이 여유롭게 시간을 보내는 모습을 보며 도심 속 평화를 느낄 수 있었습니다. 다음으로 간 남산타워에서는 서울 전경이 한눈에 내려다보였는데, 특히 밤에 보는 야경이 정말 아름다웠습니다. 도시의 불빛들이 한강을 따라 반짝이는 모습이 인상 깊었어요. 이어서 방문한 경복궁은 조선 시대의 웅장함을 느낄 수 있는 곳이었고, 궁궐을 걸으며 한국의 전통을 느끼기에 충분했어요. 고요하고 장엄한 궁궐의 분위기 속에서 과거와 현재가 공존하는 느낌이 들었습니다. 한강공원에서는 강변을 따라 산책하며 서울의 자연을 즐길 수 있었고, 바쁜 도시 생활 속에서도 이렇게 여유를 찾을 수 있다는 점이 좋았어요. 마지막으로 방문한 명동에서는 다양한 맛집과 쇼핑 명소를 둘러보며 여행의 마지막을 즐겼습니다. 이번 서울 여행은 도심 속에서 문화, 자연, 그리고 현대적인 풍경을 모두 경험할 수 있었던 멋진 시간이었습니다.
+          </Typography>
+        </CardContent>
+      </Box>
+
+      <hr className={styles.divider} />
+      <div className={styles.commentsSection}>
+        {commentList.map((comment) => (
+          <div className={styles.comment} key={comment.id} style={{ position: 'relative' }}>
+            <div className={styles.commentContent}>
+              <div className={styles.profileAndUsername}>
                 <div className={styles.profile}>
                   <img src={comment.imageUrl} alt="profile" />
                 </div>
-                <div className={styles.commentContent}>
-                  <div className={styles.username}>{comment.username}</div>
-                  <div className={styles.text}>{comment.content}</div>
-                  <div className={styles.footer}>
-                    <span className={styles.date}>{comment.date}</span>
-                    <span className={styles.report} onClick={handleClickOpen}>신고</span>
-                    <Dialog open={open} onClose={handleClose}>
-                        <DialogTitle>신고 확인</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                정말로 신고하시겠습니까?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose} color="primary">
-                                아니오
-                            </Button>
-                            <Button onClick={handleConfirm} color="primary" autoFocus>
-                                예
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                  </div>
-                </div>
-                <div className={styles.likeSection}>
-                  <button className={styles.likeButton}>♡</button>
-                  <span className={styles.likes}>{comment.likes}</span>
-                </div>
+                <div className={styles.username}>{comment.username}</div>
               </div>
-            ))}
-            
-          </div>
-          <div className={styles.commentSection}>
-            <div className={styles.userInfo}>
-              <img src="https://via.placeholder.com/40" alt="user-profile" className={styles.profileImage} />
-              <span>wjsrnr2014</span>
-            </div>
-            <div className={styles.commentWrite}>
-              <textarea placeholder="블로그가 더 훈훈해지는 댓글 부탁드립니다. @별명을 입력하면 서로 이웃이 소환됩니다." className={styles.textarea}/>
-              <div className={styles.commentActions}>
-                <span>0/3000</span>
-                <button>등록</button>
+              <div className={styles.text}>{comment.content}</div>
+              <div className={styles.date}>{comment.date}</div>
+
+              <div className={styles.toggleButtonContainer}>
+                <IconButton
+                  onClick={() => handleClickOpen(comment.id, comment.locations)}
+                  sx={{
+                    transform: openRoute === comment.id ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s',
+                  }}
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
               </div>
+
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>신고 확인</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>정말로 신고하시겠습니까?</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>아니오</Button>
+                  <Button onClick={handleConfirm}>예</Button>
+                </DialogActions>
+              </Dialog>
+
+              {openRoute === comment.id && comment.locations && (
+                <Box className={styles.mapContainer}>
+                  <LoadScript googleMapsApiKey="AIzaSyB-COY1Ryjaa2wILZqfl5UoS2WltfYD3Hc" key={mapKey}>
+                    <GoogleMap
+                      mapContainerStyle={{ width: '60%', height: '400px' }}
+                      options={{ ...mapOptions, center: calculateCenter(comment.locations) }}
+                    >
+                      {comment.locations.map((location, index) => (
+                        <Marker
+                          key={index}
+                          position={location}
+                          label={location.label}
+                        />
+                      ))}
+                      <Polyline
+                        path={comment.locations}
+                        options={polylineOptions('day1')} // Use appropriate day here
+                      />
+                    </GoogleMap>
+                  </LoadScript>
+                </Box>
+              )}
             </div>
-            <div className={styles.commentOptions}>
-              <button>😊 스티커</button>
-              <button>📷 사진</button>
-              <button>🔗 소환</button>
-              <button>🔒 비밀댓글</button>
+
+            <div className={styles.likeSection}>
+              <IconButton className={styles.likeButton}>♡</IconButton>
+              <span className={styles.likes}>{comment.likes}</span>
+              <IconButton onClick={handleDialogOpen} className={styles.reportButton}>
+                <ReportProblemOutlinedIcon />
+              </IconButton>
             </div>
           </div>
-        </Box>
-    );
+        ))}
+      </div>
+
+      <Box className={styles.comment}>
+        <Typography variant="h6" sx={{ marginBottom: 2 }}>댓글 작성하기</Typography>
+        <TextField
+          fullWidth
+          multiline
+          rows={4}
+          variant="outlined"
+          placeholder="댓글을 작성하세요..."
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          sx={{ marginBottom: 2 }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddComment}
+        >
+          댓글 추가
+        </Button>
+      </Box>
+    </Box>
+  );
 };
 
 export default ReviewListView;
