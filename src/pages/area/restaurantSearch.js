@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import styles from '../../styles/restaurantSearch.module.css';
 import axios from 'axios';
 import { UserContext } from '../../contexts/userContext';
+import { useLocation } from 'react-router-dom';
 
 const RestaurantSearch = () => {
   const [query, setQuery] = useState('');
@@ -19,6 +20,7 @@ const RestaurantSearch = () => {
   const [nextPageToken, setNextPageToken] = useState(null);
   const [sortOrder, setSortOrder] = useState('review');
   const [map, setMap] = useState(null);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [mapCenter, setMapCenter] = useState({ lat: 37.5665, lng: 126.978 });
   const mapRef = useRef(null);
   const geocoderRef = useRef(null);
@@ -32,7 +34,23 @@ const RestaurantSearch = () => {
   const [markers, setMarkers] = useState([]); // 마커 상태 추가
   const [infoWindow, setInfoWindow] = useState(null); // InfoWindow 상태 추가
   const [modalTrigger, setModalTrigger] = useState(null); // 모달 트리거 상태 추가
+  const location = useLocation();
+  
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const queryParam = params.get('query'); // 'query'라는 파라미터에서 값을 가져옵니다.
+    console.log('URL query 파라미터:', queryParam); // 로그로 queryParam 확인
+    if (queryParam) {
+      setUserLocation(queryParam); // queryParam 값을 userLocation에 설정
+    }
+  }, [location.search]);
 
+  useEffect(() => {
+    if (isMapLoaded) {
+      handleSearch();  // 맵이 로드된 후에만 실행
+    }
+  }, [isMapLoaded, userLocation]);
+  
   useEffect(() => {
     const loadMap = () => {
       if (window.google && window.google.maps) {
@@ -43,6 +61,7 @@ const RestaurantSearch = () => {
 
         setMap(mapInstance);
         geocoderRef.current = new window.google.maps.Geocoder();
+        setIsMapLoaded(true);
 
         const handleMapClick = (event) => {
           const latLng = event.latLng;

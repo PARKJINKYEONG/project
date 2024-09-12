@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';  // useNavigate 추가
 import styles from '../../styles/common.module.css';
 import ChatBot from '../ChatBot/ChatBot';
 import ProductValues from './ProductValues';
@@ -7,7 +7,9 @@ import ProductValues from './ProductValues';
 export default function Home() {
   const [activeTab, setActiveTab] = useState('전체 검색');
   const [placeholderText, setPlaceholderText] = useState('전체 검색');
+  const [searchQuery, setSearchQuery] = useState('');  // 검색어 상태 추가
   const [modalContent, setModalContent] = useState(null);
+  const navigate = useNavigate();  // useNavigate 훅 추가
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -33,6 +35,15 @@ export default function Home() {
         top: navSection.offsetTop - 80,
         behavior: 'smooth',
       });
+    }
+  };
+
+  const handleSearch = () => {
+    if (activeTab === '식당') {
+      navigate(`/place/restaurantSearch?query=${encodeURIComponent(searchQuery)}`);
+    }
+    else if (activeTab ==='호텔'){
+      navigate(`/place/hotelSearch?query=${encodeURIComponent(searchQuery)}`)
     }
   };
 
@@ -85,11 +96,13 @@ export default function Home() {
               type="text"
               placeholder={placeholderText}
               className={styles.searchInput}
+              value={searchQuery}  // 검색어 상태 추가
+              onChange={(e) => setSearchQuery(e.target.value)}  // 검색어 입력 처리
             />
             <button className={styles.voiceButton}>
               <img src="/images/home/voice.png" alt="Voice Search" />
             </button>
-            <button className={styles.searchButton}>
+            <button className={styles.searchButton} onClick={handleSearch}>  {/* 검색 버튼 클릭 시 handleSearch 호출 */}
               <img src="/images/home/search.png" alt="Search" />
             </button>
           </div>

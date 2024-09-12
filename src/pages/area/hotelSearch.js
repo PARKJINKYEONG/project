@@ -12,6 +12,8 @@ import MuiModal from './../../components/muiModal';
 import { UserContext } from '../../contexts/userContext';
 import useRequest from './../../hooks/useRequest';
 import ScrollToTopButton from '../../components/scrollToTopButton';
+import { useLocation } from 'react-router-dom';
+
 
 function HotelSearch() {
   const [region, setRegion] = useState('');
@@ -33,6 +35,16 @@ function HotelSearch() {
   const { email, accessToken } = useContext(UserContext);
   const today = new Date();
   const { post, del } = useRequest(); // `del` 메서드를 추가
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const queryParam = params.get('query'); // 'query'라는 파라미터에서 값을 가져옵니다.
+    console.log('URL query 파라미터:', queryParam); // 로그로 queryParam 확인
+    if (queryParam) {
+      setRegion(queryParam); // queryParam 값을 userLocation에 설정
+    }
+  }, [location.search]);
 
   const formatDate = (date) => {
     if (!date) return '';
