@@ -50,18 +50,6 @@ const ChatWindow = ({ selectedUser, mqttClient }) => {
 
     },[]);
 
-    // function publishMessage(input){
-    //     const now = new Date();
-    //     const sendDate = format(now,'yyyy-MM-dd HH:mm:ss');
-    //     console.log(client);
-    //       if (client) {
-    //         console.log("아자뵤~~~",selectedUser.chatRoom.id);
-    //         client.publish("chat/"+selectedUser.chatRoom.id, JSON.stringify(
-    //         { useremail:email,message_send_date:sendDate,content:input}
-    //         ));    
-    //         console.log('전송 완료!');
-    //       }
-    //   };
 
     const handleSend = async () => {
         const message = chatInput.current.value;

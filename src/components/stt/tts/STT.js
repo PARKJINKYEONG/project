@@ -27,20 +27,18 @@ export default function STT() {
     const uploadAudioAsOctetStream = async (mediaBlobUrl) => {
         try {
             const blob = await fetch(mediaBlobUrl).then(r => r.blob());
+            console.log('Blob:', blob); // 업로드할 Blob의 정보 출력
             const formData = new FormData();
             formData.append("file", blob, "audio.wav");
     
             const response = await fetch("http://localhost:8080/api/stt/record", {
                 method: "POST",
                 body: formData,
-                headers: {
-                    // 'Content-Type'을 multipart/form-data로 설정하지 않습니다.
-                    // fetch는 자동으로 multipart 데이터를 처리합니다.
-                },
             });
     
             const text = await response.text();
             const result = JSON.parse(text);
+            console.log('Response:', result); // 서버에서 반환된 응답 로그
             setResp(result.transcript || "No transcript received");
         } catch (error) {
             console.error('Upload failed:', error);

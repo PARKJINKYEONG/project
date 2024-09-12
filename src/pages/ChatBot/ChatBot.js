@@ -20,6 +20,7 @@ const ChatBot = () => {
       if(!email){
         const chatroomId = await axios.get('http://localhost:8080/api/chat/topic');
         setTopic(chatroomId.data);
+        console.log(chatroomId.data);
       }
       else{
         const chatroomId = await get(`/api/chat/topic`);
@@ -39,7 +40,7 @@ const ChatBot = () => {
   const [client, setClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [message, setMessage] = useState('');
-  const [topic,setTopic] = useState(()=>fetchData());
+  const [topic,setTopic] = useState(()=>fetchData().data);
 
   useEffect(() => {
     
@@ -49,7 +50,6 @@ const ChatBot = () => {
       mqttClient.on('connect', () => {
           console.log('Connected to MQTT broker');
           setIsConnected(true);
-          console.log(topic);
           mqttClient.subscribe("chat/"+topic); // 원하는 토픽 구독
       });
 

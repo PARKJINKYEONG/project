@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import StepperComponent from './stepperComponent';
 import ContentComponent from './contentComponent';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -7,12 +7,88 @@ import styles from '../../styles/plan/createPlan/createPlan.module.css';
 import SlidingPanel from './slidingPanel';
 import ProgressPlan5 from './progressPlan5';
 
+  // 더미 데이터
+  const plan = [
+    {
+      day: 1,
+      contents: [
+        {
+          index: 1,
+          title: "경주역",
+          time: "2024-09-11 08:11",
+          lat: 35.798365,
+          lng: 129.138955,
+          activity: '도착',
+        },
+        {
+          index: 2,
+          title: "동궁과월지",
+          time: "2024-09-11 08:11",
+          lat: 35.83486297292989,
+          lng: 129.22651290893555,
+          activity: '환승',
+        },
+      ]
+    },
+    {
+      day: 2,
+      contents: [
+        {
+          index: 1,
+          title: "경주교촌마을",
+          time: "2024-09-11 08:11",
+          lat: 35.829574442841206,
+          lng: 129.21475410461426,
+          activity: '아침',
+        },
+        {
+          index: 2,
+          title: "선덕여왕릉",
+          time: "2024-09-11 08:11",
+          lat: 35.82358962844781,
+          lng: 129.24230575561523,
+          activity: '관광',
+        },
+      ]
+    },
+    {
+      day: 3,
+      contents: [
+        {
+          index: 1,
+          title: "경주월드",
+          time: "2024-09-11 08:11",
+          lat: 35.836324215142085,
+          lng: 129.28298950195312,
+          activity: '관광',
+        },
+      ]
+    }
+  ];
+
+const planReducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_PLAN':
+      return [...state, action.payload];
+    case 'UPDATE_PLAN':
+      return state.map(plan => 
+        plan.day === action.payload.day ? action.payload : plan
+      );
+    case 'REMOVE_PLAN':
+      return state.filter(plan => plan.day !== action.payload.day);
+    default:
+      return state;
+  }
+};
+
 function CreatePlan() {
   const [activeStep, setActiveStep] = useState(0); // 현재 단계 상태 관리  
   const [isPanelOpen, setIsPanelOpen] = useState(false);  
   
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [plans, dispatchPlans] = useReducer(planReducer, plan);
 
   useEffect(() => {
     if (location.state && location.state.step) {
@@ -89,7 +165,7 @@ function CreatePlan() {
         </div>
         ): activeStep == 4 &&(
           <div className={styles.resultContainer}>
-            <ProgressPlan5 />
+            <ProgressPlan5 planItems={plans}/>
             </div>
         )}
 
