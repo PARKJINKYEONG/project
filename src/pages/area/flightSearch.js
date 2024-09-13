@@ -86,6 +86,24 @@ function FlightSearch() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let errors = [];
+
+    if (!startArea) {
+        errors.push('출발지');
+    }
+    if (!endArea) {
+        errors.push('도착지');
+    }
+    if (!startDate) {
+        errors.push('출발날짜');
+    }
+
+    if (errors.length > 0) {
+        setError(`${errors.join(', ')}를 입력하세요.`);
+        return;
+    }
+
     setLoading(true); 
     setError(null);
     setAllFlightResults([]);
@@ -94,30 +112,32 @@ function FlightSearch() {
     setPage(1);
 
     const requestData = {
-      tripType, 
-      startArea,
-      endArea,
-      startDate: formatDate(startDate),
-      endDate: formatDate(endDate),
-      passengers,
-      seatClass,
-      directFlight: directFlight ? '직항' : '',
+        tripType, 
+        startArea,
+        endArea,
+        startDate: formatDate(startDate),
+        endDate: formatDate(endDate),
+        passengers,
+        seatClass,
+        directFlight: directFlight ? '직항' : '',
     };
 
     axios.post('http://localhost:5000/flight-search', requestData)
-      .then((response) => {
-        const sortedFlights = sortFlights(response.data.flights || [], sortOption); // 정렬된 결과
-        setAllFlightResults(sortedFlights);
-        setError(null);
-      })
-      .catch((error) => {
-        console.error('Error during the flight search', error);
-        setError('검색 중 오류가 발생했습니다.');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+        .then((response) => {
+            const sortedFlights = sortFlights(response.data.flights || [], sortOption); // 정렬된 결과
+            setAllFlightResults(sortedFlights);
+            setError(null);
+        })
+        .catch((error) => {
+            console.error('Error during the flight search', error);
+            setError('검색 중 오류가 발생했습니다.');
+        })
+        .finally(() => {
+            setLoading(false);
+        });
+};
+
+
 
   useEffect(() => {
     const startIndex = (page - 1) * itemsPerPage;
@@ -150,7 +170,7 @@ function FlightSearch() {
           <Grid container spacing={2} alignItems="center" justifyContent="center">
             <Grid item style={{width: '150px' }}>
               <TextField
-                label="출발지"
+                label="출발지 *"
                 value={startArea}
                 onChange={(e) => setStartArea(e.target.value)}
               />
@@ -163,7 +183,7 @@ function FlightSearch() {
             </Grid>
             <Grid item style={{ width: '150px' }}>
               <TextField
-                label="도착지"
+                label="도착지 *"
                 value={endArea}
                 onChange={(e) => setEndArea(e.target.value)}
               />
@@ -174,7 +194,7 @@ function FlightSearch() {
                 onChange={(date) => setStartDate(date)}
                 customInput={
                   <TextField
-                    label="출발 날짜"
+                    label="출발 날짜 *"
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">

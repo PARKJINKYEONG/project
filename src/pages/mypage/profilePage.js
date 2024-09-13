@@ -26,7 +26,7 @@ export default function ProfilePage() {
         const response = await get('/getprofile');
         setName(response.data.name || '');
         setIntroduce(response.data.introduce || '');
-        setGender(response.data.gender === true ? '남자' : '여자');
+        setGender(response.data.gender === true ? '남자' : response.data.gender === false ? '여자' : '비공개');
         setBirthDate(response.data.birthDate ? new Date(response.data.birthDate) : new Date());
         if (response.data.profileImageUrl) {
           setProfileImage(response.data.profileImageUrl);
@@ -157,6 +157,7 @@ export default function ProfilePage() {
             >
               <FormControlLabel control={<Radio />} value="남자" label="남자" />
               <FormControlLabel control={<Radio />} value="여자" label="여자" />
+              <FormControlLabel control={<Radio />} value="비공개" label="비공개" />
             </RadioGroup>
           ) : (
             <input type="text" id="gender" value={gender} readOnly />

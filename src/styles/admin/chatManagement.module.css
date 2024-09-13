@@ -39,8 +39,10 @@
 .chatItem {
     display: flex;
     align-items: center;
-    padding: 8px 0 8px 20px;
+    justify-content: space-between;  /* 왼쪽과 오른쪽 요소를 분리 */
+    padding: 10px;
     border-bottom: 1px solid #ddd;
+    position: relative; /* 상대 위치 */
 }
   
 .avatar {
@@ -56,6 +58,12 @@
     font-size: 16px;
     color: #333;
 }
+
+.newMessageIcon {
+    color: #9ecffd;
+    font-size: 14px;
+    margin-left: auto;
+}
   
 .chatInputBox {
     flex-grow: 1;
@@ -69,10 +77,11 @@
 
 .chatWindow{
     height: 80%;
+    max-height: 70vh;
     padding: 20px 10px;
-    overflow-y: visible;
+    overflow-y: auto;
     display: flex;
-    flex-direction: column; /* 세로로 정렬 */
+    flex-direction: column;
     justify-content: flex-start;
 }
 .message {

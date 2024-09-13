@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';  // useNavigate 추가
 import styles from '../../styles/common.module.css';
 import ChatBot from '../ChatBot/ChatBot';
 import ProductValues from './ProductValues';
+import RecordButton from '../../components/stt/tts/recordButton';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('전체 검색');
   const [placeholderText, setPlaceholderText] = useState('전체 검색');
+  const [searchQuery, setSearchQuery] = useState('');  // 검색어 상태 추가
   const [modalContent, setModalContent] = useState(null);
+  const [recording, setRecording] = useState(false); // 녹음 상태 관리
+
+  const navigate = useNavigate();  // useNavigate 훅 추가
+
+
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -36,14 +43,33 @@ export default function Home() {
     }
   };
 
+  const handleSearch = () => {
+    if (activeTab === '식당') {
+      navigate(`/place/restaurantSearch?query=${encodeURIComponent(searchQuery)}`);
+    }
+    else if (activeTab ==='호텔'){
+      navigate(`/place/hotelSearch?query=${encodeURIComponent(searchQuery)}`)
+    }
+  };
+
   const openModal = (content) => {
     setModalContent(content);
   };
 
   const closeModal = (event) => {
-    if (event.target.className === styles.modal) {
+    if (event.target.className.includes(styles.modal) || event.target.className === styles.closeModalButton) {
       setModalContent(null);
+      setRecording(false); // 모달 닫힐 때 녹음 상태 종료
     }
+  };
+
+  const handleStartRecording = () => {
+    setRecording(true); // 녹음 시작 시 모달 열기
+  };
+
+  const handleStopRecording = (transcript) => {
+    setRecording(false);
+    setModalContent(transcript); // 녹음 결과 모달에 표시
   };
 
   return (
@@ -85,11 +111,15 @@ export default function Home() {
               type="text"
               placeholder={placeholderText}
               className={styles.searchInput}
+              value={searchQuery}  // 검색어 상태 추가
+              onChange={(e) => setSearchQuery(e.target.value)}  // 검색어 입력 처리
             />
-            <button className={styles.voiceButton}>
-              <img src="/images/home/voice.png" alt="Voice Search" />
-            </button>
-            <button className={styles.searchButton}>
+
+
+            <RecordButton onStartRecording={handleStartRecording} onStopRecording={handleStopRecording} />
+
+
+            <button className={styles.searchButton} onClick={handleSearch}>  {/* 검색 버튼 클릭 시 handleSearch 호출 */}
               <img src="/images/home/search.png" alt="Search" />
             </button>
           </div>
@@ -106,6 +136,27 @@ export default function Home() {
             <div className={styles.newsItem}>뉴스 3: 특가 여행 상품 안내</div>
           </div>
         </section>
+
+        {/* Modal for recording */}
+        {recording && (
+          <div className={styles.modal} onClick={closeModal}>
+            <div className={styles.modalContent}>
+              <h2>녹음 중...</h2>
+              <button className={styles.closeModalButton} onClick={closeModal}>중지</button>
+            </div>
+          </div>
+        )}
+
+        {modalContent && (
+          <div className={styles.modal} onClick={closeModal}>
+            <div className={styles.modalContent}>
+              <h2>녹음 결과</h2>
+              <p>{modalContent}</p>
+              <button className={styles.closeModalButton} onClick={closeModal}>닫기</button>
+            </div>
+          </div>
+        )}
+
       </main>
       <ChatBot/>
     </>

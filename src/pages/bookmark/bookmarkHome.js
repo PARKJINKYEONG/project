@@ -1,132 +1,162 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/bookmarkHome.module.css';
-import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';  // IconButton 추가
+import CloseIcon from '@mui/icons-material/Close';  // CloseIcon 추가
+import axios from 'axios';
+import { UserContext } from '../../contexts/userContext';
 
-const BookmarkHome = ({ bookmarks }) => {
-
-  // 최근 조회의 상태 
-
-  const [items, setItems] = useState([
-    { 
-      id: Date.now().toString(),
-      title: '최근 조회',
-      date: '어제',
-      images: [
-        'path/to/image1.jpg',
-        'path/to/image2.jpg',
-        'path/to/image3.jpg',
-        'path/to/image4.jpg',
-      ],
-    },
-  ]);
-
-
-  // bookmarks가 변경될 때마다 items 상태를 업데이트
-  useEffect(() => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...bookmarks,
-    ]);
-  }, [bookmarks]);
-
-  // 새로 추가된 즐겨찾기의 상태 
-
-  const [newItem, setNewItem] = useState({
-    title: '',
-  });
-
+const BookmarkHome = () => {
+  const [items, setItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('hotel');
   const navigate = useNavigate();
+  const { accessToken } = useContext(UserContext);
 
-  const handleAddItem = () => {
-
-    if (newItem.title === '') {
-      alert('즐겨찾기의 제목을 입력하세요.');
-      return;
-    }
-
-
-    const defaultImages = ['path/to/default_image1.jpg'];
-
-
-    const getCurrentDate = () => {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}.${month}.${day}`;
+  // 드롭다운 선택이 변경될 때마다 즐겨찾기를 가져오는 함수
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/bookmark/target', {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          params: {
+            target: selectedCategory
+          },
+        });
+        console.log('API 응답:', response.data);
+        
+        const sortedItems = response.data.sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+        setItems(sortedItems);
+      } catch (error) {
+        console.error('즐겨찾기 가져오기 중 오류 발생!', error);
+      }
     };
 
-    setItems([...items, { ...newItem, id: Date.now().toString(), images: defaultImages, date: getCurrentDate() }]);
+    fetchBookmarks();
+  }, [accessToken, selectedCategory]);
 
-    setNewItem({ title: '' });
-
+  // 드롭다운 선택 핸들러
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewItem((prevItem) => ({
-      ...prevItem,
-      [name]: value, 
-    }));
+  // 카드 클릭 시 상세 페이지로 이동
+  const handleCardClick = (title, id, placeName, imageUrls, lat, lng) => {
+    console.log('title', title);
+    console.log('id', id);
+    console.log('placeName', placeName); // 호텔 또는 맛집 이름
+    console.log('imageUrls', imageUrls); // 호텔 또는 맛집 이미지
+    console.log('lat', lat);
+    console.log('lng', lng);
+  
+    navigate(`/bookmark/details/${id}`, { 
+      state: { 
+        title, 
+        placeName, 
+        imageUrls,
+        favoriteId: id,
+        lat,
+        lng
+      } 
+    });
   };
+  
 
-  const handleCardClick = (title, id) => {
-    if (title === '최근 조회') {
-      navigate('/bookmark/recently-viewed');  
-    } else {
-      navigate(`/bookmark/details/${id}`, { state: { title } });
+  // 즐겨찾기 삭제
+  const handleDeleteItem = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/bookmark/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+      setItems(prevItems => prevItems.filter(item => item.id !== id));
+    } catch (error) {
+      console.error('즐겨찾기 삭제 중 오류 발생!', error);
     }
   };
 
-  const handleDeleteItem = (id) => {
-    setItems(items.filter(item => item.id !== id));
+  // 날짜별로 그룹화
+  const groupedItems = useMemo(() => items.reduce((acc, item) => {
+    const dateKey = new Date(item.createDate).toDateString();
+    if (!acc[dateKey]) {
+      acc[dateKey] = [];
+    }
+    acc[dateKey].push(item);
+    return acc;
+  }, {}), [items]);
+
+  // 날짜를 한글로 변환하는 함수 (요일명을 제외)
+  const formatDateToKorean = (dateStr) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }; // 요일 정보 제거
+    const formatter = new Intl.DateTimeFormat('ko-KR', options);
+    return formatter.format(new Date(dateStr));
   };
 
   return (
     <div className={styles.container}>
-      <div className="row mb-4">
-        <div className="col-md-4">
-
-          <input type="text" name="title" value={newItem.title} onChange={handleInputChange} 
-
-          placeholder="제목" className="form-control mb-2"/>
-          
-          <button onClick={handleAddItem} className="btn btn-primary">
-            즐겨찾기 추가
-          </button>
-        </div>
+      <div className={styles.dropdownContainer}>
+        <label htmlFor="category">카테고리 선택: </label>
+        <select id="category" value={selectedCategory} onChange={handleCategoryChange}>
+          <option value="hotel">호텔</option>
+          <option value="food">맛집</option>
+        </select>
       </div>
-      <div className="row">
-        {items.map((item, index) => (
-          <div key={index} className="col-md-4 mb-4" onClick={() => handleCardClick(item.title, item.id)}>
-            <div className={`card h-100 ${styles.card}`}>
-              <div className={`card-body ${styles.cardBody}`}>
-                <div className={`mb-2 ${styles.images}`}>
-                  {item.images && item.images.map((image, idx) => (
-                    <img key={idx} src={image}  className="img-thumbnail" />
-                  ))}
-                </div>
-                {item.title !== '최근 조회' && (
-                  <button onClick={(e) => {
 
-                      e.stopPropagation(); 
-
-                      handleDeleteItem(item.id);}} className={styles.deleteButton}> 
-                    <ClearIcon style={{fontSize: 20}}/> 
-                  </button>
-                )}
-              </div>
-              <div className={`card-footer ${styles.cardFooter}`}>
-                <h5 className={`card-title ${styles.cardTitle}`}>{item.title}</h5>
-                <p className={`card-text ${styles.cardText}`}>{item.date}</p>
+      <div className={styles.bookmarkList}>
+        {items.length === 0 ? (
+          <p>데이터가 없습니다.</p>
+        ) : (
+          Object.entries(groupedItems).map(([date, items]) => (
+            <div key={date} className={styles.dateGroup}>
+              <h4 className={styles.dateTitle}>{formatDateToKorean(date)}</h4>
+              <div className={styles.cardContainer}>
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    className={styles.card}
+                    onClick={() => handleCardClick(item.target, item.id, item.hotelName || item.foodName, item.hotelImageUrls || item.foodImageUrls, item.lat, item.lng)}
+                  >
+                    <div className={styles.cardBody}>
+                      <div className={styles.images}>
+                        {(item.hotelImageUrls && item.hotelImageUrls.length > 0) || (item.foodImageUrls && item.foodImageUrls.length > 0) ? (
+                          (item.hotelImageUrls || item.foodImageUrls).map((image, idx) => (
+                            <img key={idx} src={image} className="img-thumbnail" alt={`Image ${idx}`} />
+                          ))
+                        ) : (
+                          <p>No images available</p>
+                        )}
+                      </div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteItem(item.id);
+                        }}
+                        className={styles.deleteButton}
+                      >
+                        <IconButton style={{ padding: 0 }}>
+                          <CloseIcon style={{ fontSize: 20 }} />
+                        </IconButton>
+                      </button>
+                    </div>
+                    <div className={styles.cardFooter}>
+                      <h5 className={styles.cardTitle}>
+                        {item.hotelName || item.foodName || item.target}
+                      </h5>
+                      <p className={styles.cardText}>
+                        {item.isHotel ? (item.regionName || "지역 정보 없음") : (item.foodAddress || "주소 정보 없음")}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
+
   );
 };
 

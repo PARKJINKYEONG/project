@@ -2,12 +2,13 @@
 
 .panel {
     position: absolute; /* 부모 요소 기준으로 위치를 설정 */
-    left: 450px;
-    top: 14px;
+    left: 500px;
+    top: 11px;
     width: 350px;
     height: 99%;
     background-color: white;
-    border-left: 0.5px solid rgba(0, 0, 0, 0.3);
+    border: 0.5px solid rgba(0, 0, 0, 0.3);
+    border-radius: 0 6px 6px 0;
     transition: transform 0.3s ease; /* 애니메이션을 위한 트랜지션 */
     z-index: 1;
   }
@@ -18,8 +19,8 @@
   
   .closeButton {
     position: absolute;
-    top: -9px;
-    right: 1px;
+    top: 5px;
+    right: 12px;
     color: black; /* 글자 색을 흰색으로 설정 */
     background-color: white;
     font-size: 20px; /* 글자 크기 조정 */

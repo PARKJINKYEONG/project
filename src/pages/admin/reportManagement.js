@@ -117,7 +117,6 @@ function Row(props) {
             <StyledMenuItem value="대기">대기</StyledMenuItem>
             <StyledMenuItem value="접수">접수</StyledMenuItem>
             <StyledMenuItem value="진행중">진행</StyledMenuItem>
-            <StyledMenuItem value="완료">완료</StyledMenuItem>
           </StyledSelect>
         </TableCell>
         <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.name1}</TableCell>

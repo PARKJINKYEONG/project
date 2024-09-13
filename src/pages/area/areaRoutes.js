@@ -6,6 +6,8 @@ import WeatherSearch from './weatherSearch';
 import FlightSearch from './flightSearch';
 import AreaLocal from './areaLocal';
 import HotelSearch from './hotelSearch';
+import DomesticSightSearch from './domesticSightSearch';
+
 
 const AreaRoutes = () => {
     return (
@@ -20,6 +22,7 @@ const AreaRoutes = () => {
                     <Route path="/weatherSearch" element={<WeatherSearch/>} />
                     <Route path="/flightSearch" element={<FlightSearch/>} />
                     <Route path="/hotelSearch" element={<HotelSearch/>} />
+                    <Route path="/domesticSightSearch" element={<DomesticSightSearch/>} />
                 </Routes>
                 <Outlet />
             </div>

@@ -10,7 +10,8 @@ const menuItems = [
             { sub: '회원정보 관리', to: 'userinfo' },
             { sub: '알림 관리', to: 'alarm' },
             { sub: '신고 관리', to: 'reports' },
-        ],
+            { sub: '완료된 신고 목록', to: 'sucessreports' },
+          ],
     },
     {
         title: '게시글 관리',
@@ -38,7 +39,13 @@ const menuItems = [
     {
         title: '통계',
         num: 5,
-        subMenu: [{ sub: '방문 현황', to: 'statistics' }],
+        subMenu: [
+            { sub: '일일 방문자 수', to: 'dailyVisitor' },
+            { sub: '월간 방문자 수', to: 'statistics' },
+            { sub: '인기있는 패키지들', to: 'statistics' },
+            { sub: '검색어', to: 'statistics' },
+            { sub: '신고', to: 'statistics' },
+        ],
     },
 ];
 
@@ -75,7 +82,7 @@ const SideMenuBar = ({ isSidebarOpen, toggleSidebar, onSubMenuSelect }) => {
                             </div>
                             <div className={`${styles.subMenu} ${openMenus[index] ? styles.subMenuOpen : ''}`} >
                                 {item.subMenu.map((subItem, subIndex) => (
-                                    <Link to={'/admin2/'+subItem.to} className={styles.subMenuItemLink}>
+                                    <Link to={'/admin2/'+subItem.to} className={styles.subMenuItemLink} key={subIndex}>
                                     <div key={subIndex} className={styles.subMenuItem} onClick={() => onSubMenuSelect(item.title)} >
                                         - {subItem.sub} </div>
                                     </Link>

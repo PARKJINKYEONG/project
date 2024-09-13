@@ -28,7 +28,7 @@ const NewHeader = () => {
 };
 
   return (
-    <div className={`${styles.headerContainer} nanumsqr-korfont`} onMouseLeave={handleMouseLeave}>
+    <div className={`${styles.headerContainer} nanumsqr-korfont`} onMouseLeave={handleMouseLeave} onClick={handleMouseLeave}>
       <header className={styles.header} onMouseEnter={handleMouseEnter}>
         <div className={`${styles.logoContainer}`}>
           <Link className={`navbar-brand d-flex align-items-center `} to="/">
@@ -39,15 +39,15 @@ const NewHeader = () => {
           </Link>
         </div>
         <nav className={`text-start ${styles.nav}`}>
-          <div className={`${styles.navItem}`}>
-            여행 계획
-          </div>
-          <div className={`${styles.navItem}`}>
-            여행 정보
-          </div>
-          <div className={`${styles.navItem}`}>
+          <NavLink  className={`${styles.navItem}`} to="/createPlan">
+          여행 계획
+          </NavLink>
+          <NavLink  className={`${styles.navItem}`} to="/place/global">
+          여행 정보
+          </NavLink>
+          <NavLink  className={`${styles.navItem}`} to="/announcement">
             공지사항
-          </div>
+          </NavLink>
         </nav>
         {!!accessToken ? ( 
           <>
@@ -89,11 +89,10 @@ const NewHeader = () => {
             <NavLink className={`${styles.submenuLink}`} to="/ReviewList">여행 후기</NavLink>
           </div>
           <div className={`${styles.menuItem}`}>
-            <NavLink className={`${styles.submenuLink}`} to="/place/global">해외 여행</NavLink>
-            <NavLink className={`${styles.submenuLink}`} to="/place/local">국내 여행</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/place/flightSearch">항공 정보</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/place/weatherSearch">날씨 정보</NavLink>
             <NavLink className={`${styles.submenuLink}`} to="/place/hotelSearch">숙박 정보</NavLink>
+            <NavLink className={`${styles.submenuLink}`} to="/place/restaurantSearch">맛집 정보</NavLink>
           </div>
           
           <div className={`${styles.menuItem}`}>

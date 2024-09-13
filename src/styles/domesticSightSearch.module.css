@@ -1,0 +1,81 @@
+.container {
+  margin-top: 100px;
+  padding: 20px;
+}
+
+.searchButton {
+  margin-top: 10px;
+  margin-left: 20px;
+  height: 45px; /* 버튼 높이 */
+  width: 80px;
+  background-color: #1976D2; /* 파란색 배경 */
+  color: #FFFFFF; /* 흰색 글씨 */
+  border: none;
+  border-radius: 5px; /* 버튼 모서리 둥글게 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 버튼 그림자 */
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  background-color: #1565C0; /* 호버 시 조금 더 어두운 파란색 */
+}
+
+.inputField {
+  height: 50px; /* input 높이 버튼과 같게 설정 */
+  padding: 0 10px; /* padding을 통해 내용물이 중앙에 위치하도록 설정 */
+  font-size: 16px; /* 글씨 크기 설정 */
+}
+
+.loader {
+  margin-left: 100px;
+  margin-top: 80px;
+  display: flex;
+  justify-content: start;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* 카드 간의 간격 */
+  margin-top: 100px;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  width: calc(25% - 16px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.cardImage {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 10px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cardRank {
+  font-size: 14px;
+  color: #888;
+}
+
+.cardAddress {
+  font-size: 14px;
+  color: #555;
+  height: 40px; /* 고정된 높이 설정 */
+  overflow: hidden; /* 내용이 높이를 초과하면 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분은 '...'으로 표시 */
+  white-space: normal; /* 여러 줄로 표시되도록 설정 */
+  line-height: 1.5; /* 줄 간격 설정 */
+}

@@ -21,7 +21,6 @@ import QnA from "./pages/clientService/userQna";
 import Ecrm from "./pages/clientService/eCrm";
 import AdminRoutes from "./pages/admin/adminRoutes";
 
-import { RouteMap } from "./pages/routeMap";
 import BoardRoutes from "./pages/board/boardRoutes";
 import FaQ from "./pages/clientService/userFaq";
 
@@ -31,27 +30,28 @@ import { UserContext } from "./contexts/userContext";
 import AreaRoutes from "./pages/area/areaRoutes";
 
 import QnaView from "./pages/clientService/qnaView";
-import QuestionView from "./pages/admin/QnA/questionView";
 import AdminRoutes2 from "./pages/admin/AdminHome/adminRoutes";
 import ReviewListView from "./pages/tripreview/ReviewListView";
+import { TestPage } from "./pages/testpage";
+import STT from "./components/stt/tts/STT";
 
 
 
 function App() {
-  const [accessToken,setAccessToken] = useState(localStorage.getItem('accessToken') || "");
-  const [email, setEmail] = useState(localStorage.getItem('email') || "");
-  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') || "");
+  const [accessToken,setAccessToken] = useState(sessionStorage.getItem('accessToken') || "");
+  const [email, setEmail] = useState(sessionStorage.getItem('email') || "");
+  const [isAdmin, setIsAdmin] = useState(sessionStorage.getItem('isAdmin') || "");
 
   useEffect(() => {
-    localStorage.setItem('accessToken', accessToken !== null ? accessToken : '');
+    sessionStorage.setItem('accessToken', accessToken !== null ? accessToken : '');
   }, [accessToken]);
 
   useEffect(() => {
-    localStorage.setItem('email', email !== null ? email : '');
+    sessionStorage.setItem('email', email !== null ? email : '');
   }, [email]);
 
   useEffect(() => {
-    localStorage.setItem('isAdmin', isAdmin);
+    sessionStorage.setItem('isAdmin', isAdmin);
   }, [isAdmin]);
 
     return <>
@@ -83,8 +83,9 @@ function App() {
                 
             </Route>
             <Route path="/admin/*" element={<AdminRoutes />} />
-            <Route path="/testroute" element={<RouteMap/>} />
+            <Route path="/testroute" element={<TestPage/>} />
             <Route path="/admin2/*" element={<AdminRoutes2/>} />
+            <Route path="/teststttts" element={<STT/>} />
         </Routes>
         </UserContext.Provider>
     </>

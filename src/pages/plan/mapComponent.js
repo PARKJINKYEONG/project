@@ -24,6 +24,8 @@ function MapComponent({ selectedPlace }) {
     
   }, []);   
   
+
+  
   return (
     <div id="map" className={styles.mapContainer}></div>
   );

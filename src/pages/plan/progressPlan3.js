@@ -1,62 +1,80 @@
 import React, { useState } from 'react';
-import styles from '../../styles/progressPlan3.module.css';
+import styles from '../../styles/plan/createPlan/progressPlan3.module.css';
 
-export default function ProgressPlan3({ handlePlaceClick }) {
-  const [activeTab, setActiveTab] = useState('locationSelect');
+const ProgressPlan3 = () => {
+  const [selectedTab, setSelectedTab] = useState('선택된 숙소');
+  const [selectedCategory, setSelectedCategory] = useState('숙소');
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
 
   return (
-    <div>
-      <div>
-        <h6>선택 여행 장소</h6>
-        <div className={styles.tabs}>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'locationSelect' ? styles.active : ''}`}
-            onClick={() => setActiveTab('locationSelect')}
-          >
-            숙소 선택
-          </button>
-          <button
-            className={`${styles.tabButton} ${activeTab === 'newLocation' ? styles.active : ''}`}
-            onClick={() => setActiveTab('newLocation')}
-          >
-            신규 숙소 등록
-          </button>
-        </div>
+    <div className={styles.container}>
+      <h6 className={styles.title}>머물고 싶은 곳을 선택해주세요</h6>
 
-        <div className={styles.tabContent}>
-          {activeTab === 'locationSelect' && (
-            <div className={styles.inputContainer}>
-              <input
-                type="text"
-                placeholder="숙소명을 입력하세요"
-                className={styles.customInput}
-              />
-              <div className={styles.buttonGroup}>
-                <button className={`${styles.button} ${styles.recommendButton}`}>추천 숙소</button>
-              </div>
-              <ul className={styles.placeList}>
-                  <li className={styles.placeItem} onClick={() => handlePlaceClick()}>
-                    <div>
-                      <strong></strong>
-                      <p></p>
-                    </div>
-                    <button className={styles.addButton}>+</button>
-                  </li>
-              </ul>
-              {/* 장소 선택 관련 내용 추가 */}
-            </div>
-          )}
-          {activeTab === 'newLocation' && (
-            <div>
-              <input
-                type="text"
-                placeholder="장소명을 입력하세요"
-                className={styles.customInput2}
-              />
-            </div>
-          )}
-        </div>
+      <div className={styles.tabButtons}>
+        <button
+          className={selectedTab === '선택된 숙소' ? styles.categoryButton : styles.tabButton}
+          onClick={() => handleTabChange('선택된 숙소')}
+        >
+          선택된 숙소
+        </button>
+        <button
+          className={selectedTab === '숙소 검색 및 추천' ? styles.categoryButton : styles.tabButton}
+          onClick={() => handleTabChange('숙소 검색 및 추천')}
+        >
+          숙소 검색 및 추천
+        </button>
       </div>
+
+      {selectedTab === '선택된 숙소' ? (
+        <div>
+          <div className={styles.categoryButtons}>
+            <button
+              className={selectedCategory === '숙소' ? styles.activeCategory : styles.button}
+              onClick={() => handleCategoryChange('숙소')}
+            >
+              추천 숙소
+            </button>
+          </div>
+
+          <div className={styles.selectedTouristSpot}>
+            <img
+              src="https://via.placeholder.com/150"
+              alt={selectedCategory}
+              className={styles.spotImage}
+            />
+            <div className={styles.cardContent}>
+              <h4 className={styles.spotTitle}>{selectedCategory} 이름</h4>
+              <p className={styles.spotInfo}>연락처, 서울특별시, 강남구...</p>
+              <p className={styles.spotTime}>00:00 - 00:00</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.recommendation}>
+          <div className={styles.searchBox}>
+            <input
+              type="text"
+              placeholder="관광지를 검색하세요"
+              className={styles.searchInput}
+            />
+            <button className={styles.searchButton}>검색</button>
+          </div>
+
+          {/* KakaoMap이 표시될 위치 */}
+          <div className={styles.mapContainer}>
+            <div id="kakaoMap" className={styles.map}></div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default ProgressPlan3;

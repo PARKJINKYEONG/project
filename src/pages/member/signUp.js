@@ -49,6 +49,7 @@ export default function SignUp() {
       const registrationData = {
         email,
         password,
+        loginType:'email',
         ...userInfo,
       };
       await post('/register', registrationData, {skipAuth:true});
@@ -145,13 +146,9 @@ export default function SignUp() {
               뒤로가기
             </Button>
             <Box sx={{ flex: '1 1 auto' }} />
-            {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                건너뛰기
-              </Button>
-            )}
+            
             <Button onClick={handleNext} disabled={isNextDisabled}>
-              {activeStep === steps.length - 1 ? '종료' : '다음'}
+              {activeStep === steps.length - 1 ? '회원가입 완료' : '다음'}
             </Button>
           </Box>
         </Fragment>

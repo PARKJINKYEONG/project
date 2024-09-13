@@ -1,0 +1,50 @@
+.progress5Container{
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: none;
+    height: 100%;
+}
+
+.resultTitle{
+    margin: 15px 0 15px 10px;
+}
+
+.resultContainer{
+   height: 90%;
+}
+
+.mapContainer{
+    height: 60%;
+}
+
+.map{
+    height: 100%;
+    width: 86%;
+    margin: auto;
+    border-radius: 3px;    
+    border: 1px solid gainsboro;
+}
+
+.planitemContainer {
+    min-height: 40%;
+    width: 86%;
+    margin: auto;
+    padding-top: 8px;
+    display: flex; /* Flexbox 레이아웃 사용 */
+    flex-wrap: wrap; /* 한 줄에 아이템이 꽉 차면 다음 줄로 넘어가도록 설정 */
+    gap: 10px; /* 아이템들 간의 간격 */
+    justify-content: center;
+}
+
+.planitem {
+    flex: 1 1 calc(20% - 20px); /* 화면 크기에 따라 너비가 조정되도록 설정 (예: 3개씩 한 줄) */
+    box-sizing: border-box; /* 패딩과 마진을 포함한 크기 계산 */
+    padding: 15px 10px 15px 10px;
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    height: fit-content;
+}
+
+.planitemContents{
+    text-align: center;
+}

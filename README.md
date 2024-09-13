@@ -44,6 +44,8 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### installed module
+
+```
 - npm install
 - npm install axios
 - npm install react-router-dom@6
@@ -64,7 +66,10 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 - npm install @mui/x-date-pickers-pro
 - npm install dayjs
 - npm install react-beautiful-dnd
-- npm insatll @mui/lab
+- npm install @mui/lab
 - npm install @fullcalendar/core @fullcalendar/daygrid
 - npm install @chatscope/chat-ui-kit-react @chatscope/chat-ui-kit-styles
 - npm install react-day-picker
+- npm install react-media-recorder
+
+```

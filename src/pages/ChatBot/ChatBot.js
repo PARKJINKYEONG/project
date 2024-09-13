@@ -1,17 +1,33 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import "../../styles/chatBot.css"
 import axios from 'axios';
 import mqtt from 'mqtt';
+import { UserContext } from '../../contexts/userContext';
+import { format } from 'date-fns';
+import useRequest from '../../hooks/useRequest';
+import Loading from "../../components/loading";
 
 const ChatBot = () => {
+
+  const { email } = useContext(UserContext);
+  const { get } = useRequest();
+  const [loading,setLoading] = useState(false);
 
   //mqtt chatting
 
   const fetchData = async () =>{
     try{
-      const chatroomId = await axios.get('http://localhost:8080/api/chat/topic');
-      setTopic(chatroomId.data);
-      console.log(chatroomId.data);
+      if(!email){
+        const chatroomId = await axios.get('http://localhost:8080/api/chat/topic');
+        setTopic(chatroomId.data);
+        console.log(chatroomId.data);
+      }
+      else{
+        const chatroomId = await get(`/api/chat/topic`);
+        setTopic(chatroomId.data);
+        console.log(chatroomId.data);
+      }
+      
 
     } catch(err) {
       console.log('Error: ',err);
@@ -24,7 +40,7 @@ const ChatBot = () => {
   const [client, setClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [message, setMessage] = useState('');
-  const [topic,setTopic] = useState(()=>fetchData()); // <---------------------- topic 받아오기
+  const [topic,setTopic] = useState(()=>fetchData().data);
 
   useEffect(() => {
     
@@ -61,11 +77,21 @@ const ChatBot = () => {
       };
   }, []);
 
-  function publishMessage(){
+  function publishMessage(input){
+    const now = new Date();
+    const sendDate = format(now,'yyyy-MM-dd HH:mm:ss');
       if (client && isConnected) {
-          client.publish("chat/"+topic, JSON.stringify({
-              sender:'userid',recipient:'수신자?',content:chatInput.current.value
-          }));
+        if(email){
+          client.publish("chat/"+topic, JSON.stringify(
+            { useremail:email,message_send_date:sendDate,content:input}
+            ));
+        }
+        else{
+          client.publish("chat/"+topic, JSON.stringify(
+            { useremail:'userid',message_send_date:sendDate,content:input }
+            ));
+        }
+
       }
   };
   //mqtt
@@ -87,29 +113,7 @@ const ChatBot = () => {
         name: "user",
         description: newMessage,
       });
-
-      console.log("어디서 찍히는거람",response.data);
       return response.data.content;
-
-    //[react에서 바로 보내기]
-    // const apiKey = 'key';
-    // try {
-    //   const apiResponse = await axios.post(
-    //     'https://api.openai.com/v1/chat/completions',
-    //     {
-    //       model: 'gpt-3.5-turbo',
-    //       messages: [{ role: 'user', content: newMessage }],
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${apiKey}`,
-    //         'Content-Type': 'application/json',
-    //       },
-    //     }
-    //   );
-  
-    //   // 응답 데이터를 반환합니다.
-    //   return apiResponse.data.choices[0].message.content;
   
     } catch (error) {
       console.error('Error sending message:', error.response ? error.response.data : error.message);
@@ -138,38 +142,33 @@ const ChatBot = () => {
 
   const handleSend = async () => {
     if (chatInput.current.value.trim()) {
-      const newMessage = { type: 'user', text: chatInput.current.value };
-  
+      const input =  chatInput.current.value;
+      const newMessage = { type: 'user', text: input };
+      chatInput.current.value='';
       if (activeTab === 'chatbot') {
+        
+        setChatbotMessages((prev) => [...prev, newMessage]);
+        setLoading(true); //로딩이미지
         try {
-          let updateMessages = [...chatbotMessages, newMessage];
-          setChatbotMessages(updateMessages);
+          
           const botResponse = await sendQueryToOPENAI(newMessage.text); // OpenAI API 응답 대기
-          console.log("어디서 찍힌거야",botResponse);
-
-          updateMessages = [...chatbotMessages, { type: 'bot', text: botResponse }];
-          setChatbotMessages(updateMessages);
+          setChatbotMessages((prev) => [ ...prev, { type: 'ai', text: botResponse }, ]);
+          
         } catch (error) {
           console.error('Error in chatbot:', error);
+          setChatbotMessages((prev) => [ ...prev, { type: 'ai', text: "연결이 불안정하여, 잠시 후 다시 시도해 주시기 바랍니다." }, ]);
+          chatInput.current.value=input;
         }
+        setLoading(false);
       } else if (activeTab === 'support') {
-        const newMessages = [...supportMessages, newMessage];
-        setSupportMessages(newMessages); // 채팅방에 채팅 메세지 추가
-  
-        publishMessage(); // MQTT pub
-  
-        handleSupportMessage(newMessages);
-      }
-  
-      chatInput.current.value = ''; // 메시지 전송 후 입력 필드 초기화
-    }
-  };
 
-  const handleSupportMessage = (newMessages) => {
-    // 예시: 상담원 응답 시뮬레이션
-    setTimeout(() => {
-      setSupportMessages([...newMessages, { type: 'support', text: '상담원이 곧 답변을 드릴 것입니다.' }]);
-    }, 10000);
+        setSupportMessages((prev) => [...prev, newMessage]); // 채팅방에 채팅 메세지 추가
+  
+        publishMessage(input); // MQTT pub
+  
+        //handleSupportMessage();
+      }
+    }
   };
 
   const handleKeyPress = (e) => { //엔터누른경우
@@ -188,7 +187,7 @@ const ChatBot = () => {
   return (
     <div className="chatbot">
       <button className="chatbot-button" onClick={handleToggle}>
-        🤔
+        <img src='/images/chat/joy.png' width='56px' alt='Joy'/>
       </button>
       {isOpen && (
         <div className="chatbot-window">
@@ -197,7 +196,7 @@ const ChatBot = () => {
               className={`tab ${activeTab === 'chatbot' ? 'active' : ''}`} 
               onClick={() => handleTabChange('chatbot')}
             >
-              챗봇
+              조이
             </button>
             <button 
               className={`tab ${activeTab === 'support' ? 'active' : ''}`} 
@@ -213,6 +212,8 @@ const ChatBot = () => {
               </div>
             ))}
             <div ref={messagesEndRef} />
+            {loading && <Loading width={50} height={50}/>} 
+            {/* 로딩이미지 */}
           </div>
           <div className="chatbot-input">
             <input type="text" ref={chatInput} onKeyDown={handleKeyPress}
