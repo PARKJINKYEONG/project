@@ -18,7 +18,7 @@ function Announcement() {
 
   const effect = async () => {
     try {
-        const notice = await axios.get('http://localhost:8080/api/notice/all');
+        const notice = await axios.get('http://localhost:8080/api/notice/all/user');
         console.log(notice);
         setNotices(notice.data);  // 질문 목록을 상태에 저장
     } catch (error) {
