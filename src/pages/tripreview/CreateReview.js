@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Rating from '@mui/material/Rating';
+import axios from 'axios';
 
 const CreateTripReview = () => {
   const [formData, setFormData] = useState({
@@ -71,12 +72,39 @@ const CreateTripReview = () => {
     return !Object.values(newErrors).includes(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (validateForm()) {
-      console.log('Form Data Submitted:', formData);
-      navigate('/ReviewList');
+      try {
+        // FormData 객체를 사용하여 데이터를 전송
+        const formData = new FormData();
+        formData.append('title', formData.title);
+        formData.append('author', formData.author);
+        formData.append('startDate', formData.startDate.toISOString());
+        formData.append('endDate', formData.endDate.toISOString());
+        formData.append('package', formData.package);
+        formData.append('itinerary', formData.itinerary);
+        formData.append('content', formData.content);
+        formData.append('rating', formData.rating);
+        
+        formData.images.forEach((file, index) => {
+          formData.append(`images[${index}]`, file);
+        });
+  
+        const response = await axios.post('/api/reviewList', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+  
+        if (response.status === 200) {
+          console.log('Form Data Submitted:', formData);
+          navigate('/ReviewList'); // 성공적으로 제출된 후 페이지 이동
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
     } else {
       console.log('Form validation failed');
     }
@@ -133,30 +161,6 @@ const CreateTripReview = () => {
                   여행 기간을 선택해주세요.
                 </Typography>
               )}
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="패키지"
-                name="package"
-                value={formData.package}
-                onChange={handleInputChange}
-                fullWidth
-                required
-                error={errors.package}
-                helperText={errors.package ? '패키지를 입력해주세요.' : ''}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="일정"
-                name="itinerary"
-                value={formData.itinerary}
-                onChange={handleInputChange}
-                fullWidth
-                required
-                error={errors.itinerary}
-                helperText={errors.itinerary ? '일정을 입력해주세요.' : ''}
-              />
             </Grid>
             <Grid item xs={12}>
               <TextField

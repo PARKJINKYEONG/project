@@ -264,7 +264,7 @@ const ReviewList = () => {
           <div className="search-container">
             <div className="filter-container">
               <button className="filter-button my-4" onClick={toggleDropdown}>
-                {selectedFilter === 'title' ? '제목' : selectedFilter === 'author' ? '작성자' : selectedFilter === 'content' ? '후기' : '일정'}
+                {selectedFilter === 'title' ? '제목' : selectedFilter === 'author' ? '작성자' : '후기'}
               </button>
               <div className={`filter-dropdown ${dropdownOpen ? 'show' : ''}`}>
                 <label>
@@ -296,16 +296,6 @@ const ReviewList = () => {
                     onChange={() => handleFilterSelect('content')}
                   />
                   후기
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="filter"
-                    value="itinerary"
-                    checked={selectedFilter === 'itinerary'}
-                    onChange={() => handleFilterSelect('itinerary')}
-                  />
-                  일정
                 </label>
               </div>
             </div>
@@ -364,9 +354,7 @@ const ReviewList = () => {
                     <div className="review-body">
                       {expandedReviewIds.has(review.id) ? (
                         <>
-                          <div className="review-itinerary">
-                            <strong>일정:</strong> {review.itinerary}
-                          </div>
+
                           {review.content}
                         </>
                       ) : (
@@ -374,9 +362,6 @@ const ReviewList = () => {
                         <Stack spacing={1}>
                           <Rating name="half-rating" defaultValue={4.4} precision={0.1} readOnly/>
                         </Stack>
-                          <div className="review-itinerary">
-                            <strong>일정:</strong> {review.itinerary.length > MAX_LENGTH ? `${review.itinerary.substring(0, MAX_LENGTH)}...` : review.itinerary}
-                          </div>
                           {review.content.length > MAX_LENGTH ? `${review.content.substring(0, MAX_LENGTH)}...` : review.content}
                         </>
                       )}

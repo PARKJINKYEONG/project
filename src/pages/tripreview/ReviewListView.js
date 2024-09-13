@@ -17,13 +17,17 @@ const comments = [
     likes: 1,
     imageUrl: '/images/mypage.jpg',
     isReported: false,
-    locations: [
-      { lat: 37.5665, lng: 126.9780, label: '출발' }, // 서울시청
-      { lat: 37.5512, lng: 126.9882, label: '경유' }, // 남산타워
-      { lat: 37.5796, lng: 126.9770, label: '도착' }, // 경복궁
-      { lat: 37.5143, lng: 126.9800, label: '도착' }, // 한강공원
-      { lat: 37.5600, lng: 126.9940, label: '도착' }, // 명동
-    ]
+    locations:{
+      day1:[
+        { lat: 37.5665, lng: 126.9780 }, // 서울시청
+        { lat: 37.5512, lng: 126.9882 }, // 남산타워
+        { lat: 37.5796, lng: 126.9770 }, // 경복궁
+      ],
+      day2: [
+        { lat: 37.5143, lng: 126.9800 }, // 한강공원
+        { lat: 37.5600, lng: 126.9940 }, // 명동
+      ] 
+    }   
   },
   {
     id: 2,
@@ -33,12 +37,16 @@ const comments = [
     likes: 1,
     imageUrl: '/images/notice.jpg',
     isReported: false,
-    locations: [
-      { lat: 37.5665, lng: 126.9780, label: '출발' }, // 서울시청
-      { lat: 37.5512, lng: 126.9882, label: '경유' }, // 남산타워
-      { lat: 37.5796, lng: 126.9770, label: '도착' }, // 경복궁
-      { lat: 37.5600, lng: 126.9940, label: '도착' }, // 명동
-    ]
+    locations:{
+      day1:[
+        { lat: 37.5665, lng: 126.9780 }, // 서울시청
+        { lat: 37.5512, lng: 126.9882 }, // 남산타워
+      ],
+      day2:[
+        { lat: 37.5796, lng: 126.9770 }, // 경복궁
+        { lat: 37.5600, lng: 126.9940 }, // 명동
+      ]
+    }
   },
   {
     id: 3,
@@ -48,6 +56,20 @@ const comments = [
     likes: 1,
     imageUrl: '/images/notice.jpg',
     isReported: false,
+    locations:{
+      day1:[
+        { lat: 37.5585, lng: 126.9719, label: '출발' }, // 서울역
+        { lat: 37.5665, lng: 126.9780, label: '경유' }, // 서울시청
+        { lat: 37.5512, lng: 126.9882, label: '도착' } // 남산타워
+      ],
+      day2: [
+        { lat: 37.5110, lng: 127.0980, label: '출발' }, // 코엑스
+        { lat: 37.5600, lng: 126.9940, label: '경유' }, // 명동
+        { lat: 37.5143, lng: 126.9800, label: '도착' } // 한강공원
+        
+        
+      ]
+    }   
   },
   {
     id: 4,
@@ -57,6 +79,20 @@ const comments = [
     likes: 0,
     imageUrl: '/images/review.jpg',
     isReported: false,
+    locations:{
+      day1:[
+        { lat: 37.5585, lng: 126.9719, label: '출발' }, // 서울역
+        { lat: 37.5600, lng: 126.9940, label: '경유' }, // 명동
+        { lat: 37.5143, lng: 126.9800, label: '도착' } // 한강공원
+      ],
+      day2: [
+        { lat: 37.5110, lng: 127.0980, label: '출발' }, // 코엑스
+        { lat: 37.5796, lng: 126.9770, label: '경유' }, // 경복궁
+        { lat: 37.5349, lng: 127.0012, label: '도착' }, // 이태원
+        
+        
+      ]
+    }   
   },
 ];
 
@@ -77,6 +113,16 @@ const locations = {
     { lat: 37.5349, lng: 127.0012, label: '도착' }, // 이태원
   ]
 };
+
+const markerSrc = [
+  "/images/map/marker_red.png", //red: E9382D
+  "/images/map/marker_yellow.png", //yellow: FFC700
+  "/images/map/marker_green.png", //green: 3EED00
+  "/images/map/marker_skyblue.png", //skyblue: 29CCFF
+  "/images/map/marker_blue.png", //blue: 0057FF
+  "/images/map/marker_violet.png", //violet: A93AFF
+  "/images/map/marker_pink.png", //pink: FF00C7
+];
 
 const ReviewListView = () => {
   const [open, setOpen] = useState(false);
@@ -101,7 +147,7 @@ const ReviewListView = () => {
   const handleClickOpen = useCallback((commentId, locations) => {
     if (openRoute !== commentId) {
       setMapCenter(calculateCenter(locations));
-      setMapKey((prevKey) => prevKey + 1);  // 지도 리렌더링
+      setMapKey(prevKey => prevKey + 1);  // Trigger map re-render
     }
     setOpenRoute(openRoute === commentId ? null : commentId);
   }, [openRoute]);
@@ -139,15 +185,31 @@ const ReviewListView = () => {
 
   const mapOptions = {
     zoom: 12,
-    center: mapCenter, // 현재 지도 중심
+    center: mapCenter,
   };
 
-  const polylineOptions = (day) => ({
-    path: locations[day],
-    strokeColor: day === 'day1' ? '#FF0000' : day === 'day2' ? '#0000FF' : '#00FF00', // 빨간색, 파란색, 초록색
-    strokeOpacity: 1.0,
-    strokeWeight: 2,
-  });
+  const renderMarkersAndPolyline = (locations, color) => {
+    return (
+      <>
+        {locations.map((location, index) => (
+          <Marker
+            key={index}
+            position={location}
+            icon={color}
+            label={location.label}
+          />
+        ))}
+        <Polyline
+          path={locations}
+          options={{
+            strokeColor: '#FF9431',
+            strokeOpacity: 0.7,
+            strokeWeight: 5,
+          }}
+        />
+      </>
+    );
+  };
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -183,16 +245,9 @@ const ReviewListView = () => {
             <LoadScript googleMapsApiKey="AIzaSyB-COY1Ryjaa2wILZqfl5UoS2WltfYD3Hc" key={mapKey}>
               <GoogleMap
                 mapContainerStyle={{ width: '100%', height: '100%' }}
-                options={{ ...mapOptions, center: calculateCenter(locations.day1) }}
+                options={{ ...mapOptions, center: calculateCenter(Object.values(locations).flat()) }}
               >
-                {locations.day1.map((location, index) => (
-                  <Marker
-                    key={index}
-                    position={location}
-                    label={location.label}
-                  />
-                ))}
-                <Polyline options={polylineOptions('day1')} />
+                {Object.keys(locations).map((dayKey) => renderMarkersAndPolyline(locations[dayKey], markerSrc[Object.keys(locations).indexOf(dayKey) % markerSrc.length]))}
               </GoogleMap>
             </LoadScript>
           </Box>
@@ -201,7 +256,7 @@ const ReviewListView = () => {
         <CardContent sx={{ paddingTop: 1 }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', marginLeft: 3, marginTop: 3, marginBottom: 2 }}>여행 후기</Typography>
           <Typography variant="h6" color="text.secondary" sx={{ marginLeft: 3, marginRight: 3 }}>
-            서울 여행은 정말 잊을 수 없는 경험이었어요. 첫 번째로 방문한 서울시청은 서울의 중심부에 위치해, 도시의 활기와 역사적 배경이 잘 어우러진 곳이었어요. 주변에 위치한 광장에서 시민들이 여유롭게 시간을 보내는 모습을 보며 도심 속 평화를 느낄 수 있었습니다. 다음으로 간 남산타워에서는 서울 전경이 한눈에 내려다보였는데, 특히 밤에 보는 야경이 정말 아름다웠습니다. 도시의 불빛들이 한강을 따라 반짝이는 모습이 인상 깊었어요. 이어서 방문한 경복궁은 조선 시대의 웅장함을 느낄 수 있는 곳이었고, 궁궐을 걸으며 한국의 전통을 느끼기에 충분했어요. 고요하고 장엄한 궁궐의 분위기 속에서 과거와 현재가 공존하는 느낌이 들었습니다. 한강공원에서는 강변을 따라 산책하며 서울의 자연을 즐길 수 있었고, 바쁜 도시 생활 속에서도 이렇게 여유를 찾을 수 있다는 점이 좋았어요. 마지막으로 방문한 명동에서는 다양한 맛집과 쇼핑 명소를 둘러보며 여행의 마지막을 즐겼습니다. 이번 서울 여행은 도심 속에서 문화, 자연, 그리고 현대적인 풍경을 모두 경험할 수 있었던 멋진 시간이었습니다.
+          서울 여행은 정말 잊을 수 없는 경험이었어요. 첫 번째로 방문한 서울시청은 서울의 중심부에 위치해, 도시의 활기와 역사적 배경이 잘 어우러진 곳이었어요. 주변에 위치한 광장에서 시민들이 여유롭게 시간을 보내는 모습을 보며 도심 속 평화를 느낄 수 있었습니다. 다음으로 간 남산타워에서는 서울 전경이 한눈에 내려다보였는데, 특히 밤에 보는 야경이 정말 아름다웠습니다. 도시의 불빛들이 한강을 따라 반짝이는 모습이 인상 깊었어요. 이어서 방문한 경복궁은 조선 시대의 웅장함을 느낄 수 있는 곳이었고, 궁궐을 걸으며 한국의 전통을 느끼기에 충분했어요. 고요하고 장엄한 궁궐의 분위기 속에서 과거와 현재가 공존하는 느낌이 들었습니다. 한강공원에서는 강변을 따라 산책하며 서울의 자연을 즐길 수 있었고, 바쁜 도시 생활 속에서도 이렇게 여유를 찾을 수 있다는 점이 좋았어요. 마지막으로 방문한 명동에서는 다양한 맛집과 쇼핑 명소를 둘러보며 여행의 마지막을 즐겼습니다. 이번 서울 여행은 도심 속에서 문화, 자연, 그리고 현대적인 풍경을 모두 경험할 수 있었던 멋진 시간이었습니다.
           </Typography>
         </CardContent>
       </Box>
@@ -222,7 +277,7 @@ const ReviewListView = () => {
 
               <div className={styles.toggleButtonContainer}>
                 <IconButton
-                  onClick={() => handleClickOpen(comment.id, comment.locations)}
+                  onClick={() => handleClickOpen(comment.id, Object.values(comment.locations || {}).flat())}
                   sx={{
                     transform: openRoute === comment.id ? 'rotate(180deg)' : 'rotate(0deg)',
                     transition: 'transform 0.3s',
@@ -248,19 +303,9 @@ const ReviewListView = () => {
                   <LoadScript googleMapsApiKey="AIzaSyB-COY1Ryjaa2wILZqfl5UoS2WltfYD3Hc" key={mapKey}>
                     <GoogleMap
                       mapContainerStyle={{ width: '60%', height: '400px' }}
-                      options={{ ...mapOptions, center: calculateCenter(comment.locations) }}
+                      options={{ ...mapOptions, center: calculateCenter(Object.values(comment.locations).flat()) }}
                     >
-                      {comment.locations.map((location, index) => (
-                        <Marker
-                          key={index}
-                          position={location}
-                          label={location.label}
-                        />
-                      ))}
-                      <Polyline
-                        path={comment.locations}
-                        options={polylineOptions('day1')} // Use appropriate day here
-                      />
+                      {Object.keys(comment.locations).map((dayKey) => renderMarkersAndPolyline(comment.locations[dayKey], markerSrc[Object.keys(locations).indexOf(dayKey) % markerSrc.length]))}
                     </GoogleMap>
                   </LoadScript>
                 </Box>

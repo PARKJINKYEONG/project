@@ -15,7 +15,7 @@ const NoticeManagement = () => {
 
   const fetchNotices = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/notice/all');
+      const response = await axios.get('http://localhost:8080/api/notice/all/admin');
       setNotices(response.data);
     } catch (error) {
       console.error('공지사항을 불러오는 중 오류가 발생했습니다.', error);

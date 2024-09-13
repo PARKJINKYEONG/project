@@ -110,24 +110,6 @@ const EditReview = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="패키지"
-              name="package"
-              value={review.package}
-              onChange={handleChange}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="일정"
-              name="itinerary"
-              value={review.itinerary}
-              onChange={handleChange}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
               label="후기 내용"
               name="content"
               value={review.content}
