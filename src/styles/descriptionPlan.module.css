@@ -8,6 +8,7 @@
   .datePickerContainer {
     width: 50%; /* searchInput과 동일한 너비 설정 */
     margin: 0 auto; /* 중앙 정렬 */
+ 
 }
   @media (max-width: 1440px) {
     .container {
@@ -62,14 +63,18 @@
   }
   
   .cardContainer {
+    width: auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-between;
+    overflow-x: auto;
   }
   
   .card {
+    flex: 0 0 auto;
     position: relative;
     width: calc(25% - 10px);
+    margin-right: 10px;
     margin-bottom: 20px;
     border-radius: 10px;
     overflow: hidden;
@@ -114,4 +119,28 @@
     margin: 5px 0 0;
     color: #666;
     font-size: 14px;
+  }
+
+  .App {
+    font-family: sans-serif;
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .counter_container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+  }
+  
+  .counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  button {
+    width: 30px;
+    margin: 5px;
+    cursor: pointer;
   }

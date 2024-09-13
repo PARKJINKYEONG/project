@@ -32,7 +32,9 @@
 
 .planFullContainer{
     width: 90%;
+    height: 100%;
     margin: auto;
+    overflow: auto;
 }
 
 .progress4planContainer{

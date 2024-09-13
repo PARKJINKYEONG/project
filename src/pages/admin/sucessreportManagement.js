@@ -41,36 +41,51 @@ function createData(name, name1, value2, value3, value4, value5) {
 }
 
 function Row(props) {
-  const { row, onDelete } = props;
+
+  const { row, onDelete, index } = props;
   const [open, setOpen] = React.useState(false);
-  const [status, setStatus] = React.useState("대기");
+  const [status, setStatus] = React.useState("완료");
+
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // 삭제 모달 상태
+  const [showCompleteModal, setShowCompleteModal] = useState(false); // 완료 모달 상태
 
   const handleStatusChange = event => {
     setStatus(event.target.value);
   };
 
-  const [modalMessage, setModalMessage] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [buttonStates, setButtonStates] = useState({});
-
-   // 모달을 닫는 핸들러
-   const handleButtonClick = () => {
-    // 모달에 "완료되었습니다" 메시지를 설정하고 표시
-    setShowModal(true);
+  // 취소 버튼 클릭 시 모달 표시
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true);
   };
 
+  // 모달 닫기 핸들러
   const handleClose = () => {
-    setShowModal(false);
+    setShowDeleteModal(false);
+    setShowCompleteModal(false);
   };
 
-  //행 삭제
-  const handleDelete = () => {
+  // 취소 확인 핸들러
+  const handleConfirmDelete = () => {
+    setShowDeleteModal(false);
     if (onDelete) {
-      onDelete(row.name); // onDelete를 호출하여 행 삭제
+      onDelete(row.name); // 행 삭제
     }
   };
   
-
+    // "비고" 칸을 활성화 상태로 유지하는 스타일
+    const activeCellStyle = {
+      opacity: 1,
+      pointerEvents: 'auto',
+      cursor: 'pointer',
+    };
+  
+    // 나머지 비활성화된 칸 스타일
+    const disabledCellStyle = {
+      opacity: 0.5,
+      pointerEvents: 'none',
+      cursor: 'not-allowed',
+    };
 
   const StyledSelect = styled(Select)(({ theme }) => ({
     minWidth: 50,
@@ -100,40 +115,42 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
+        <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)', ...(index === 0 ? activeCellStyle : disabledCellStyle) }}>
           <IconButton
             aria-label="expand row"
             size="small"
             onClick={() => setOpen(!open)}
+            style={index === 0 ? activeCellStyle : disabledCellStyle}
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
+        <TableCell component="th" scope="row" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)', ...(index === 0 ? activeCellStyle : disabledCellStyle) }}>
           <StyledSelect
             value={status}
             onChange={handleStatusChange}
+            style={index === 0 ? activeCellStyle : disabledCellStyle}
           >
-            <StyledMenuItem value="대기">대기</StyledMenuItem>
-            <StyledMenuItem value="접수">접수</StyledMenuItem>
-            <StyledMenuItem value="진행중">진행</StyledMenuItem>
+            <StyledMenuItem value="완료">완료</StyledMenuItem>
           </StyledSelect>
         </TableCell>
-        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.name1}</TableCell>
-        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.value2}</TableCell>
-        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.value3}</TableCell>
-        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{row.value4}</TableCell>
-        <TableCell align="center" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-          <button style={{ marginLeft: "15px" }} onClick={handleButtonClick}>완료</button>
-          <button style={{ marginLeft: "15px" }} onClick={handleDelete}>🗑️</button>
+        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)', ...(index === 0 ? activeCellStyle : disabledCellStyle) }}>{row.name1}</TableCell>
+        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)', ...(index === 0 ? activeCellStyle : disabledCellStyle) }}>{row.value2}</TableCell>
+        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)', ...(index === 0 ? activeCellStyle : disabledCellStyle) }}>{row.value3}</TableCell>
+        <TableCell align="left" sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)', ...(index === 0 ? activeCellStyle : disabledCellStyle) }}>{row.value4}</TableCell>
+        <TableCell align="center" sx={activeCellStyle}>
+          <button style={{ marginLeft: "15px" }} onClick={handleDeleteClick}>취소</button>
         </TableCell>
-        <Modal open={showModal} onClose={handleClose}>
-          <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
-            <h3>신고 처리가 완료되었습니다</h3>
-            <Button align="center" onClick={handleClose}>닫기</Button>
-          </Box>
-        </Modal>
       </TableRow>
+
+      {/* 삭제 확인 모달 */}
+      <Modal open={showDeleteModal} onClose={handleClose}>
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+          <h3>취소하시겠습니까?</h3>
+          <Button onClick={handleConfirmDelete}>확인</Button>
+          <Button onClick={handleClose}>취소</Button>
+        </Box>
+      </Modal>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7} sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -198,7 +215,7 @@ export default function CollapsibleTable() {
 
   return (
     <div style={{ margin: "50px" }}>
-      <h3>신고 목록</h3>
+      <h3>완료 목록</h3>
       <Box sx={{ mt: 5 }}>
         <TableContainer className={styles.tableContainer} component={Paper} sx={{ width: "100%", border: '1px solid rgba(224, 224, 224, 1)' }}>
           <Table aria-label="collapsible table" sx={{ borderCollapse: 'collapse', width: '100%' }}>

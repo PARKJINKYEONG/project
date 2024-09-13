@@ -10,7 +10,8 @@ const menuItems = [
             { sub: '회원정보 관리', to: 'userinfo' },
             { sub: '알림 관리', to: 'alarm' },
             { sub: '신고 관리', to: 'reports' },
-        ],
+            { sub: '완료된 신고 목록', to: 'sucessreports' },
+          ],
     },
     {
         title: '게시글 관리',

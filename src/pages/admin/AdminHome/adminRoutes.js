@@ -8,6 +8,9 @@ import StatisticHome from "../../statistic/statisticHome"
 import Privacy from "../../changeInfoAsManager/privacy"
 import FAQManagement from "../QnA/FAQManagement"
 import MemberManagement from "../user/memberManagement"
+
+import Sucessreports from "../sucessreportManagement"
+
 import VisitStatistics from "../statistic/visitStatistics"
 
 <ChatManagement/>
@@ -23,6 +26,7 @@ export default function AdminRoutes2(){
                 <Route path="/userinfo2" element={<MemberManagement/>}/>
                 <Route path="/alarm"/>
                 <Route path="/reports" element={<CollapsibleTable/>}/>
+                <Route path="/sucessreports" element={<Sucessreports/>}/>
 
                 <Route path="/notice" element={<NoticeManagement/>}/>
                 <Route path="/review"/>

@@ -38,7 +38,22 @@ const destinations = [
     isNew: true,
     description: '제주는 대한민국의 대표적인 섬으로, 천혜의 자연경관을 자랑하는 여행지입니다.',
   },
-  
+  {
+    id: 5,
+    name: 'JEJU',
+    country: '대한민국 제주',
+    imageUrl: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/0d/d9/dc/caption.jpg?w=800&h=-1&s=1',
+    isNew: true,
+    description: '제주는 대한민국의 대표적인 섬으로, 천혜의 자연경관을 자랑하는 여행지입니다.',
+  },
+  {
+    id: 6,
+    name: 'FUKUOKA',
+    country: '일본 후쿠오카',
+    imageUrl: 'https://cdn.imweb.me/thumbnail/20220510/fd58b78185ad9.png',
+    isNew: true,
+    description: '후쿠오카는 일본의 남부에 위치한 도시로, 아름다운 자연과 활기찬 도심을 자랑합니다.',
+  }
 ];
 
 export default function DescriptionPlan() {
@@ -55,29 +70,26 @@ export default function DescriptionPlan() {
     setOpen(false);
   };
 
+  const [counts, setCounts] = useState({
+    adult: 0,
+    senior: 0,
+    teen: 0,
+    child: 0,
+  });
+
+  const handleChange = (type, value) => {
+    setCounts((prevCounts) => ({
+      ...prevCounts,
+      [type]: Math.max(0, prevCounts[type] + value), // 음수로 내려가지 않도록 설정
+    }));
+  };
+
+  const total = counts.adult + counts.senior + counts.teen + counts.child;
+
   return (
     <div className={styles.container}>
-      <h2>일정을 생성해 주십시오</h2>
-      <div className={styles.datePickerContainer}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateRangePicker
-            calendars={2}
-            value={dateRange}
-            onChange={(newValue) => setDateRange(newValue)}
-            renderInput={(startProps, endProps) => (
-              <React.Fragment>
-                <TextField {...startProps} />
-                <Box sx={{ mx: 2 }}> to </Box>
-                <TextField {...endProps} />
-              </React.Fragment>
-            )}
-          />
-        </LocalizationProvider>
-      </div>
-      <hr/>
-      <h2>어디로 여행을 떠나시나요?</h2>
+      <h2>가고싶은 곳이 있으신가요?</h2>
       <input type="text" placeholder="국가명이나 도시명으로 검색해보세요." className={styles.searchInput} />
-      
       <div className={styles.tabs}>
         <button className={styles.tab}>전체</button>
         <button className={styles.tab}>국내</button>
@@ -96,6 +108,87 @@ export default function DescriptionPlan() {
           </div>
         ))}
       </div>
+
+      <hr/>
+      <br/>
+      <h2>언제 가실 예정이세요?</h2>
+      <div className={styles.datePickerContainer}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateRangePicker
+            calendars={2}
+            value={dateRange}
+            onChange={(newValue) => setDateRange(newValue)}
+            renderInput={(startProps, endProps) => (
+              <React.Fragment>
+                <TextField {...startProps} />
+                <Box sx={{ mx: 2 }}> to </Box>
+                <TextField {...endProps} />
+              </React.Fragment>
+            )}
+          />
+        </LocalizationProvider>
+      </div>
+      <br/>
+      <hr/>
+      <h2>몇명이서 갈 예정이세요?</h2>  
+      <br/>
+      <div className={styles.App}>
+      <h1>인원수 선택</h1>
+      <div className={styles.counter_container}>
+        <div className={styles.counter}>
+          <label>성인:</label>
+          <input
+            type="number"
+            value={counts.adult}
+            readOnly
+          />
+          <button onClick={() => handleChange('adult', 1)}>▲</button>
+          <button onClick={() => handleChange('adult', -1)}>▼</button>
+        </div>
+        
+        <div className="counter">
+          <label>노인:</label>
+          <input
+            type="number"
+            value={counts.senior}
+            readOnly
+          />
+          <button onClick={() => handleChange('senior', 1)}>▲</button>
+          <button onClick={() => handleChange('senior', -1)}>▼</button>
+        </div>
+
+        <div className="counter">
+          <label>청소년:</label>
+          <input
+            type="number"
+            value={counts.teen}
+            readOnly
+          />
+          <button onClick={() => handleChange('teen', 1)}>▲</button>
+          <button onClick={() => handleChange('teen', -1)}>▼</button>
+        </div>
+
+        <div className="counter">
+          <label>유아:</label>
+          <input
+            type="number"
+            value={counts.child}
+            readOnly
+          />
+          <button onClick={() => handleChange('child', 1)}>▲</button>
+          <button onClick={() => handleChange('child', -1)}>▼</button>
+        </div>
+      </div>
+
+      <h2>총 인원수: {total}</h2>
+    </div>
+
+
+
+
+      <hr/>
+      <h2>몇명이서 갈 예정이세요?</h2> 
+      
 
       {selectedDest && (
         <Dialog open={open} onClose={handleClose} sx={{ '& .MuiDialog-paper': { width: '80%', maxWidth: '800px' } }}>
