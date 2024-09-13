@@ -71,7 +71,7 @@ function App() {
                 <Route path="/userFaq" element={<FaQ/>}></Route>
                 <Route path="/eCrm" element={<Ecrm/>}></Route>
                 <Route path="/announcement" element={<Announcement/>}></Route>
-                <Route path="/announcementView" element={<AnnouncementView/>}/>
+                <Route path="/announcement/:notice_id" element={<AnnouncementView />} />
                 <Route path="/statistics/*" element={<StatisticRoutes/>}/>
                 <Route path="/mypage/*" element={<MyPageRoutes />} />
                 <Route path="/ReviewList" element={<ReviewList />}/>
