@@ -1,29 +1,33 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import useRequest from '../../../hooks/useRequest'; // useRequest 훅 import
 import styles from '../../../styles/admin/notice/editNotice.module.css'; // 새로운 스타일 모듈
 
 const EditNotice = ({ notice, setIsEditing, fetchNotices }) => {
   const [title, setTitle] = useState(notice.title);
   const [content, setContent] = useState(notice.content);
 
+  // useRequest 훅에서 put과 del 메서드 가져오기
+  const { put, del } = useRequest();
+
   const handleSave = async () => {
     try {
-      await axios.put(`http://localhost:8080/api/notice/${notice.id}`, { title, content });
+      await put(`http://localhost:8080/api/notice/${notice.id}`, { title, content });
       await fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
       setIsEditing(false); // 수정 화면에서 나옵니다.
     } catch (error) {
       console.error('공지사항을 수정하는 중 오류가 발생했습니다.', error);
+      alert('공지사항을 수정하는 중 오류가 발생했습니다.');
     }
   };
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/notice/${notice.id}`);
+      await del(`http://localhost:8080/api/notice/${notice.id}`);
       await fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
       setIsEditing(false); // 수정 화면에서 나옵니다.
     } catch (error) {
       console.error('공지사항을 삭제하는 중 오류가 발생했습니다.', error);
-      alert('공지사항 삭제 권한이 없습니다.');
+      alert('공지사항 삭제 권한이 없습니다.'); // 삭제 권한이 없다는 메시지 표시
     }
   };
 
