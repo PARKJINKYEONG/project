@@ -83,12 +83,17 @@ const planReducer = (state, action) => {
 
 function CreatePlan() {
   const [activeStep, setActiveStep] = useState(0); // 현재 단계 상태 관리  
-  const [isPanelOpen, setIsPanelOpen] = useState(false);  
+  const [isPanelOpen, setIsPanelOpen] = useState(false); 
+  const [selectedPlaces, setSelectedPlaces] = useState([]); 
   
   const navigate = useNavigate();
   const location = useLocation();
 
   const [plans, dispatchPlans] = useReducer(planReducer, plan);
+
+  useEffect(() => {
+    console.log(selectedPlaces);
+  }, [selectedPlaces]);
 
   useEffect(() => {
     if (location.state && location.state.step) {
@@ -123,8 +128,9 @@ function CreatePlan() {
     setActiveStep(step);
   };
 
-  const handlePlaceClick = () => {
+  const handlePlaceClick = (place) => {
     setIsPanelOpen(true);
+    setSelectedPlaces([...selectedPlaces, place]);
   };
 
   const handleClosePanel = () => {
@@ -134,6 +140,12 @@ function CreatePlan() {
 
   const handleShowPanel = (show) => {
     setIsPanelOpen(show);
+  };
+
+  const handleRemovePlace = (placeToRemove) => {
+    setSelectedPlaces((prevSelected) =>
+      prevSelected.filter((place) => place.id !== placeToRemove.id)
+    );
   };
 
   return (  
@@ -154,7 +166,9 @@ function CreatePlan() {
               : activeStep==4 ? styles.hiddenplanContainer
               : styles.planContainer}>
           {activeStep <3 && (
-          <ContentComponent  activeStep={activeStep}  handlePlaceClick={handlePlaceClick} onShowPanel={handleShowPanel}  />
+          <ContentComponent  activeStep={activeStep}  handlePlaceClick={handlePlaceClick} onShowPanel={handleShowPanel}
+          selectedPlaces={selectedPlaces} setSelectedPlaces={setSelectedPlaces}
+          onRemovePlace={handleRemovePlace}  />
           )}
         </div>
 
@@ -172,6 +186,8 @@ function CreatePlan() {
         <SlidingPanel 
         isOpen={isPanelOpen} 
         onClose={handleClosePanel} 
+        selectedPlaces={selectedPlaces}
+        onRemovePlace={handleRemovePlace}
         />
       </div>      
   );

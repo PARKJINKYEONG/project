@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/plan/createPlan/progressPlan3.module.css';
 
-const ProgressPlan2 = () => {
+const ProgressPlan3 = () => {
   const [selectedTab, setSelectedTab] = useState('선택된 숙소');
   const [selectedCategory, setSelectedCategory] = useState('숙소');
 
@@ -19,13 +19,13 @@ const ProgressPlan2 = () => {
 
       <div className={styles.tabButtons}>
         <button
-          className={selectedTab === '선택된 숙소' ? styles.active : styles.button}
+          className={selectedTab === '선택된 숙소' ? styles.categoryButton : styles.tabButton}
           onClick={() => handleTabChange('선택된 숙소')}
         >
           선택된 숙소
         </button>
         <button
-          className={selectedTab === '숙소 검색 및 추천' ? styles.active : styles.button}
+          className={selectedTab === '숙소 검색 및 추천' ? styles.categoryButton : styles.tabButton}
           onClick={() => handleTabChange('숙소 검색 및 추천')}
         >
           숙소 검색 및 추천
@@ -77,4 +77,4 @@ const ProgressPlan2 = () => {
   );
 };
 
-export default ProgressPlan2;
+export default ProgressPlan3;
