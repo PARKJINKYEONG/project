@@ -101,8 +101,8 @@ const DomesticSightSearch = () => {
                   onClick={() => handleFavoriteToggle(result)}
                 >
                   {favorites[result.name] ? 
-                    <FavoriteIcon /> : 
-                    <FavoriteBorderIcon />
+                    <FavoriteIcon style={{ color: 'red'}} /> : 
+                    <FavoriteBorderIcon style={{ color: 'red' , marginLeft:'200px'}} />
                   }
                 </IconButton>
               </div>

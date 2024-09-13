@@ -45,17 +45,8 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
-  width: calc(25% - 16px); /* 4개씩 가로로 배치하기 위해 너비 설정 */
+  width: calc(25% - 16px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative; /* 하트 아이콘을 카드의 절대 위치로 조정하기 위해 필요 */
-}
-
-.favoriteButton {
-  position: absolute; /* 절대 위치로 설정 */
-  top: 10px; /* 카드 상단에서 10px 떨어진 위치 */
-  right: 10px; /* 카드 우측에서 10px 떨어진 위치 */
-  color: red; /* 하트 색상 빨간색 */
-  z-index: 1; /* 다른 내용 위에 표시되도록 설정 */
 }
 
 
