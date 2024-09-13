@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import useRequest from '../../../hooks/useRequest'; // useRequest 훅 import
 import styles from '../../../styles/admin/notice/createNotice.module.css'; // 새로운 스타일 모듈
 
 const CreateNotice = ({ setIsCreating, fetchNotices, navigate }) => {
@@ -7,16 +7,18 @@ const CreateNotice = ({ setIsCreating, fetchNotices, navigate }) => {
   const [content, setContent] = useState('');
   const [writer, setWriter] = useState(''); // 작성자 상태 추가
 
+  const { post } = useRequest(); // useRequest 훅을 사용하여 post 메서드 가져오기
+
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/notice', { title, content, writer }, { // 작성자 추가
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      await post('http://localhost:8080/api/notice', 
+        { title, content, writer }, 
+        { headers: { 'Content-Type': 'application/json' } }
+      );
       await fetchNotices(); // 공지사항 목록을 다시 불러옵니다.
       navigate('/admin2/notice'); // 목록 페이지로 이동합니다.
+      setIsCreating(false)
     } catch (error) {
       console.error('공지사항을 생성하는 중 오류가 발생했습니다.', error);
     }
